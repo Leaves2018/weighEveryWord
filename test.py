@@ -7,17 +7,17 @@ from update import update_vocabulary_words
 
 # 打开待处理文本，划分单词
 # TODO 将重复单词去重
-with open(r'Cats know their names.txt') as raw_text:
+with open(r'Cats know their names.txt', encoding='UTF-8') as raw_text:
     words = raw_text.read().lower().split()
 
 # 打开熟词本，按行取单词
 # TODO 将熟词本存储数据由字符串变为对象；读取时用'-'作为分隔符，生成对象
-with open("familiar_words.txt") as fw:
+with open("familiar_words.txt", encoding='UTF-8') as fw:
     familiar_words = [line.strip('\n') for line in fw.readlines()]
 
 # 打开生词本，按行取单词
 # TODO 将生词本存储数据由字符串变为对象；读取时用'-'作为分隔符，生成对象
-with open("vocabulary_words.txt") as vw:
+with open("vocabulary_words.txt", encoding='UTF-8') as vw:
     vocabulary_words = [line.strip('\n') for line in vw.readlines()]
 
 # pprint.pprint(words)
