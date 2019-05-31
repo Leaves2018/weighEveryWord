@@ -1,9 +1,8 @@
-import pprint
 from queue import Queue
 from txt2html import process_raw_text
 from wordlist import generate_word_list
-from update import update_familiar_words
 from update import update_vocabulary_words
+from vocabulary import Word
 
 # 打开待处理文本，划分单词
 # TODO 将重复单词去重
