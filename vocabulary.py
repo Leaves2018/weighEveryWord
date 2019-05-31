@@ -20,3 +20,9 @@ class Word:
     def get_ch_interpretation(self):
         pass
 
+    def to_string(self):
+        return "{}-{}-{}-{}-{}"\
+            .format(self.name, self.context, self.eng_interpretation, self.ch_interpretation, str(self.count))
+
+    def to_tuple(self):
+        return self.name, self.context, self.eng_interpretation, self.ch_interpretation, str(self.count)

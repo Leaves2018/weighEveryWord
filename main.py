@@ -1,25 +1,42 @@
 from queue import Queue
 from txt2html import process_raw_text
 from wordlist import generate_word_list
-from update import update_vocabulary_words
+from update import update_vocabulary_words, update_familiar_words
 from vocabulary import Word
+from reptile import youdao
 
 # 打开待处理文本，划分单词
-# TODO 将重复单词去重
 with open(r'Cats know their names.txt', encoding='UTF-8') as raw_text:
     words = raw_text.read().lower().split()
 
+
+# 去重（考虑是否有更高效率的实现方式）
+temp = []
+for word in words:
+    if word not in temp:
+        temp.append(word)
+words = temp
+
+
 # 打开熟词本，按行取单词
 # TODO 将熟词本存储数据由字符串变为对象；读取时用'-'作为分隔符，生成对象
-with open("familiar_words.txt", encoding='UTF-8') as fw:
-    familiar_words = [line.strip('\n') for line in fw.readlines()]
+with open("familiar_words.txt", 'r', encoding='UTF-8') as fw:
+    # familiar_words = [line.strip('\n').split('-') for line in fw.readlines()]
+    familiar_words = dict()
+    for line in fw.readline():
+        text = line.strip('\n').split('-')
+        familiar_words[text[0]] = Word(*text)
+
 
 # 打开生词本，按行取单词
 # TODO 将生词本存储数据由字符串变为对象；读取时用'-'作为分隔符，生成对象
-with open("vocabulary_words.txt", encoding='UTF-8') as vw:
-    vocabulary_words = [line.strip('\n') for line in vw.readlines()]
+with open("vocabulary_words.txt", 'r', encoding='UTF-8') as vw:
+    # vocabulary_words = [line.strip('\n').split('-') for line in vw.readlines()]
+    vocabulary_words = dict()
+    for line in vw.readlines():
+        text = line.strip('\n').split('-')
+        vocabulary_words[text[0]] = Word(*text)
 
-# pprint.pprint(words)
 
 # 待处理队列
 to_be_processed = Queue()
@@ -29,23 +46,34 @@ unknown = Queue()
 # 遍历待处理文本所有单词，进行熟词、生词、未知词分类
 for word in words:
     # 如果是熟词，过滤
-    if word in familiar_words:
+    if word in familiar_words.keys():
         continue
     # 如果是生词，加入待处理队列
-    elif word in vocabulary_words:
-        to_be_processed.put(word)
+    elif word in vocabulary_words.keys():
+        to_be_processed.put(Word(name=word))
     # 否则认为是未知词，加入未知词队列
     else:
-        unknown.put(word)
+        unknown.put(Word(name=word, ch_interpretation=youdao(word)))
 
+old_words = []
 # 处理未知词队列：由用户决断属于熟词还是生词
 while not unknown.empty():
     word = unknown.get()
     # 打印该单词名称、语境、英解、中解
-    print(word)
+    print(word.to_string())
+    print(word.name)
+    print(word.context)
+    print(word.eng_interpretation)
+    print(word.ch_interpretation)
     choice = bool(input("生词还是熟词？(输入任意字符表示生词，直接敲回车表示熟词)"))
     if choice:
         to_be_processed.put(word)
+        print("生词")
+    else:
+        old_words.append(word)
+        print("熟词")
+    print("=============================")
+
 
 # 未知词中被认为是生词的单词列表
 new_words = []
@@ -55,8 +83,12 @@ new_words = []
 # （2）生成单词列表
 while not to_be_processed.empty():
     word = to_be_processed.get()
-    new_words.append(new_words)
+    new_words.append(word)
+    # 处理原始文本：为生词添加HTML标签以突出显示
     process_raw_text()
+    # 生成单词表：单词名称、语境、英解、中解
     generate_word_list()
 
+# 更新生词本：将新增生词加入生词本
 update_vocabulary_words(new_words)
+update_familiar_words(old_words)
