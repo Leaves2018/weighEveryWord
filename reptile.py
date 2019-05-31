@@ -1,30 +1,24 @@
 import json
-from vocabulary import Word
+import time
+import random
+import hashlib
+from urllib import request, parse
 
-with open("inputtest.txt") as t:
-    words = t.read().lower().split()
-
-d = {}
-for word in words:
-    d[word] = Word(count=words.count(word))
 
 def get_salt():
-    '''
+    """
     :return:
-    '''
-    import time, random
-
+    """
     salt = int(time.time() * 1000) + random.randint(0, 10)
 
     return salt
 
 
 def get_md5(v):
-    import hashlib
     # Message Digest Algorithm MD5（中文名为消息摘要算法第五版）为计算机安全领域广泛使用的一种散列函数，用以提供消息的完整性保护
     md5 = hashlib.md5()  # md5对象，md5不能反解，但是加密是固定的，就是关系是一一对应，所以有缺陷，可以被对撞出来
 
-    ## update需要一个bytes格式参数
+    # update需要一个bytes格式参数
     md5.update(v.encode('utf-8'))  # 要对哪个字符串进行加密，就放这里
     value = md5.hexdigest()  # 拿到加密字符串
 
@@ -39,7 +33,9 @@ def get_sign(key, salt):
     return sign
 
 
-from urllib import request, parse
+"""
+翻译函数，将英文单词传入youdao()即可获得中文意思
+"""
 
 
 def youdao(key):
@@ -91,10 +87,4 @@ def youdao(key):
     return translate
 
 
-if __name__ == '__main__':
-    for word in words:
-        d[word] = Word(ch_interpretation=youdao(word))
 
-with open('outputtest.txt', 'a+') as wl:
-    for key in d:
-        wl.write(key+' '+d[key].ch_interpretation)
