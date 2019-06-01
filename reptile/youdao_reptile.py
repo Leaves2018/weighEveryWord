@@ -71,8 +71,3 @@ def en_mean(word):
 
 def example_mean(word):
     return deal_page_example('http://dict.youdao.com/w/eng/' + word + '/#keyfrom=dict2.index')
-
-d = 'pinkson'
-print(ch_mean(d))
-print(en_mean(d))
-print(example_mean(d))
