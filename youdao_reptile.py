@@ -5,6 +5,7 @@ def func(s):
     a = s.split("'")
     return a[1]
 
+# 转换编码格式，获取网页
 def get_page(url):
     a = requests.get(url)
     try:
@@ -14,6 +15,7 @@ def get_page(url):
     except:
         return ''
 
+# 获取网页上的单词的中文解释
 def deal_page_ch(url):
     page = get_page(url)
     bs = BeautifulSoup(page, 'html.parser')
@@ -28,6 +30,7 @@ def deal_page_ch(url):
             else:
                 return None
 
+# 获取网页上的单词的英文解释
 def deal_page_en(url):
     page = get_page(url)
     bs = BeautifulSoup(page, 'html.parser')
@@ -37,8 +40,10 @@ def deal_page_en(url):
     else:
         return None
 
+# 获取单词的中文意思
 def ch_mean(word):
     return deal_page_ch('http://dict.youdao.com/w/eng/' + word + '/#keyfrom=dict2.index')
 
+# 获取单词的英文意思
 def en_mean(word):
     return deal_page_en('http://dict.youdao.com/w/eng/' + word + '/#keyfrom=dict2.index')
