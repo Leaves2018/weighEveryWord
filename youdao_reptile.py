@@ -40,9 +40,12 @@ def deal_page_example(url):
     page = get_page(url)
     bs = BeautifulSoup(page, 'html.parser')
     div = bs.find('div', id='authority')
-    li=div.find('li')
-    p=li.find('p')
-    return p.get_text()
+    if div is not None:
+        li=div.find('li')
+        p=li.find('p')
+        return p.get_text()
+    else:
+        return None
 
 
 # 获取网页上的单词的英文解释
@@ -69,5 +72,7 @@ def en_mean(word):
 def example_mean(word):
     return deal_page_example('http://dict.youdao.com/w/eng/' + word + '/#keyfrom=dict2.index')
 
-d = 'muheim'
+d = 'pinkson'
 print(ch_mean(d))
+print(en_mean(d))
+print(example_mean(d))
