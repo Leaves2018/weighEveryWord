@@ -1,102 +1,204 @@
 **harry**: annoy continually or chronically
+
 **tray**: an open receptacle for holding or displaying or serving articles or food
+
 **butler**: a manservant (usually the head servant of a household) who has charge of wines and the table
+
 **obsequiousness**: abject or cringing submissiveness
+
 **slab**: block consisting of a thick piece of something
+
 **thrust**: the force used in pushing
+
 **upstate**: in or toward the northern parts of a state
+
 **blight**: a state or condition being blighted
+
 **orchards**: garden consisting of a small cultivated wood without undergrowth
+
 **bloodhound**: a breed of large powerful hound of European origin having very acute smell and used in tracking
+
 **strung**: that is on a string
+
 **drab**: a dull greyish to yellowish or light olive brown
+
 **examiners**: someone who administers a test to determine your qualifications
+
 **bonds**: an electrical force linking atoms
+
 **jeopardize**: pose a threat to; present a danger to
+
 **snapped**: the act of catching an object with the hands
+
 **jersey**: a Mid-Atlantic state on the Atlantic; one of the original 13 colonies
+
 **palisades**: fortification consisting of a strong fence made of stakes driven into the ground
+
 **unaccountably**: in an unaccountable manner
+
 **trim**: a state of arrangement or appearance
+
 **pistols**: a firearm that is held and fired with one hand
+
 **rifles**: a shoulder firearm with a long barrel and a rifled bore
+
 **cackle**: the sound made by a hen after laying an egg
+
 **scotch**: a slight surface cut (especially a notch that is made to keep a tally)
+
 **trigger**: lever that activates the firing mechanism of a gun
+
 **hauled**: the act of drawing or hauling something
+
 **stuck**: caught or fixed
+
 **spite**: feeling a need to see others suffer
+
 **carols**: joyful religious song celebrating the birth of Christ
+
 **squarely**: directly and without evasion; not roundabout
+
 **blotter**: absorbent paper used to dry ink
+
 **slipped**: a socially awkward or tactless act
+
 **leaning**: an inclination to do something
+
 **muzzle**: the open circular discharging end of a gun
+
 **poking**: a sharp hand gesture (resembling a blow)
+
 **deserted**: remote from civilization
+
 **authoritative**: having authority or ascendancy or influence
+
 **drained**: emptied or exhausted of (as by drawing off e.g. water or other liquid)
+
 **buzzed**: sound of rapid vibration
+
 **stiffened**: become stiff or stiffer
+
 **wobbling**: (of sound) fluctuating unsteadily
+
 **choppy**: marked by abrupt transitions
+
 **incredulous**: not disposed or willing to believe; unbelieving
+
 **overplay**: exaggerate one's acting
+
 **indignant**: angered at something unjust or wrong
+
 **faculty**: one of the inherent cognitive or perceptual powers of the mind
+
 **gingerly**: with extreme care or delicacy
+
 **frisked**: the act of searching someone for concealed weapons or illegal drugs
+
 **jammed**: filled to capacity
+
 **flailed**: an implement consisting of handle with a free swinging stick at the end; used in manual threshing
+
 **spun**: a swift whirling motion (usually of a missile)
+
+
 **jerk**: a dull stupid fatuous person
+
 **sleeves**: the part of a garment that is attached at the armhole and that provides a cloth covering for the arm
+
 **crumpling**: fall apart
+
 **tack**: the heading or position of a vessel relative to the trim of its sails
+
 **concealed**: not accessible to view
+
 **suspenders**: elastic straps that hold trousers up (usually used in the plural)
+
 **depositors**: a person who has deposited money in a bank or similar institution
+
 **sake**: a reason for wanting something done
+
 **shattering**: the act of breaking something into small pieces
+
 **steered**: an indication of potential opportunity
+
 **passed**: (baseball) an advance to first base by a batter who receives four balls
+
 **aberrations**: a state or condition markedly different from the norm
+
 **whistling**: the sound made by something moving rapidly or by steam coming out of a small aperture
+
 **christ**: a teacher and prophet born in Bethlehem and active in Nazareth; his life and sermons form the basis for Christianity (circa 4 BC - AD 29)
+
 **carol**: joyful religious song celebrating the birth of Christ
+
 **aloof**: remote in manner
+
 **transaction**: the act of transacting within or between groups (as carrying on commercial activities)
+
 **corridor**: an enclosed passageway; rooms usually open onto it
+
 **hallucination**: illusory perception; a common symptom of severe mental disorder
+
 **genuinely**: in accordance with truth or fact or reality
+
 **grip**: the act of grasping
+
 **earmarked**: identification mark on the ear of a domestic animal
+
 **strip**: a relatively long narrow piece of something
+
 **flustered**: thrown into a state of agitated confusion; (`rattled' is an informal term)
+
 **tremendous**: extraordinarily large in size or extent or amount or power or degree
+
 **shriek**: sharp piercing cry
+
 **fuss**: an excited state of agitation
+
 **wrenched**: a sharp strain on muscles or ligaments
+
 **scattered**: occurring or distributed over widely spaced and irregular intervals in time or space
+
 **grabbed**: a mechanical device for gripping an object
+
 **lapels**: lap at the front of a coat; continuation of the coat collar
+
 **pasty**: small meat pie or turnover
+
 **inkwell**: a small well holding writing ink into which a pen can be dipped
+
 **splattering**: the noise of something spattering or sputtering explosively
+
 **crashing**: (used of persons) informal intensifiers
+
 **arc**: electrical conduction through a gas in an applied electric field
+
 **smashing**: the act of breaking something into small pieces
+
 **flattened**: having been flattened
+
 **muttering**: a low continuous indistinct sound; often accompanied by movement of the lips without the production of articulate speech
+
 **grunt**: the short low gruff noise of the kind made by hogs
+
 **puff**: a short light gust of air
+
 **overhang**: projection that extends beyond or hangs over something else
+
 **slapped**: a blow from a flat object (as an open hand)
+
 **stinging**: a kind of pain; something as sudden and painful as being stung
+
 **stunned**: filled with the emotional impact of overwhelming surprise or shock
+
 **sobbing**: convulsive gasp made while weeping
+
 **sensation**: an unelaborated elementary awareness of stimulation
+
 **surge**: a sudden forceful flow
+
 **tamper**: a tool for tamping (e.g., for tamping tobacco into a pipe bowl or a charge into a drill hole etc.)
+
 **drove**: a group of animals (a herd or flock) moving together
+
 **mailed**: wearing protective mail
