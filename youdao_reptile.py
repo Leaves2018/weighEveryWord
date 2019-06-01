@@ -22,15 +22,18 @@ def get_page(url):
 def deal_page_ch(url):
     page = get_page(url)
     bs = BeautifulSoup(page, 'html.parser')
-    div = bs.find('div', class_="trans-container").children
-    for i in div:
-        s = str(type(i))
-        if func(s) == 'bs4.element.Tag':
-            t = i.find('li')
-            if t is not None:
-                return t.contents[0]
-            else:
-                return None
+    div = bs.find('div', class_="trans-container")
+    if div is not None:
+        for i in div:
+            s = str(type(i))
+            if func(s) == 'bs4.element.Tag':
+                t = i.find('li')
+                if t is not None:
+                    return t.contents[0]
+                else:
+                    return None
+    else:
+        return None
 
 
 def deal_page_example(url):
@@ -66,3 +69,5 @@ def en_mean(word):
 def example_mean(word):
     return deal_page_example('http://dict.youdao.com/w/eng/' + word + '/#keyfrom=dict2.index')
 
+d = 'muheim'
+print(ch_mean(d))
