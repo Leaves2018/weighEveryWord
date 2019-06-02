@@ -1,4 +1,3 @@
-from util import *
 import re
 from vocabulary import Word
 from process_raw_text import decorate_raw_text
@@ -6,7 +5,7 @@ from wordlist import generate_word_list
 from update import *
 
 
-def first(filename):
+def first(text):
     familiar_words = []
     with open("familiar/familiar_words.txt", mode='r+', encoding='UTF-8') as fw:
         for line in fw.readlines():
@@ -22,22 +21,22 @@ def first(filename):
 
     new_words = []
     unknown_words = []
-    with open(filename, mode='r+', encoding='UTF-8') as f:
-        for sentence in sentences(f):
-            words = re.split('[^a-zA-Z]+', sentence)
-            for word in words:
-                if word is "":
-                    continue
-                # 记录单词所在文章名、文章中所在句位置、句中所在单词位置
-                if sentence.strip().index(word) == 0:
-                    word = word.lower()
-                new_word = Word(name=word, context=re.sub(word, '*'+word+'*', sentence.strip()))
-                if word in familiar_words:
-                    continue
-                elif word in vocabulary_words.keys():
-                    new_words.append(new_word)
-                else:
-                    unknown_words.append(new_word)
+
+    for sentence in sentences(text):
+        words = re.split('[^a-zA-Z]+', sentence)
+        for word in words:
+            if word is "":
+                continue
+            # 记录单词所在文章名、文章中所在句位置、句中所在单词位置
+            if sentence.strip().index(word) == 0:
+                word = word.lower()
+            new_word = Word(name=word, context=re.sub(word, '*'+word+'*', sentence.strip()))
+            if word in familiar_words:
+                continue
+            elif word in vocabulary_words.keys():
+                new_words.append(new_word)
+            else:
+                unknown_words.append(new_word)
     return new_words, unknown_words
 
 
@@ -71,4 +70,8 @@ def third(new_words, filename):
     generate_word_list(new_words, filename)
 
 
+def sentences(text):
+    s = re.split("[.!?]+", text)
+    for sentence in s:
+        yield sentence
 
