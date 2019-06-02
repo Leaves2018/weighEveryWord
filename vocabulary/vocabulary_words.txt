@@ -19,3 +19,13 @@ evasive_The poorest are overhesitant, evasive, preoccupied with their relationsh
 confront_They confront all embarrassments with a stale general formula___0
 stale_They confront all embarrassments with a stale general formula___0
 formula_They confront all embarrassments with a stale general formula___0
+enormous_There is an enormous difference in the ways in which various public officials respond to public pressures, and in the means and methods they employ to deal with them___0
+swerved_The best possess understanding of the forces that must be taken into account, determination not to be swerved from the path of public interest, a willingness to make enemies along with a gift for avoiding them and faith that public support will be forthcoming for the correct course___0
+forthcoming_The best possess understanding of the forces that must be taken into account, determination not to be swerved from the path of public interest, a willingness to make enemies along with a gift for avoiding them and faith that public support will be forthcoming for the correct course___0
+evasive_The poorest are overhesitant, evasive, preoccupied with their relationships with their colleagues, superiors, the press or the political support on which they lean___0
+confront_They confront all embarrassments with a stale general formula___0
+stale_They confront all embarrassments with a stale general formula___0
+formula_They confront all embarrassments with a stale general formula___0
+thwarted_Yet what an individual does when he is thwarted remains a reasonable good key to the understanding of his personality_disappointingly unsuccessful_adj. 挫败的_0
+thwarting_If his responses to thwarting are emotional explosions and irrational excuses, he is tending to live in an unreal world_an act of hindering someone's plans or efforts_v. 阻挠；妨碍（thwart的ing形式）_0
+irrational_If his responses to thwarting are emotional explosions and irrational excuses, he is tending to live in an unreal world_a real number that cannot be expressed as a rational number_adj. 不合理的；无理性的；荒谬的_0
