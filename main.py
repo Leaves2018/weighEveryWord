@@ -1,11 +1,8 @@
 from queue import Queue
-import re
 from format_conversion.txt2html.txt2html import process_raw_text
 from wordlist import generate_word_list
-from format_conversion.txt2html.update import update_vocabulary_words, update_familiar_words
+from update import update_vocabulary_words, update_familiar_words
 from vocabulary import Word
-from reptile.reptile import youdao
-from reptile.youdao_reptile import *
 
 # 打开待处理文本，划分单词
 with open(r'Cats know their names.txt', encoding='UTF-8') as raw_text:

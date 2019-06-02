@@ -1,20 +1,12 @@
-import codecs
-import markdown
 
-css = '''
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<style type="text/css">
-<!-- 此处省略掉markdown的css样式，因为太长了 -->
-</style>
-'''
-
-# 读取 markdown 文本
-input_file = codecs.open("Vocabulary of The Dusty Drawer.md", mode="r", encoding="utf-8")
-text = input_file.read()
-
-# 转为 html 文本
-html = markdown.markdown(text)
-
-# 保存为文件
-output_file = codecs.open("Vocabulary of The Dusty Drawer.html", mode="w", encoding="utf-8")
-output_file.write(css + html)
+from weigh import *
+filename = "input/The Dusty Drawer.txt"
+old_words, new_words, unknown_words = first(filename)
+third(second(old_words, new_words, unknown_words), "The Dusty Drawer")
+# from wordlist import *
+# from vocabulary import Word
+# from queue import Queue
+# q = Queue()
+# q.put(Word("Hello"))
+# q.put(Word("World"))
+# generate_word_list(q, 'test')

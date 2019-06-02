@@ -1,4 +1,4 @@
-from PyQt5 import QtCore,QtGui,QtWidgets
+from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
 import qtawesome
 
@@ -24,17 +24,18 @@ class MainInter(QtWidgets.QMainWindow):
         self.down_layout = QtWidgets.QGridLayout()
         self.down_widget.setLayout(self.down_layout)  # 设置下方部件布局为网格
 
-        self.main_layout.addWidget(self.up_widget, 0, 0, 18, 18)  # 上方部件在第0行第0列，占12行12列
-        self.main_layout.addWidget(self.down_widget, 19, 0, 2, 18)  # 上方部件在第13行第13列，占3行12列
+        self.main_layout.addWidget(self.up_widget, 0, 0, 18, 18)  # 上方部件在第0行第0列，占18行18列
+        self.main_layout.addWidget(self.down_widget, 19, 0, 2, 18)  # 上方部件在第19行第0列，占2行18列
         self.setCentralWidget(self.main_widget)  # 设置窗口主部件
 
         self.up_bar_widget = QtWidgets.QWidget()  # 上方顶部搜索框部件
         self.up_bar_layout = QtWidgets.QGridLayout()  # 上方顶部搜索框网格布局
         self.up_bar_widget.setLayout(self.up_bar_layout)
+        self.up_bar_widget.setFixedSize(1000, 100)
         self.up_bar_widget_search_input = QtWidgets.QLineEdit()
         self.up_bar_widget_search_input.setPlaceholderText("输入要标记的文本")
         self.up_bar_layout.addWidget(self.up_bar_widget_search_input, 0, 1, 18, 18)
-        self.up_layout.addWidget(self.up_bar_widget, 0, 0, 1, 9)
+        self.up_layout.addWidget(self.up_bar_widget, 0, 0, 18, 18)
 
         self.down_button_1 = QtWidgets.QPushButton("清空")
         self.down_button_1.setObjectName('down_button')
@@ -42,7 +43,6 @@ class MainInter(QtWidgets.QMainWindow):
         self.down_button_2.setObjectName('down_button')
         self.down_layout.addWidget(self.down_button_1, 0, 0, 1, 3)
         self.down_layout.addWidget(self.down_button_2, 0, 3, 1, 3)
-
 
 
 def main():
