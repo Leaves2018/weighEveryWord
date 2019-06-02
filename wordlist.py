@@ -21,13 +21,15 @@ def generate_word_list(words, filename):
     # 转为 html 文本
     html = markdown.markdown(text)
     # 保存为文件
-    output_file = codecs.open("output/" + filename + '.html', mode="w+", encoding="utf-8")
+    output_file = codecs.open("output/Vocabulary of " + filename + '.html', mode="w+", encoding="utf-8")
     output_file.write(css + html)
     output_file.close()
 
 
 def process(words, filename):
     md = open("md/Vocabulary of " + filename + ".md", mode="w+", encoding="UTF-8")
+    md.write("# Vocabulary\n\n")
+    md.write("## " + filename + "\n\n")
     for i in range(len(words)):
         word = words[i]
         md.write(str(i) + ". **" + word.get_name() + "**:" + "\n\n"

@@ -1,4 +1,7 @@
 # -*- coding="UTF-8" -*-
+import re
+
+
 def lines(file):
     for line in file:
         yield line
@@ -13,3 +16,10 @@ def blocks(file):
         elif block:
             yield ''.join(block).strip()
             block = []
+
+
+def sentences(file):
+    text = file.read()
+    s = re.split("[.!?]+", text)
+    for sentence in s:
+        yield sentence

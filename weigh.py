@@ -7,11 +7,12 @@ from update import *
 
 
 def first(filename):
-    familiar_words = dict()
+    familiar_words = []
     with open("familiar/familiar_words.txt", mode='r+', encoding='UTF-8') as fw:
         for line in fw.readlines():
-            text = line.split('_')
-            familiar_words[text[0]] = Word(*text)
+            # text = line.split('_')
+            # familiar_words[text[0]] = Word(*text)
+            familiar_words.append(line.strip().lower())
 
     vocabulary_words = dict()
     with open("vocabulary/vocabulary_words.txt", mode='r+', encoding='UTF-8') as vw:
@@ -19,31 +20,30 @@ def first(filename):
             text = line.split('_')
             vocabulary_words[text[0]] = Word(*text)
 
-    old_words = []
     new_words = []
     unknown_words = []
     with open(filename, mode='r+', encoding='UTF-8') as f:
-        for block in blocks(f):
-            words = re.split('[^a-zA-Z]+', block)
+        for sentence in sentences(f):
+            words = re.split('[^a-zA-Z]+', sentence)
             for word in words:
                 if word is "":
                     continue
                 # 记录单词所在文章名、文章中所在句位置、句中所在单词位置
-                block.index(word)
-                new_word = Word(name=word, context=block)
-                if word in familiar_words.keys():
-                    old_words.append(new_word)
+                word = word.lower()
+                new_word = Word(name=word, context=sentence.strip())
+                if word in familiar_words:
+                    continue
                 elif word in vocabulary_words.keys():
                     new_words.append(new_word)
                 else:
                     unknown_words.append(new_word)
-    return old_words, new_words, unknown_words
+    return new_words, unknown_words
 
 
-def second(old_words, new_words, unknown_words):
+def second(new_words, unknown_words):
+    old_words = []
     size = len(unknown_words)
-    for i in range(len(unknown_words)):
-        word = unknown_words[i]
+    for word in unknown_words:
         print('--------------------')
         print(word.get_name())
         print(word.get_context())

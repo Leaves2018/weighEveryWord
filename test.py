@@ -1,8 +1,8 @@
 
 from weigh import *
-filename = "input/The Dusty Drawer.txt"
-old_words, new_words, unknown_words = first(filename)
-third(second(old_words, new_words, unknown_words), "The Dusty Drawer")
+filename = "input/public pressure.txt"
+new_words, unknown_words = first(filename)
+third(second(new_words, unknown_words), "public pressure")
 # from wordlist import *
 # from vocabulary import Word
 # from queue import Queue

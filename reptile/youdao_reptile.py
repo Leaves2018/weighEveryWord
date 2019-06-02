@@ -33,7 +33,7 @@ def deal_page_ch(url):
                 else:
                     return None
     else:
-        return None
+        return ""
 
 
 def deal_page_example(url):
@@ -45,7 +45,7 @@ def deal_page_example(url):
         p=li.find('p')
         return p.get_text()
     else:
-        return None
+        return ""
 
 
 # 获取网页上的单词的英文解释
@@ -56,7 +56,7 @@ def deal_page_en(url):
     if span is not None:
         return span.contents[0]
     else:
-        return None
+        return ""
 
 
 # 获取单词的中文意思
