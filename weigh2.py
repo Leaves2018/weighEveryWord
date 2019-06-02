@@ -5,12 +5,10 @@ from wordlist import generate_word_list
 from update import *
 
 
-def first(text):
+def first(raw_text):
     familiar_words = []
     with open("familiar/familiar_words.txt", mode='r+', encoding='UTF-8') as fw:
         for line in fw.readlines():
-            # text = line.split('_')
-            # familiar_words[text[0]] = Word(*text)
             familiar_words.append(line.strip().lower())
 
     vocabulary_words = dict()
@@ -22,7 +20,7 @@ def first(text):
     new_words = []
     unknown_words = []
 
-    for sentence in sentences(text):
+    for sentence in sentences(raw_text):
         words = re.split('[^a-zA-Z]+', sentence)
         for word in words:
             if word is "":
