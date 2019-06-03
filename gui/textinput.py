@@ -80,11 +80,13 @@ class MainInter(QtWidgets.QMainWindow):
         self.up_button_1.setObjectName('left_button')
         self.up_button_1.setCheckable(True)
         self.up_button_1.clicked.connect(self.lastone)
+        # self.up_button_1.setShortcut(chr())
 
         self.up_button_2 = QtWidgets.QPushButton(qtawesome.icon('fa.sellsy', color='white'), "下一个")
         self.up_button_2.setObjectName('left_button')
         self.up_button_2.setCheckable(True)
         self.up_button_2.clicked.connect(self.nextone)
+        # self.up_button_2.setShortcut(chr())
 
         self.up_button_return = QtWidgets.QPushButton(qtawesome.icon('fa.music', color='white'), "返回")
         self.up_button_return.setObjectName('left_button')
@@ -99,32 +101,38 @@ class MainInter(QtWidgets.QMainWindow):
         self.up_bar_layout = QtWidgets.QGridLayout()  # 上方顶部网格布局
         self.up_bar_widget.setLayout(self.up_bar_layout)
 
+        self.up_label = QtWidgets.QLabel()
+
+        self.up_bar_layout.addWidget(self.up_label, 0, 0, 1, 12)
+
         self.word_name_output = QtWidgets.QTextEdit()
         self.word_name_output.setPlaceholderText("单词名称")
-        self.up_bar_layout.addWidget(self.word_name_output, 0, 1, 3, 6)
+        self.up_bar_layout.addWidget(self.word_name_output, 1, 1, 4, 6)
 
         self.word_ch_output = QtWidgets.QTextEdit()
         self.word_ch_output.setPlaceholderText("中文解释")
-        self.up_bar_layout.addWidget(self.word_ch_output, 0, 8, 3, 6)
+        self.up_bar_layout.addWidget(self.word_ch_output, 1, 8, 4, 6)
 
         self.word_context_output = QtWidgets.QTextEdit()
         self.word_context_output.setPlaceholderText("语境信息")
-        self.up_bar_layout.addWidget(self.word_context_output, 5, 1, 5, 6)
+        self.up_bar_layout.addWidget(self.word_context_output, 6, 1, 6, 6)
 
         self.word_en_output = QtWidgets.QTextEdit()
         self.word_en_output.setPlaceholderText("英文解释")
-        self.up_bar_layout.addWidget(self.word_en_output, 5, 8, 5, 6)
+        self.up_bar_layout.addWidget(self.word_en_output, 6, 8, 6, 6)
         self.up_layout.addWidget(self.up_bar_widget, 0, 1, 18, 17)
 
         self.btn_vocabulary_word = QtWidgets.QPushButton("生词")
         self.btn_vocabulary_word.setObjectName('down_button')
         self.btn_vocabulary_word.setCheckable(True)
         self.btn_vocabulary_word.clicked.connect(self.shengci)
+        self.btn_vocabulary_word.setShortcut('Ctrl+'+chr(32))
 
         self.btn_familiar_word = QtWidgets.QPushButton("熟词")
         self.btn_familiar_word.setObjectName('down_button')
         self.btn_familiar_word.setCheckable(True)
         self.btn_familiar_word.clicked.connect(self.shuci)
+        self.btn_familiar_word.setShortcut(chr(32))
 
         self.down_layout.addWidget(self.btn_vocabulary_word, 1, 0, 1, 9)
         self.down_layout.addWidget(self.btn_familiar_word, 1, 9, 1, 9)
@@ -132,6 +140,10 @@ class MainInter(QtWidgets.QMainWindow):
 
     def display(self):
         word = self.unknown_words[self.count]
+        self.word_name_output.clear()
+        self.word_en_output.clear()
+        self.word_ch_output.clear()
+        self.word_context_output.clear()
         self.word_name_output.setPlainText(word.get_name())
         self.word_context_output.setPlainText(word.get_context())
         self.word_ch_output.setPlainText(word.get_ch_interpretation())
@@ -146,59 +158,76 @@ class MainInter(QtWidgets.QMainWindow):
             self.display()
 
     def testDialog_1(self):
-        text, ok = QtWidgets.QInputDialog.getText(self, '提示', '已接收到文本')
-        if ok:
-            return 0
+        res = QtWidgets.QMessageBox.question(self, '提示',
+                                             "已接收到文本", QtWidgets.QMessageBox.Yes |
+                                             QtWidgets.QMessageBox.No,
+                                             QtWidgets.QMessageBox.No)
+        if res == QtWidgets.QMessageBox.Yes:
+            pass
         else:
-            return 0
+            pass
 
     def testDialog_2(self):
-        text, ok = QtWidgets.QInputDialog.getText(self, '提示', '未接收到文本')
-        if ok:
-            return 0
+        res = QtWidgets.QMessageBox.question(self, '提示',
+                                             "未接收到文本", QtWidgets.QMessageBox.Yes |
+                                             QtWidgets.QMessageBox.No,
+                                             QtWidgets.QMessageBox.No)
+        if res == QtWidgets.QMessageBox.Yes:
+            pass
         else:
-            return 0
+            pass
 
     def showDialog(self, text="提示"):
         text, ok = QtWidgets.QInputDialog.getText(self, text, '生熟词已判断完毕，请输入文件名:')
 
         if ok:
             self.filename = str(text)
+            f = open("C:\\Users\\10513\\PycharmProjects\\weighEveryWord\\input\\" + self.filename + ".txt", mode="w+",
+                     encoding="UTF-8")
+            f.write(self.s)
+            f.close()
+            self.finish()
             return True
         return False
-
-
 
     def nextone(self):
         self.count += 1
         if self.count >= len(self.unknown_words):
-            if self.showDialog():
-                self.finish()
+            self.showDialog()
+            self.count -= 1
         else:
             self.display()
 
     def shengci(self):
+        self.up_label.setText("上一个单词为" + self.word_name_output.toPlainText() + "已被判断为生词")
+        word = self.unknown_words[self.count]
+        ch = "Test"
         word = Word(name=self.word_name_output.toPlainText(), context=self.word_context_output.toPlainText(),
-                    ch_interpretation=self.word_ch_output.toPlainText(), eng_interpretation=self.word_en_output.toPlainText())
+                    ch_interpretation=ch, eng_interpretation=self.word_en_output.toPlainText())
         self.new_words.append(word)
         self.nextone()
 
     def finish(self):
         update_familiar_words(old_words=self.old_words)
         update_vocabulary_words(new_words=self.new_words)
-        self.third(self.new_words, self.filename)
+        third(self.new_words, self.filename)
 
     def shuci(self):
+        self.up_label.setText("上一个单词为" + self.word_name_output.toPlainText() + "已被判断为熟词")
         self.old_words.append(self.word_name_output.toPlainText())
         self.nextone()
 
     def get(self):
         self.s = self.up_bar_widget_input.toPlainText()
         self.new_words, self.unknown_words = first(self.s)
+        # f = open("C:\\Users\\10513\\PycharmProjects\\weighEveryWord\\input\\" + filename + ".txt", mode="r+",
+        #          encoding="UTF-8")
+        # text = f.read()
+        # f.close()
         if self.new_words or self.unknown_words:
-            self.showDialog(text="熟词已过滤")
+            self.testDialog_1()
         else:
-            self.showDialog(text="内容读取失败")
+            self.testDialog2()
 
     def clear(self):
         self.up_bar_widget_input.clear()

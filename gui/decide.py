@@ -3,10 +3,12 @@ import sys
 import qtawesome
 
 
-class MainInter(QtWidgets.QMainWindow):
+class SecondInter(QtWidgets.QMainWindow):
     def __init__(self):
         super().__init__()
         self.decide()
+
+
 
     def decide(self):
         self.setFixedSize(960, 700)
@@ -36,47 +38,72 @@ class MainInter(QtWidgets.QMainWindow):
 
         self.up_button_1 = QtWidgets.QPushButton(qtawesome.icon('fa.music', color='white'), "上一个")
         self.up_button_1.setObjectName('left_button')
+        self.up_button_1.setCheckable(True)
+        self.up_button_1.toggle()
+        self.up_button_1.clicked.connect(self.lastone)
+
         self.up_button_2 = QtWidgets.QPushButton(qtawesome.icon('fa.sellsy', color='white'), "下一个")
         self.up_button_2.setObjectName('left_button')
+        self.up_button_2.setCheckable(True)
+        self.up_button_2.toggle()
+        self.up_button_2.clicked.connect(self.nextone)
+
         self.up_button_return = QtWidgets.QPushButton(qtawesome.icon('fa.music', color='white'), "返回")
         self.up_button_return.setObjectName('left_button')
         self.up_button_return.setCheckable(True)
         self.up_button_return.toggle()
         self.up_button_return.clicked.connect(self.init_ui)
+
         self.up_layout.addWidget(self.up_button_1, 9, 0, 1, 1)
         self.up_layout.addWidget(self.up_button_2, 9, 18, 1, 1)
         self.up_layout.addWidget(self.up_button_return, 0, 0, 1, 1)
 
-        self.up_bar_widget = QtWidgets.QWidget()  # 上方顶部搜索框部件
-        self.up_bar_layout = QtWidgets.QGridLayout()  # 上方顶部搜索框网格布局
+        self.up_bar_widget = QtWidgets.QWidget()  # 上方顶部部件
+        self.up_bar_layout = QtWidgets.QGridLayout()  # 上方顶部网格布局
         self.up_bar_widget.setLayout(self.up_bar_layout)
-        self.up_bar_widget_search_input = QtWidgets.QTextEdit()
-        self.up_bar_widget_search_input.setPlaceholderText("显示要判断的单词信息")
-        self.up_bar_layout.addWidget(self.up_bar_widget_search_input, 0, 1, 18, 17)
+
+        self.word_name_output = QtWidgets.QTextEdit()
+        self.word_name_output.setPlaceholderText("单词名称")
+        self.up_bar_layout.addWidget(self.word_name_output, 0, 1, 3, 6)
+
+        self.word_ch_output = QtWidgets.QTextEdit()
+        self.word_ch_output.setPlaceholderText("中文解释")
+        self.up_bar_layout.addWidget(self.word_ch_output, 0, 8, 3, 6)
+
+        self.word_context_output = QtWidgets.QTextEdit()
+        self.word_context_output.setPlaceholderText("语境信息")
+        self.up_bar_layout.addWidget(self.word_context_output, 5, 1, 5, 6)
+
+        self.word_en_output = QtWidgets.QTextEdit()
+        self.word_en_output.setPlaceholderText("英文解释")
+        self.up_bar_layout.addWidget(self.word_en_output, 5, 8, 5, 6)
         self.up_layout.addWidget(self.up_bar_widget, 0, 1, 18, 17)
 
-        self.down_button_1 = QtWidgets.QPushButton("生词")
-        self.down_button_1.setObjectName('down_button')
-        self.down_button_2 = QtWidgets.QPushButton("熟词")
-        self.down_button_2.setObjectName('down_button')
-        self.down_button_2.setCheckable(True)
-        self.down_button_2.toggle()
-        self.down_button_2.clicked.connect(self.output)
-        self.down_layout.addWidget(self.down_button_1, 1, 0, 1, 9)
-        self.down_layout.addWidget(self.down_button_2, 1, 9, 1, 9)
+        self.btn_vocabulary_word = QtWidgets.QPushButton("生词")
+        self.btn_vocabulary_word.setObjectName('down_button')
+        self.btn_vocabulary_word.setCheckable(True)
+        self.btn_vocabulary_word.toggle()
+        self.btn_vocabulary_word.clicked.connect(self.shengci)
+
+        self.btn_familiar_word = QtWidgets.QPushButton("熟词")
+        self.btn_familiar_word.setObjectName('down_button')
+        self.btn_familiar_word.setCheckable(True)
+        self.btn_familiar_word.toggle()
+        self.btn_familiar_word.clicked.connect(self.shuci)
+
+        self.down_layout.addWidget(self.btn_vocabulary_word, 1, 0, 1, 9)
+        self.down_layout.addWidget(self.btn_familiar_word, 1, 9, 1, 9)
 
 
-
-
-def main():
-    app = QtWidgets.QApplication(sys.argv)
-    gui = MainInter()
-    gui.show()
-    sys.exit(app.exec_())
-
-
-if __name__ == '__main__':
-    main()
+# def main():
+#     app = QtWidgets.QApplication(sys.argv)
+#     gui = SecondInter()
+#     gui.show()
+#     sys.exit(app.exec_())
+#
+#
+# if __name__ == '__main__':
+#     main()
 
 
 
