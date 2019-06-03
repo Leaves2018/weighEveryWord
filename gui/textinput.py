@@ -37,28 +37,6 @@ class MainInter(QtWidgets.QMainWindow):
                                          QtWidgets.QMessageBox.No)
         if res == QtWidgets.QMessageBox.Yes:
             self.decide()
-            familiar_words = []
-
-            vocabulary_words = dict()
-
-            new_words = []
-            unknown_words = []
-
-            for sentence in sentences(self.s):
-                words = re.split('[^a-zA-Z]+', sentence)
-                for word in words:
-                    if word is "":
-                        continue
-                    # 记录单词所在文章名、文章中所在句位置、句中所在单词位置
-                    if sentence.strip().index(word) == 0:
-                        word = word.lower()
-                    new_word = Word(name=word, context=re.sub(word, '*' + word + '*', sentence.strip()))
-                    if word in familiar_words:
-                        continue
-                    elif word in vocabulary_words.keys():
-                        new_words.append(new_word)
-                    else:
-                        unknown_words.append(new_word)
         else:
             return 0
 
@@ -101,19 +79,16 @@ class MainInter(QtWidgets.QMainWindow):
         self.up_button_1 = QtWidgets.QPushButton(qtawesome.icon('fa.music', color='white'), "上一个")
         self.up_button_1.setObjectName('left_button')
         self.up_button_1.setCheckable(True)
-        self.up_button_1.toggle()
         self.up_button_1.clicked.connect(self.lastone)
 
         self.up_button_2 = QtWidgets.QPushButton(qtawesome.icon('fa.sellsy', color='white'), "下一个")
         self.up_button_2.setObjectName('left_button')
         self.up_button_2.setCheckable(True)
-        self.up_button_2.toggle()
         self.up_button_2.clicked.connect(self.nextone)
 
         self.up_button_return = QtWidgets.QPushButton(qtawesome.icon('fa.music', color='white'), "返回")
         self.up_button_return.setObjectName('left_button')
         self.up_button_return.setCheckable(True)
-        self.up_button_return.toggle()
         self.up_button_return.clicked.connect(self.init_ui)
 
         self.up_layout.addWidget(self.up_button_1, 9, 0, 1, 1)
@@ -144,17 +119,16 @@ class MainInter(QtWidgets.QMainWindow):
         self.btn_vocabulary_word = QtWidgets.QPushButton("生词")
         self.btn_vocabulary_word.setObjectName('down_button')
         self.btn_vocabulary_word.setCheckable(True)
-        self.btn_vocabulary_word.toggle()
         self.btn_vocabulary_word.clicked.connect(self.shengci)
 
         self.btn_familiar_word = QtWidgets.QPushButton("熟词")
         self.btn_familiar_word.setObjectName('down_button')
         self.btn_familiar_word.setCheckable(True)
-        self.btn_familiar_word.toggle()
         self.btn_familiar_word.clicked.connect(self.shuci)
 
         self.down_layout.addWidget(self.btn_vocabulary_word, 1, 0, 1, 9)
         self.down_layout.addWidget(self.btn_familiar_word, 1, 9, 1, 9)
+        self.nextone()
 
     def display(self):
         word = self.unknown_words[self.count]
@@ -165,10 +139,11 @@ class MainInter(QtWidgets.QMainWindow):
 
     def lastone(self):
         self.count -= 1
+
         if self.count < 0:
             self.count += 1
         else:
-            self.show()
+            self.display()
 
     def testDialog_1(self):
         text, ok = QtWidgets.QInputDialog.getText(self, '提示', '已接收到文本')
@@ -184,8 +159,8 @@ class MainInter(QtWidgets.QMainWindow):
         else:
             return 0
 
-    def showDialog(self):
-        text, ok = QtWidgets.QInputDialog.getText(self, '提示', '生熟词已判断完毕，请输入文件名:')
+    def showDialog(self, text="提示"):
+        text, ok = QtWidgets.QInputDialog.getText(self, text, '生熟词已判断完毕，请输入文件名:')
 
         if ok:
             self.filename = str(text)
@@ -200,7 +175,7 @@ class MainInter(QtWidgets.QMainWindow):
             if self.showDialog():
                 self.finish()
         else:
-            self.show()
+            self.display()
 
     def shengci(self):
         word = Word(name=self.word_name_output.toPlainText(), context=self.word_context_output.toPlainText(),
@@ -219,7 +194,11 @@ class MainInter(QtWidgets.QMainWindow):
 
     def get(self):
         self.s = self.up_bar_widget_input.toPlainText()
-        print(self.s)
+        self.new_words, self.unknown_words = first(self.s)
+        if self.new_words or self.unknown_words:
+            self.showDialog(text="熟词已过滤")
+        else:
+            self.showDialog(text="内容读取失败")
 
     def clear(self):
         self.up_bar_widget_input.clear()
@@ -256,19 +235,16 @@ class MainInter(QtWidgets.QMainWindow):
         self.btn_vocabulary_word = QtWidgets.QPushButton("清空")
         self.btn_vocabulary_word.setObjectName('down_button')
         self.btn_vocabulary_word.setCheckable(True)
-        self.btn_vocabulary_word.toggle()
         self.btn_vocabulary_word.clicked.connect(self.clear)
 
         self.btn_familiar_word = QtWidgets.QPushButton("确认文本")
         self.btn_familiar_word.setObjectName('down_button')
         self.btn_familiar_word.setCheckable(True)
-        self.btn_familiar_word.toggle()
         self.btn_familiar_word.clicked.connect(self.get)
 
         self.down_button_3 = QtWidgets.QPushButton("确认输入完毕")
         self.down_button_3.setObjectName('down_button')
         self.down_button_3.setCheckable(True)
-        self.down_button_3.toggle()
         self.down_button_3.clicked.connect(self.openNext)
 
         self.down_layout.addWidget(self.btn_vocabulary_word, 0, 0, 1, 3)

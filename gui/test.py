@@ -1,7 +1,20 @@
+# -*- coding: utf-8 -*-
+
+"""
+ZetCode PyQt5 tutorial
+
+In this example, we receive data from
+a QInputDialog dialog.
+
+author: Jan Bodnar
+website: zetcode.com
+last edited: January 2015
+"""
+
 import sys
 from PyQt5.QtWidgets import (QWidget, QPushButton, QLineEdit,
                              QInputDialog, QApplication)
-
+from weigh2 import *
 
 class Example(QWidget):
 
@@ -25,8 +38,10 @@ class Example(QWidget):
     def showDialog(self):
         text, ok = QInputDialog.getText(self, 'Input Dialog',
                                         'Enter your name:')
+
         if ok:
-            self.le.setText(str(text))
+            new_words, unknown_words = first(text)
+            self.le.setText(new_words[0].get_name())
 
 
 if __name__ == '__main__':
