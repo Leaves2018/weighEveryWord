@@ -14,26 +14,26 @@ def first(raw_text):
     vocabulary_words = dict()
     with open("./vocabulary/vocabulary_words.txt", mode='r+', encoding='UTF-8') as vw:
         for line in vw.readlines():
-            text = line.split('-')
+            text = line.lower().split('-')
             vocabulary_words[text[0]] = Word(*text)
 
+    unfamiliar_words = []
     unknown_words = []
+    temp = []
     for sentence in sentences(raw_text):
         words = re.split('[^a-zA-Z]+', sentence)
         for word in words:
-            if word is "":
+            if word is "" or word in temp:
                 continue
-            # 记录单词所在文章名、文章中所在句位置、句中所在单词位置
-            if sentence.strip().index(word) == 0:
-                word = word.lower()
-            new_word = Word(name=word, context=re.sub(word, '_'+word+'_', sentence.strip()))
-            if word in familiar_words:
+            new_word = Word(name=word, context=re.sub(word, '*'+word+'*', sentence.strip()))
+            if word.lower() in familiar_words:
                 continue
-            elif word in vocabulary_words.keys():
-                continue
+            elif word.lower() in vocabulary_words.keys():
+                unfamiliar_words.append(new_word)
             else:
                 unknown_words.append(new_word)
-    return unknown_words
+                temp.append(word)
+    return unfamiliar_words, unknown_words
 
 
 def second(unknown_words):

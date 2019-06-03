@@ -14,6 +14,7 @@ class MainInter(QtWidgets.QMainWindow):
         super().__init__()
         self.init_ui()
         self.old_words = []
+        self.unfamiliar_words = []
         self.unknown_words = []
         self.new_words = []
         self.count = -1
@@ -139,6 +140,7 @@ class MainInter(QtWidgets.QMainWindow):
         self.nextone()
 
     def display(self):
+        QtWidgets.QApplication.processEvents()
         word = self.unknown_words[self.count]
         self.word_name_output.clear()
         self.word_en_output.clear()
@@ -148,6 +150,7 @@ class MainInter(QtWidgets.QMainWindow):
         self.word_context_output.setPlainText(word.get_context())
         self.word_ch_output.setPlainText(word.get_ch_interpretation())
         self.word_en_output.setPlainText(word.get_eng_interpretation())
+        QtWidgets.QApplication.processEvents()
 
     def lastone(self):
         self.count -= 1
@@ -200,8 +203,6 @@ class MainInter(QtWidgets.QMainWindow):
 
     def shengci(self):
         self.up_label.setText("上一个单词为" + self.word_name_output.toPlainText() + "已被判断为生词")
-        word = self.unknown_words[self.count]
-        ch = "Test"
         word = Word(name=self.word_name_output.toPlainText(), context=self.word_context_output.toPlainText(),
                     ch_interpretation=self.word_ch_output.toPlainText(), eng_interpretation=self.word_en_output.toPlainText())
         self.new_words.append(word)
@@ -210,7 +211,7 @@ class MainInter(QtWidgets.QMainWindow):
     def finish(self):
         update_familiar_words(old_words=self.old_words)
         update_vocabulary_words(new_words=self.new_words)
-        third(self.new_words, self.filename)
+        third(self.unfamiliar_words + self.new_words, self.filename)
 
     def shuci(self):
         self.up_label.setText("上一个单词为" + self.word_name_output.toPlainText() + "已被判断为熟词")
@@ -219,12 +220,8 @@ class MainInter(QtWidgets.QMainWindow):
 
     def get(self):
         self.s = self.up_bar_widget_input.toPlainText()
-        self.unknown_words = first(self.s)
-        # f = open("C:\\Users\\10513\\PycharmProjects\\weighEveryWord\\input\\" + filename + ".txt", mode="r+",
-        #          encoding="UTF-8")
-        # text = f.read()
-        # f.close()
-        if self.unknown_words:
+        self.unfamiliar_words, self.unknown_words = first(self.s)
+        if self.unfamiliar_words or self.unknown_words:
             self.testDialog_1()
         else:
             self.testDialog2()
