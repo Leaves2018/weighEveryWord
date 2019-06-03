@@ -47,7 +47,7 @@ class MainInter(QtWidgets.QMainWindow):
                                              QtWidgets.QMessageBox.No,
                                              QtWidgets.QMessageBox.No)
         if res == QtWidgets.QMessageBox.Yes:
-            pass
+            self.init_ui()
         else:
             pass
 
@@ -106,23 +106,24 @@ class MainInter(QtWidgets.QMainWindow):
 
         self.up_label = QtWidgets.QLabel()
 
-        self.up_bar_layout.addWidget(self.up_label, 0, 0, 1, 12)
+        self.up_bar_layout.addWidget(self.up_label, 0, 1, 1, 12)
 
         self.word_name_output = QtWidgets.QTextEdit()
         self.word_name_output.setPlaceholderText("单词名称")
-        self.up_bar_layout.addWidget(self.word_name_output, 1, 1, 4, 6)
+        self.up_bar_layout.addWidget(self.word_name_output, 1, 1, 4, 7)
 
         self.word_ch_output = QtWidgets.QTextEdit()
         self.word_ch_output.setPlaceholderText("中文解释")
-        self.up_bar_layout.addWidget(self.word_ch_output, 1, 8, 4, 6)
+        self.up_bar_layout.addWidget(self.word_ch_output, 1, 8, 4, 7)
 
         self.word_context_output = QtWidgets.QTextEdit()
         self.word_context_output.setPlaceholderText("语境信息")
-        self.up_bar_layout.addWidget(self.word_context_output, 6, 1, 6, 6)
+        self.up_bar_layout.addWidget(self.word_context_output, 6, 1, 6, 7)
 
         self.word_en_output = QtWidgets.QTextEdit()
         self.word_en_output.setPlaceholderText("英文解释")
-        self.up_bar_layout.addWidget(self.word_en_output, 6, 8, 6, 6)
+        self.up_bar_layout.addWidget(self.word_en_output, 6, 8, 6, 7)
+
         self.up_layout.addWidget(self.up_bar_widget, 0, 1, 18, 17)
 
         self.btn_vocabulary_word = QtWidgets.QPushButton("生词")
@@ -156,7 +157,7 @@ class MainInter(QtWidgets.QMainWindow):
 
     def lastone(self):
         self.count -= 1
-
+        self.down_process_bar.setValue(100.0 * self.count / len(self.unknown_words))
         if self.count < 0:
             self.count += 1
         else:
@@ -215,6 +216,7 @@ class MainInter(QtWidgets.QMainWindow):
         update_familiar_words(old_words=self.old_words)
         update_vocabulary_words(new_words=self.new_words)
         third(self.unfamiliar_words + self.new_words, self.filename)
+        self.output()
 
     def shuci(self):
         self.up_label.setText("上一个单词为" + self.word_name_output.toPlainText() + "已被判断为熟词")
