@@ -1,6 +1,11 @@
 import markdown
 import codecs
 from util import *
+import os
+
+
+def GetDesktopPath():
+    return os.path.join(os.path.expanduser("~"), 'Desktop')
 
 
 def decorate_raw_text(words, filename):
@@ -19,7 +24,7 @@ def decorate_raw_text(words, filename):
     # 转为 html 文本
     html = markdown.markdown(text)
     # 保存为文件
-    output_file = codecs.open("./output/" + filename + '.html', mode="w+", encoding="utf-8")
+    output_file = codecs.open(GetDesktopPath() + "/" + filename + '.html', mode="w+", encoding="utf-8")
     output_file.write(css + html)
     output_file.close()
 

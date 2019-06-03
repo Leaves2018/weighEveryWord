@@ -1,7 +1,11 @@
 # 生成单词表word_list、定制样式等
 import codecs
 import markdown
+import os
 
+
+def GetDesktopPath():
+    return os.path.join(os.path.expanduser("~"), 'Desktop')
 
 # 输入：txt文件名（以MarkDown进行标记）
 # 输出：html文件名
@@ -21,7 +25,8 @@ def generate_word_list(words, filename):
     # 转为 html 文本
     html = markdown.markdown(text)
     # 保存为文件
-    output_file = codecs.open("./output/Vocabulary of " + filename + '.html', mode="w+", encoding="utf-8")
+    # output_file = codecs.open("./output/Vocabulary of " + filename + '.html', mode="w+", encoding="utf-8")
+    output_file = codecs.open(GetDesktopPath() + "/Vocabulary of " + filename + '.html', mode="w+", encoding="utf-8")
     output_file.write(css + html)
     output_file.close()
 
