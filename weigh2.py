@@ -7,12 +7,12 @@ from update import *
 
 def first(raw_text):
     familiar_words = []
-    with open(r"C:\Users\10513\PycharmProjects\weighEveryWord\familiar\familiar_words.txt", mode='r+', encoding='UTF-8') as fw:
+    with open("./familiar/familiar_words.txt", mode='r+', encoding='UTF-8') as fw:
         for line in fw.readlines():
             familiar_words.append(line.strip().lower())
 
     vocabulary_words = dict()
-    with open(r"C:\Users\10513\PycharmProjects\weighEveryWord\vocabulary/vocabulary_words.txt", mode='r+', encoding='UTF-8') as vw:
+    with open("./vocabulary/vocabulary_words.txt", mode='r+', encoding='UTF-8') as vw:
         for line in vw.readlines():
             text = line.split('_')
             vocabulary_words[text[0]] = Word(*text)
