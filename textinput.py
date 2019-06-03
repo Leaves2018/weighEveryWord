@@ -73,6 +73,8 @@ class MainInter(QtWidgets.QMainWindow):
         self.down_process_bar.setTextVisible(False)  # 不显示进度条文字
         self.down_layout.addWidget(self.down_process_bar, 0, 0, 1, 18)
 
+        self.down_process_bar.setRange(0, 101)
+
         self.main_layout.addWidget(self.up_widget, 0, 0, 18, 18)  # 上方部件在第0行第0列，占18行18列
         self.main_layout.addWidget(self.down_widget, 19, 0, 2, 18)  # 上方部件在第19行第0列，占2行18列
         self.setCentralWidget(self.main_widget)  # 设置窗口主部件
@@ -195,6 +197,7 @@ class MainInter(QtWidgets.QMainWindow):
 
     def nextone(self):
         self.count += 1
+        self.down_process_bar.setValue(100.0 * self.count / len(self.unknown_words))
         if self.count >= len(self.unknown_words):
             self.showDialog()
             self.count -= 1
