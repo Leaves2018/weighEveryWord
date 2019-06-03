@@ -1,7 +1,10 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
 import qtawesome
+from update import *
 from weigh2 import *
+
+
 from vocabulary import Word
 
 
@@ -15,6 +18,7 @@ class MainInter(QtWidgets.QMainWindow):
         self.new_words = []
         self.count = -1
         self.filename = ""
+        self.s = ""
 
     def closeEvent(self, event):
         res = QtWidgets.QMessageBox.question(self, '警告',
@@ -33,6 +37,28 @@ class MainInter(QtWidgets.QMainWindow):
                                          QtWidgets.QMessageBox.No)
         if res == QtWidgets.QMessageBox.Yes:
             self.decide()
+            familiar_words = []
+
+            vocabulary_words = dict()
+
+            new_words = []
+            unknown_words = []
+
+            for sentence in sentences(self.s):
+                words = re.split('[^a-zA-Z]+', sentence)
+                for word in words:
+                    if word is "":
+                        continue
+                    # 记录单词所在文章名、文章中所在句位置、句中所在单词位置
+                    if sentence.strip().index(word) == 0:
+                        word = word.lower()
+                    new_word = Word(name=word, context=re.sub(word, '*' + word + '*', sentence.strip()))
+                    if word in familiar_words:
+                        continue
+                    elif word in vocabulary_words.keys():
+                        new_words.append(new_word)
+                    else:
+                        unknown_words.append(new_word)
         else:
             return 0
 
@@ -144,14 +170,29 @@ class MainInter(QtWidgets.QMainWindow):
         else:
             self.show()
 
+    def testDialog_1(self):
+        text, ok = QtWidgets.QInputDialog.getText(self, '提示', '已接收到文本')
+        if ok:
+            return 0
+        else:
+            return 0
+
+    def testDialog_2(self):
+        text, ok = QtWidgets.QInputDialog.getText(self, '提示', '未接收到文本')
+        if ok:
+            return 0
+        else:
+            return 0
+
     def showDialog(self):
-        text, ok = QtWidgets.QInputDialog.getText(self, '提示',
-                                        '生熟词已判断完毕，请输入文件名:')
+        text, ok = QtWidgets.QInputDialog.getText(self, '提示', '生熟词已判断完毕，请输入文件名:')
 
         if ok:
             self.filename = str(text)
             return True
         return False
+
+
 
     def nextone(self):
         self.count += 1
@@ -170,15 +211,15 @@ class MainInter(QtWidgets.QMainWindow):
     def finish(self):
         update_familiar_words(old_words=self.old_words)
         update_vocabulary_words(new_words=self.new_words)
-        third(self.new_words, self.filename)
+        self.third(self.new_words, self.filename)
 
     def shuci(self):
         self.old_words.append(self.word_name_output.toPlainText())
         self.nextone()
 
     def get(self):
-        s = self.up_bar_widget_input.toPlainText()
-        self.new_words, self.unknown_words = first(s)
+        self.s = self.up_bar_widget_input.toPlainText()
+        print(self.s)
 
     def clear(self):
         self.up_bar_widget_input.clear()
