@@ -7,4 +7,4 @@ def update_vocabulary_words(new_words):
 def update_familiar_words(old_words):
     with open("./familiar/familiar_words.txt", 'a+') as fw:
         for word in old_words:
-            fw.write("\n" + word.get_name())
+            fw.write("\n" + word)

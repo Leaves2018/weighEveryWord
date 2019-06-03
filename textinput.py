@@ -182,7 +182,7 @@ class MainInter(QtWidgets.QMainWindow):
 
         if ok:
             self.filename = str(text)
-            f = open("C:\\Users\\10513\\PycharmProjects\\weighEveryWord\\input\\" + self.filename + ".txt", mode="w+",
+            f = open("./input/" + self.filename + ".txt", mode="w+",
                      encoding="UTF-8")
             f.write(self.s)
             f.close()
@@ -203,7 +203,7 @@ class MainInter(QtWidgets.QMainWindow):
         word = self.unknown_words[self.count]
         ch = "Test"
         word = Word(name=self.word_name_output.toPlainText(), context=self.word_context_output.toPlainText(),
-                    ch_interpretation=ch, eng_interpretation=self.word_en_output.toPlainText())
+                    ch_interpretation=self.word_ch_output.toPlainText(), eng_interpretation=self.word_en_output.toPlainText())
         self.new_words.append(word)
         self.nextone()
 
@@ -219,12 +219,12 @@ class MainInter(QtWidgets.QMainWindow):
 
     def get(self):
         self.s = self.up_bar_widget_input.toPlainText()
-        self.new_words, self.unknown_words = first(self.s)
+        self.unknown_words = first(self.s)
         # f = open("C:\\Users\\10513\\PycharmProjects\\weighEveryWord\\input\\" + filename + ".txt", mode="r+",
         #          encoding="UTF-8")
         # text = f.read()
         # f.close()
-        if self.new_words or self.unknown_words:
+        if self.unknown_words:
             self.testDialog_1()
         else:
             self.testDialog2()
