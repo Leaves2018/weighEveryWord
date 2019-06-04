@@ -52,9 +52,10 @@ class MainInter(QtWidgets.QMainWindow):
                                              QtWidgets.QMessageBox.No,
                                              QtWidgets.QMessageBox.No)
         if res == QtWidgets.QMessageBox.Yes:
-            self.init_ui()
+            sys.exit(0)
+
         else:
-            pass
+            sys.exit(0)
 
     def decide(self):
         self.setFixedSize(960, 700)
@@ -101,9 +102,15 @@ class MainInter(QtWidgets.QMainWindow):
         self.up_button_return.setCheckable(True)
         self.up_button_return.clicked.connect(self.init_ui)
 
+        self.up_button_search = QtWidgets.QPushButton("查询")
+        self.up_button_search.setObjectName('left_button')
+        self.up_button_search.setCheckable(True)
+        self.up_button_search.clicked.connect(self.search)
+
         self.up_layout.addWidget(self.up_button_1, 9, 0, 1, 1)
         self.up_layout.addWidget(self.up_button_2, 9, 18, 1, 1)
         self.up_layout.addWidget(self.up_button_return, 0, 0, 1, 1)
+        self.up_layout.addWidget(self.up_button_search, 0, 18, 1, 1)
 
         self.up_bar_widget = QtWidgets.QWidget()  # 上方顶部部件
         self.up_bar_layout = QtWidgets.QGridLayout()  # 上方顶部网格布局
@@ -147,13 +154,20 @@ class MainInter(QtWidgets.QMainWindow):
         self.down_layout.addWidget(self.btn_familiar_word, 1, 9, 1, 9)
         self.nextone()
 
+    def search(self):
+        word = Word()
+        word.name = self.word_name_output.toPlainText()
+        word.get_context(True)
+        word.get_ch_interpretation(True)
+        word.get_eng_interpretation(True)
+        self.word_name_output.setPlainText(word.get_name())
+        self.word_context_output.setPlainText(word.get_context())
+        self.word_ch_output.setPlainText(word.get_ch_interpretation())
+        self.word_en_output.setPlainText(word.get_eng_interpretation())
+
     def display(self):
         QtWidgets.QApplication.processEvents()
         word = self.unknown_words[self.count]
-        self.word_name_output.clear()
-        self.word_en_output.clear()
-        self.word_ch_output.clear()
-        self.word_context_output.clear()
         self.word_name_output.setPlainText(word.get_name())
         self.word_context_output.setPlainText(word.get_context())
         self.word_ch_output.setPlainText(word.get_ch_interpretation())
@@ -172,7 +186,7 @@ class MainInter(QtWidgets.QMainWindow):
         res = QtWidgets.QMessageBox.question(self, '提示',
                                              "已接收到文本，初步处理完毕。\n"
                                              "请快速浏览并手动修改不合理的分词:)\n"
-                                             "（尤其是连词符-）", QtWidgets.QMessageBox.Yes |
+                                             , QtWidgets.QMessageBox.Yes |
                                              QtWidgets.QMessageBox.No,
                                              QtWidgets.QMessageBox.No)
         if res == QtWidgets.QMessageBox.Yes:
@@ -239,7 +253,7 @@ class MainInter(QtWidgets.QMainWindow):
 
     def get(self):
         self.s = self.up_bar_widget_input.toPlainText()
-        text = re.sub('[^a-zA-Z\'\-]', ' ', self.s)
+        text = re.sub('[^a-zA-Z\']+', ' ', self.s)
         if text:
             self.up_bar_widget_input.setText(text)
             self.testDialog_1()
@@ -283,7 +297,7 @@ class MainInter(QtWidgets.QMainWindow):
         self.btn_vocabulary_word.setCheckable(True)
         self.btn_vocabulary_word.clicked.connect(self.clear)
 
-        self.btn_familiar_word = QtWidgets.QPushButton("去中文去符号")
+        self.btn_familiar_word = QtWidgets.QPushButton("去中文去符号去数字")
         self.btn_familiar_word.setObjectName('down_button')
         self.btn_familiar_word.setCheckable(True)
         self.btn_familiar_word.clicked.connect(self.get)

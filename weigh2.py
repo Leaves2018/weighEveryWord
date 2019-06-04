@@ -21,7 +21,7 @@ def first(raw_text):
     unknown_words = []
     temp = []
     for sentence in sentences(raw_text):
-        words = re.split('[^a-zA-Z\-\']+', sentence)
+        words = re.split('[^a-zA-Z\']+', sentence)
         for word in words:
             if word is "" or word in temp:
                 continue
