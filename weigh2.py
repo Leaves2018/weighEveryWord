@@ -11,24 +11,24 @@ def first(raw_text):
         for line in fw.readlines():
             familiar_words.append(line.strip().lower())
 
-    vocabulary_words = dict()
+    vocabulary_words = []
     with open("./vocabulary/vocabulary_words.txt", mode='r+', encoding='UTF-8') as vw:
         for line in vw.readlines():
             text = line.lower().split('-')
-            vocabulary_words[text[0]] = Word(*text)
+            vocabulary_words.append(text[0])
 
     unfamiliar_words = []
     unknown_words = []
     temp = []
     for sentence in sentences(raw_text):
-        words = re.split('[^a-zA-Z]+', sentence)
+        words = re.split('[^a-zA-Z\-\']+', sentence)
         for word in words:
             if word is "" or word in temp:
                 continue
             new_word = Word(name=word, context=re.sub(word, '*'+word+'*', sentence.strip()))
             if word.lower() in familiar_words:
                 continue
-            elif word.lower() in vocabulary_words.keys():
+            elif word.lower() in vocabulary_words:
                 unfamiliar_words.append(new_word)
             else:
                 unknown_words.append(new_word)

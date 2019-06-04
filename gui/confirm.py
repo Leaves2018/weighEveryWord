@@ -2,6 +2,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
 import qtawesome
 
+
 def decide(self):
     self.setFixedSize(960, 700)
     self.main_widget = QtWidgets.QWidget()  # 创建窗口主部件

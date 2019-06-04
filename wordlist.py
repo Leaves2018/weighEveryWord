@@ -30,6 +30,7 @@ def generate_word_list(words, filename):
     output_file.write(css + html)
     output_file.close()
 
+
 def process(words, filename):
     md = open("./md/Vocabulary of " + filename + ".md", mode="w+", encoding="UTF-8")
     md.write("# Vocabulary\n\n")

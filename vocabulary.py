@@ -1,4 +1,4 @@
-from reptile.youdao_reptile import *
+from youdao_reptile import *
 
 
 # 单词类
