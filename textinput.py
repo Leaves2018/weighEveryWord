@@ -44,7 +44,7 @@ class MainInter(QtWidgets.QMainWindow):
 
     def output(self):
         res = QtWidgets.QMessageBox.question(self, '提示',
-                                             "单词列表已保存至桌面，将返回文本输入框\n"
+                                             "单词列表已保存至桌面\n"
                                              "仍然有一些Bug，请谅解:)\n"
                                              "持续开发中:)您可以联系开发者提供反馈意见\n"
                                              "yuanyufei1999@gmail.com\n"
@@ -122,18 +122,23 @@ class MainInter(QtWidgets.QMainWindow):
 
         self.word_name_output = QtWidgets.QTextEdit()
         self.word_name_output.setPlaceholderText("抱歉，无单词名称")
+        self.word_name_output.setFontPointSize(72)
+        self.word_name_output.setFontWeight(5)
         self.up_bar_layout.addWidget(self.word_name_output, 1, 1, 4, 7)
 
         self.word_ch_output = QtWidgets.QTextEdit()
         self.word_ch_output.setPlaceholderText("抱歉，未查询到中文解释")
+        self.word_ch_output.setFontPointSize(24)
         self.up_bar_layout.addWidget(self.word_ch_output, 1, 8, 4, 7)
 
         self.word_context_output = QtWidgets.QTextEdit()
         self.word_context_output.setPlaceholderText("抱歉，无语境信息")
+        self.word_context_output.setFontPointSize(24)
         self.up_bar_layout.addWidget(self.word_context_output, 6, 1, 6, 7)
 
         self.word_en_output = QtWidgets.QTextEdit()
         self.word_en_output.setPlaceholderText("抱歉，未查询到英文解释")
+        self.word_en_output.setFontPointSize(24)
         self.up_bar_layout.addWidget(self.word_en_output, 6, 8, 6, 7)
 
         self.up_layout.addWidget(self.up_bar_widget, 0, 1, 18, 17)
