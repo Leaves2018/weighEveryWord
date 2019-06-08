@@ -32,6 +32,7 @@ def deal_page_yb(url):
 
 # 获取网页上的单词的中文解释
 def deal_page_ch(url):
+    ch_list = []
     page = get_page(url)
     bs = BeautifulSoup(page, 'html.parser')
     try:
@@ -40,15 +41,17 @@ def deal_page_ch(url):
             for i in div:
                 s = str(type(i))
                 if func(s) == 'bs4.element.Tag':
-                    t = i.find('li')
-                    if t is not None:
-                        return t.contents[0]
-                    else:
-                        return None
+                    t = i.find_all('li')
+                    for i in t:
+                        if i is not None:
+                            ch_list.append(i.contents[0])
+                        else:
+                            return None
+        return ch_list
     except:
             return ""
 
-
+# 获取网页上的单词的例句展示
 def deal_page_example(url):
     page = get_page(url)
     bs = BeautifulSoup(page, 'html.parser')

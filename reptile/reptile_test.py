@@ -1,8 +1,6 @@
 import requests
 from bs4 import BeautifulSoup
 
-a = []
-
 
 def func(s):
     a = s.split("'")
@@ -19,22 +17,28 @@ def get_page(url):
     except:
         return ""
 
-# 获取网页上的单词的英文解释
-def deal_page_en(url):
+
+# 获取网页上的单词的中文解释
+def deal_page_ch(url):
+    ch_list = []
     page = get_page(url)
     bs = BeautifulSoup(page, 'html.parser')
     try:
-        span = bs.find_all('span', class_='def')
-        if span is not None:
-            for i in span:
+        div = bs.find('div', class_="trans-container")
+        if div is not None:
+            for i in div:
                 s = str(type(i))
                 if func(s) == 'bs4.element.Tag':
-                    a.append(i.contents[0])
-        return a
+                    t = i.find_all('li')
+                    for i in t:
+                        if i is not None:
+                            ch_list.append(i.contents[0])
+                        else:
+                            return None
+        return ch_list
     except:
-        return "sss"
+            return ""
 
-word = "find"
-print(deal_page_en('http://dict.youdao.com/w/eng/' + word + '/#keyfrom=dict2.index'))
-
+word = "word"
+print(deal_page_ch('http://dict.youdao.com/w/eng/' + word + '/#keyfrom=dict2.index'))
 
