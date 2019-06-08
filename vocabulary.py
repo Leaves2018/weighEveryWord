@@ -43,7 +43,11 @@ class Word:
     # 获取英解（如果还没有查询单词的英解，则先查询存储再返回）
     def get_eng_interpretation(self, flag=False):
         if flag or not self.eng_interpretation:
-            self.eng_interpretation = en_mean(self.name)
+            text = en_mean(self.name)
+            s = ""
+            for i in range(len(text)):
+                s += str(i+1) + ". " + text[i] + "\n"
+            self.eng_interpretation = s
         return self.eng_interpretation
 
     def set_eng_interpretation(self, eng_interpretation):
@@ -52,7 +56,11 @@ class Word:
     # 获取中解（如果还没有查询单词的中解，则先查询存储再返回）
     def get_ch_interpretation(self, flag=False):
         if flag or not self.ch_interpretation:
-            self.ch_interpretation = ch_mean(self.name)
+            text = ch_mean(self.name)
+            s = ""
+            for i in range(len(text)):
+                s += str(i+1) + ". " + text[i] + "\n"
+            self.ch_interpretation = s
         return self.ch_interpretation
 
     def set_ch_interpretation(self, ch_interpretation):

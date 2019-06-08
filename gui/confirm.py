@@ -45,7 +45,7 @@ def decide(self):
     self.up_button_return.setObjectName('left_button')
     self.up_button_return.setCheckable(True)
     self.up_button_return.toggle()
-    self.up_button_return.clicked.connect(self.init_ui)
+    self.up_button_return.clicked.connect(self.look_up_ui)
 
     self.up_layout.addWidget(self.up_button_1, 9, 0, 1, 1)
     self.up_layout.addWidget(self.up_button_2, 9, 18, 1, 1)
