@@ -7,6 +7,7 @@ import os
 def GetDesktopPath():
     return os.path.join(os.path.expanduser("~"), 'Desktop')
 
+
 # 输入：txt文件名（以MarkDown进行标记）
 # 输出：html文件名
 def generate_word_list(words, filename):
@@ -38,7 +39,7 @@ def process(words, filename):
     for i in range(len(words)):
         word = words[i]
         md.write(str(i) + ". **" + word.get_name() + "**:" + "\n\n"
-                 + "    " + "> " + word.get_context() + "\n\n"
-                 + "    " + "- " + word.get_eng_interpretation() + "\n\n"
-                 + "    " + "- " + word.get_ch_interpretation() + "\n\n")
+                 + "    " + " > " + word.get_context() + "\n\n"
+                 + "    " + " - " + word.get_eng_interpretation() + "\n\n"
+                 + "    " + " - " + word.get_ch_interpretation() + "\n\n")
     md.close()

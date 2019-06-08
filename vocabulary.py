@@ -1,5 +1,5 @@
 from youdao_reptile import *
-
+import re
 
 # 单词类
 class Word:
@@ -23,7 +23,8 @@ class Word:
     # 获取语境（如果没有提供语境，将自动从有道词典获取例句）
     def get_context(self, flag=False):
         if flag or not self.context:
-            self.context = example_mean(self.name)
+            text = example_mean(self.name)
+            self.context = re.sub(self.name, " *" + self.name + "* ", text)
         return self.context
 
     # 设置语境（该词所在句或段）
