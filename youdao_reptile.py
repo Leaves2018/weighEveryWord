@@ -86,10 +86,12 @@ def en_mean(word):
         return deal_page_en('http://dict.youdao.com/w/eng/' + word + '/#keyfrom=dict2.index')
 
 
+# 获取例句
 def example_mean(word):
     return str(deal_page_example('http://dict.youdao.com/w/eng/' + word + '/#keyfrom=dict2.index')).strip()
 
 
+# 获取音标
 def yb_mean(word):
     if word:
         return deal_page_yb('http://dict.youdao.com/w/eng/' + word + '/#keyfrom=dict2.index')
