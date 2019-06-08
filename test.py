@@ -72,6 +72,7 @@ class MainUi(QMainWindow):
         self.help_ui_widget = QWidget()
         self.help_ui_layout = QGridLayout(self.help_ui_widget)
         self.contact_text_browser = QTextBrowser()
+        self.support_qr_code_button = QToolButton()
 
         self.main_ui()
         self.left_ui()
@@ -304,14 +305,19 @@ class MainUi(QMainWindow):
     def help_ui(self):
         self.contact_text_browser.setText("如遇到使用上的问题或者开发建议，欢迎联系开发者：\n"
                                           "yuanyufei1999@gmail.com\n"
-                                          "zhaonanfeng@foxmail.com")
+                                          "zhaonanfeng@foxmail.com\n"
+                                          "如果您觉得这个软件还不错，可以用支付宝扫描下方二维码支持开发者，万分感谢！\n")
+        self.support_qr_code_button.setText("支持开发者，看小哥哥照片")
+        self.support_qr_code_button.setIcon(QtGui.QIcon("./zhaonanfeng.jpg"))
+        self.support_qr_code_button.setIconSize(QtCore.QSize(500, 500))
+        self.support_qr_code_button.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
 
         self.help_add_to_window()
         self.help_beautify()
 
     def help_add_to_window(self):
-        self.help_ui_layout.addWidget(self.contact_text_browser, 0, 0,)
-
+        self.help_ui_layout.addWidget(self.contact_text_browser, 0, 0, 3, 10)
+        self.help_ui_layout.addWidget(self.support_qr_code_button, 3, 0,)
         self.right_widget.addWidget(self.help_ui_widget)
 
     def help_beautify(self):
