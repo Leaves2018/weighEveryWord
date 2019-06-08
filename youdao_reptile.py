@@ -64,12 +64,17 @@ def deal_page_example(url):
 
 # 获取网页上的单词的英文解释
 def deal_page_en(url):
+    en_list = []
     page = get_page(url)
     bs = BeautifulSoup(page, 'html.parser')
     try:
-        span = bs.find('span', class_='def')
+        span = bs.find_all('span', class_='def')
         if span is not None:
-            return span.contents[0]
+            for i in span:
+                s = str(type(i))
+                if func(s) == 'bs4.element.Tag':
+                    en_list.append(i.contents[0])
+        return en_list
     except:
         return ""
 
