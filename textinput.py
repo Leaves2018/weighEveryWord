@@ -2,8 +2,6 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import sys
 from weigh2 import *
 import re
-
-
 from vocabulary import Word
 
 

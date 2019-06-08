@@ -4,8 +4,9 @@ import re
 # 单词类
 class Word:
     # 四个基本属性：名称、语境、英解、中解、出现频次，默认值均为空字符串或0（如果设置为None，在转str时可能会报错）
-    def __init__(self, name="", context="", eng_interpretation="", ch_interpretation="", count=0):
+    def __init__(self, name="", yb="", context="", eng_interpretation="", ch_interpretation="", count=0):
         self.name = name
+        self.yb = yb
         self.context = context
         self.eng_interpretation = eng_interpretation
         self.ch_interpretation = ch_interpretation
@@ -19,6 +20,14 @@ class Word:
         self.get_ch_interpretation(True)
         self.get_eng_interpretation(True)
         return self.name
+
+    def get_yb(self, flag=False):
+        if flag or not self.yb:
+            self.yb = yb_mean(self.name)
+        return self.yb
+
+    def set_yb(self, yb):
+        self.yb = yb
 
     # 获取语境（如果没有提供语境，将自动从有道词典获取例句）
     def get_context(self, flag=False):
