@@ -509,7 +509,7 @@ class MainUi(QMainWindow):
 
     def ensure_value(self):
         res = QtWidgets.QMessageBox.question(self, '警告',
-                                             "此操作会清空你的熟词本并初始化为你所勾选的单词本。\n"
+                                             "此操作会清空你的熟词本,并初始化为你所勾选的单词本。\n"
                                              "按下确认以执行操作", QtWidgets.QMessageBox.Yes |
                                              QtWidgets.QMessageBox.No,
                                              QtWidgets.QMessageBox.No)
