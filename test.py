@@ -318,7 +318,7 @@ class MainUi(QMainWindow):
                                              "请快速浏览并手动修改不合理的分词:)\n"
                                              , QtWidgets.QMessageBox.Yes |
                                              QtWidgets.QMessageBox.No,
-                                             QtWidgets.QMessageBox.No)
+                                             QtWidgets.QMessageBox.Yes)
         if res == QtWidgets.QMessageBox.Yes:
             pass
         else:
@@ -328,7 +328,7 @@ class MainUi(QMainWindow):
         res = QtWidgets.QMessageBox.question(self, '提示',
                                              "未接收到文本，请确认输入正确", QtWidgets.QMessageBox.Yes |
                                              QtWidgets.QMessageBox.No,
-                                             QtWidgets.QMessageBox.No)
+                                             QtWidgets.QMessageBox.Yes)
         if res == QtWidgets.QMessageBox.Yes:
             pass
         else:
@@ -511,7 +511,7 @@ class MainUi(QMainWindow):
                                              "此操作会清空你的熟词本,并初始化为你所勾选的单词本。\n"
                                              "按下确认以执行操作", QtWidgets.QMessageBox.Yes |
                                              QtWidgets.QMessageBox.No,
-                                             QtWidgets.QMessageBox.No)
+                                             QtWidgets.QMessageBox.Yes)
         if res == QtWidgets.QMessageBox.Yes:
             with open('./familiar/familiar_words.txt', 'w+', encoding='UTF-8') as f:
                 xiaoxue = open('./familiar/xiaoxue.txt', 'r+',
@@ -708,7 +708,7 @@ class DecideUi(QMainWindow):
         res = QtWidgets.QMessageBox.question(self, '警告',
                                          "你要确定退出吗？", QtWidgets.QMessageBox.Yes |
                                          QtWidgets.QMessageBox.No,
-                                         QtWidgets.QMessageBox.No)
+                                         QtWidgets.QMessageBox.Yes)
         if res == QtWidgets.QMessageBox.Yes:
             event.accept()
         else:
@@ -722,7 +722,7 @@ class DecideUi(QMainWindow):
                                              "yuanyufei1999@gmail.com\n"
                                              "zhaonanfeng@foxmail.com", QMessageBox.Yes |
                                              QMessageBox.No,
-                                             QMessageBox.No)
+                                             QMessageBox.Yes)
         if res == QMessageBox.Yes:
             self.mark_return()
 
@@ -753,8 +753,9 @@ class DecideUi(QMainWindow):
     def next_one(self):
         self.count += 1
         try:
-           self.progress_bar.setValue(100.0 * self.count / len(self.unknown_words))
+            self.progress_bar.setValue(100.0 * self.count / len(self.unknown_words))
         except ZeroDivisionError:
+            self.show_dialog("该文本中没有未知词")
             return 0
         if self.count >= len(self.unknown_words):
             self.show_dialog()
@@ -815,7 +816,7 @@ class DecideUi(QMainWindow):
         res = QMessageBox.question(self, '警告',
                                          "你要确定退出吗？", QtWidgets.QMessageBox.Yes |
                                          QtWidgets.QMessageBox.No,
-                                         QtWidgets.QMessageBox.No)
+                                         QtWidgets.QMessageBox.Yes)
         if res == QMessageBox.Yes:
             event.accept()
         else:
