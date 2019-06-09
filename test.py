@@ -19,6 +19,11 @@ class MainUi(QMainWindow):
         self.dui = None
         self.rui = None
         self.word_count = 0
+        self.shuci_count = 0
+        self.xiaoxue_selected = False
+        self.chuzhong_selected = False
+        self.gaozhong_selected = False
+        self.siliuji_selected = False
 
         # 一、声明窗口主部件及其布局
         self.main_widget = QWidget()
@@ -472,15 +477,57 @@ class MainUi(QMainWindow):
     def settings_ui(self):
         self.initial_value_button.clicked.connect(self.restore_initial_value)
         self.ensure_value_button.clicked.connect(self.ensure_value)
+        self.shuci_xiaoxue_checkbox.stateChanged.connect(self.shuci_xiaoxue)
+        self.shuci_chuzhong_checkbox.stateChanged.connect(self.shuci_chuzhong)
+        self.shuci_gaozhong_checkbox.stateChanged.connect(self.shuci_gaozhong)
+        self.shuci_siliuji_checkbox.stateChanged.connect(self.shuci_siliuji)
 
         self.settings_add_to_window()
         self.settings_beautify()
 
+    def shuci_xiaoxue(self):
+        self.xiaoxue_selected = True
+
+    def shuci_chuzhong(self):
+        self.chuzhong_selected = True
+
+    def shuci_gaozhong(self):
+        self.gaozhong_selected = True
+
+    def shuci_siliuji(self):
+        self.siliuji_selected = True
+
     def restore_initial_value(self):
-        pass
+        self.shuci_xiaoxue_checkbox.setCheckState(Qt.Checked)
+        self.shuci_chuzhong_checkbox.setCheckState(Qt.Checked)
+        self.shuci_gaozhong_checkbox.setCheckState(Qt.Checked)
+        self.shuci_siliuji_checkbox.setCheckState(Qt.Unchecked)
+        self.xiaoxue_selected = True
+        self.chuzhong_selected = True
+        self.gaozhong_selected = True
+        self.siliuji_selected = False
 
     def ensure_value(self):
-        pass
+        res = QtWidgets.QMessageBox.question(self, '警告',
+                                             "此操作会清空你的熟词本并初始化为你所勾选的单词本。\n"
+                                             "按下确认以执行操作", QtWidgets.QMessageBox.Yes |
+                                             QtWidgets.QMessageBox.No,
+                                             QtWidgets.QMessageBox.No)
+        if res == QtWidgets.QMessageBox.Yes:
+            with open('./familiar/familiar_words.txt', 'w+', encoding='UTF-8') as f:
+                xiaoxue = open('./familiar/xiaoxue.txt', 'r+',
+                               encoding='UTF-8').read() if self.xiaoxue_selected else "\n"
+                f.writelines(xiaoxue)
+                chuzhong = open('./familiar/chuzhong.txt', 'r+',
+                                encoding='UTF-8').read() if self.chuzhong_selected else "\n"
+                f.writelines(chuzhong)
+                gaozhong = open('./familiar/gaozhong.txt', 'r+',
+                                encoding='UTF-8').read() if self.gaozhong_selected else "\n"
+                f.writelines(gaozhong)
+                cet = open('./familiar/cet.txt', 'r+', encoding='UTF-8').read() if self.siliuji_selected else "\n"
+                f.writelines(cet)
+        else:
+            return 0
 
     def settings_add_to_window(self):
         self.settings_ui_layout.addWidget(self.test_label_shuci)
@@ -491,11 +538,11 @@ class MainUi(QMainWindow):
 
         self.settings_ui_layout.addWidget(self.down_process_bar_1)
 
-        self.settings_ui_layout.addWidget(self.test_label_goal)
-        self.settings_ui_layout.addWidget(self.goal_IELTS_checkbox)
-        self.settings_ui_layout.addWidget(self.goal_TOEFL_checkbox)
-
-        self.settings_ui_layout.addWidget(self.down_process_bar_2)
+        # self.settings_ui_layout.addWidget(self.test_label_goal)
+        # self.settings_ui_layout.addWidget(self.goal_IELTS_checkbox)
+        # self.settings_ui_layout.addWidget(self.goal_TOEFL_checkbox)
+        #
+        # self.settings_ui_layout.addWidget(self.down_process_bar_2)
 
         self.settings_ui_layout.addWidget(self.test_label_output)
         self.settings_ui_layout.addWidget(self.sample_output_button_1)
