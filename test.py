@@ -25,6 +25,10 @@ class MainUi(QMainWindow):
         self.left_layout = QGridLayout(self.left_widget)
 
         # 左侧菜单栏（多UI共用）：left_ui
+        self.left_close = QPushButton("")
+        self.left_minimize = QPushButton("")
+        self.left_maximize = QPushButton("")
+
         self.left_label_1 = QLabel("功能选项")
         self.left_button_1 = QPushButton(qta.icon("fa5s.flag", color="white"), "标记")
         self.left_button_2 = QPushButton(qta.icon("fa5s.book", color="white"), "背诵")
@@ -97,17 +101,22 @@ class MainUi(QMainWindow):
 
     def main_ui(self):
         # 设置窗口大小
-        self.setFixedSize(960, 700)
+        self.setBaseSize(960, 700)
         # 设置窗口主部件
         self.setCentralWidget(self.main_widget)
         # 设置窗口名称
         self.setWindowTitle("字斟句酌 Weigh Every Word")
+        # self.setWindowFlag(QtCore.Qt.FramelessWindowHint)
 
     def left_ui(self):
         # 设置名称，方便QSS统一修改样式
         self.left_widget.setObjectName('left_widget')
 
         # 左侧菜单栏属性设置：
+        self.left_close.setFixedSize(15, 15)
+        self.left_minimize.setFixedSize(15, 15)
+        self.left_maximize.setFixedSize(15, 15)
+
         # 两个标签：功能选项、输出设置与帮助
         # 五个按钮：标记、背诵、查询、设置、帮助
         self.left_label_1.setObjectName("left_label")
@@ -120,6 +129,10 @@ class MainUi(QMainWindow):
         self.left_button_5.setObjectName("left_button")
 
         # 左侧菜单栏点击事件设置
+        self.left_close.clicked.connect(self.close)
+        self.left_minimize.clicked.connect(self.showMinimized)
+        self.left_maximize.clicked.connect(self.showMaximized)
+
         self.left_button_1.clicked.connect(self.on_mark_ui_clicked)
         self.left_button_2.clicked.connect(self.on_recite_ui_clicked)
         self.left_button_3.clicked.connect(self.on_look_up_ui_clicked)
@@ -132,20 +145,28 @@ class MainUi(QMainWindow):
         self.left_beautify()
 
     def left_add_to_window(self):
+        # 向左侧部件添加标签及按钮
+
+        self.left_layout.addWidget(self.left_label_1, 0, 0, 1, 3)
+        self.left_layout.addWidget(self.left_button_1, 1, 0, 2, 3)
+        self.left_layout.addWidget(self.left_button_2, 3, 0, 2, 3)
+        self.left_layout.addWidget(self.left_button_3, 5, 0, 2, 3)
+
+        self.left_layout.addWidget(self.left_label_2, 7, 0, 1, 3)
+        self.left_layout.addWidget(self.left_button_4, 8, 0, 2, 3)
+        self.left_layout.addWidget(self.left_button_5, 10, 0, 2, 3)
+
         # 左侧部件在第0行第0列，占12行2列
         self.main_layout.addWidget(self.left_widget, 0, 0, 12, 2)
 
-        # 向左侧部件添加标签及按钮
-        self.left_layout.addWidget(self.left_label_1, 0, 0, 2, 3)
-        self.left_layout.addWidget(self.left_button_1, 2, 0, 2, 3)
-        self.left_layout.addWidget(self.left_button_2, 4, 0, 2, 3)
-        self.left_layout.addWidget(self.left_button_3, 6, 0, 2, 3)
-
-        self.left_layout.addWidget(self.left_label_2, 8, 0, 2, 3)
-        self.left_layout.addWidget(self.left_button_4, 10, 0, 2, 3)
-        self.left_layout.addWidget(self.left_button_5, 12, 0, 2, 3)
-
     def left_beautify(self):
+        self.left_close.setStyleSheet('''QPushButton{background:#F76677;border-radius:5px;}
+        QPushButton:hover{background:red;}''')
+        self.left_minimize.setStyleSheet('''QPushButton{background:#F7D674;border-radius:5px;}
+                QPushButton:hover{background:yellow;}''')
+        self.left_maximize.setStyleSheet('''QPushButton{background:#6DDF6D;border-radius:5px;}
+                QPushButton:hover{background:green;}''')
+
         self.left_widget.setStyleSheet('''
             QPushButton{border:none;color:white;}
             QLabel#left_label{
@@ -194,14 +215,24 @@ class MainUi(QMainWindow):
         # 右侧部件在第0行第3列，占12行10列
         self.main_layout.addWidget(self.right_widget, 0, 3, 12, 10)
 
-        # self.right_widget.addWidget(self.mark_ui_widget)
-        # self.right_widget.addWidget(self.recite_ui_widget)
-        # self.right_widget.addWidget(self.look_up_ui_widget)
-        # self.right_widget.addWidget(self.settings_ui_widget)
-        # self.right_widget.addWidget(self.help_ui_widget)
-
     def right_beautify(self):
-        pass
+        self.right_widget.setStyleSheet('''
+            QWidget#right_widget{
+                color:#232C51;
+                background:white;
+                border-top:1px solid darkGray;
+                border-bottom:1px solid darkGray;
+                border-right:1px solid darkGray;
+                border-top-right-radius:10px;
+                border-bottom-right-radius:10px;
+            }
+            QLabel#right_label{
+                border:none;
+                font-size:16px;
+                font-weight:700;
+                font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            }
+        ''')
 
     def mark_ui(self):
         self.input_text_edit.setPlaceholderText("请输入要标记生词的文本")
@@ -328,24 +359,6 @@ class MainUi(QMainWindow):
 
     # 美化各种控件显示样式（QSS）
     def look_up_beautify(self):
-        self.right_widget.setStyleSheet('''
-            QWidget#right_widget{
-                color:#232C51;
-                background:white;
-                border-top:1px solid darkGray;
-                border-bottom:1px solid darkGray;
-                border-right:1px solid darkGray;
-                border-top-right-radius:10px;
-                border-bottom-right-radius:10px;
-            }
-            QLabel#right_label{
-                border:none;
-                font-size:16px;
-                font-weight:700;
-                font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-            }
-        ''')
-
         self.search_line_edit.setStyleSheet(
             '''QLineEdit{
                     border:1px solid gray;
