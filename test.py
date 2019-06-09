@@ -3,7 +3,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import *
 import sys
 import qtawesome as qta
-from vocabulary import Word
+from vocabulary2 import Word
 import re
 from weigh2 import *
 
@@ -67,19 +67,28 @@ class MainUi(QMainWindow):
 
         # 右侧顶部搜索框
         self.right_bar_widget = QWidget()
-        self.right_bar_layout = QGridLayout()
+        self.right_bar_layout = QGridLayout(self.right_bar_widget)
         # 搜索标签（图标及文字）
         self.search_button = QPushButton(qta.icon("fa5s.search"), "搜索")
         # 搜索框
         self.search_line_edit = QLineEdit()
+
         # 单词框
         self.right_word_widget = QWidget()
-        self.right_word_layout = QGridLayout()
+        self.right_word_layout = QGridLayout(self.right_word_widget)
+
         self.word_text_edit = QTextEdit("Word")
         self.yb_text_edit = QTextEdit("Phonetic Symbol")
         self.context_text_edit = QTextEdit("Context")
         self.english_text_edit = QTextEdit("English Interpretation")
         self.chinese_text_edit = QTextEdit("Chinese Interpretation")
+
+        # 按钮框
+        self.look_up_down_widget = QWidget()
+        self.look_up_down_layout = QGridLayout(self.look_up_down_widget)
+
+        self.new_button = QPushButton(qta.icon("fa5s.star", color="black"), "生词")
+        self.old_button = QPushButton(qta.icon("fa5s.eye-slash", color="black"), "熟词")
 
         # 3.4 "设置"页面：settings_ui
         self.settings_ui_widget = QWidget()
@@ -330,7 +339,6 @@ class MainUi(QMainWindow):
 
     def look_up_ui(self):
         # 搜索模块
-        self.right_bar_widget.setLayout(self.right_bar_layout)
         self.search_line_edit.setPlaceholderText("输入单词后按回车进行查询")
         # 实现在搜索输入框中按回车进行搜索
         self.search_line_edit.returnPressed.connect(self.look_up_search)
@@ -339,7 +347,20 @@ class MainUi(QMainWindow):
 
         # 单词模块
         self.right_word_widget.setObjectName("right_word_widget")
-        self.right_word_widget.setLayout(self.right_word_layout)
+
+        self.word_text_edit.setPlaceholderText("单词框为空")
+        self.word_text_edit.setFontPointSize(36)
+        self.yb_text_edit.setPlaceholderText("抱歉，未查询到音标")
+        self.yb_text_edit.setFontPointSize(36)
+        self.context_text_edit.setPlaceholderText("抱歉，未查询到例句")
+        self.context_text_edit.setFontPointSize(18)
+        self.english_text_edit.setPlaceholderText("抱歉，未查询到英文解释")
+        self.english_text_edit.setFontPointSize(18)
+        self.chinese_text_edit.setPlaceholderText("抱歉，未查询到中文解释")
+        self.chinese_text_edit.setFontPointSize(18)
+
+        self.new_button.clicked.connect(self.add_to_vocabulary_word)
+        self.old_button.clicked.connect(self.add_to_familiar_word)
 
         self.look_up_add_to_window()
         self.look_up_beautify()
@@ -347,34 +368,41 @@ class MainUi(QMainWindow):
     # 搜索按钮点击事件
     def look_up_search(self):
         text = self.search_line_edit.text()
+        if not text.isalpha():
+            self.search_line_edit.clear()
+            return 0
         word = Word(text)
         self.word_text_edit.setText(word.get_name())
         self.yb_text_edit.setText(word.get_yb())
-        self.context_text_edit.setText(word.get_context())
-        self.english_text_edit.setText(word.get_en_interpretation())
-        self.chinese_text_edit.setText(word.get_ch_interpretation())
+        self.context_text_edit.setText(word.get_str_context())
+        self.english_text_edit.setText(word.get_str_en_interpretation())
+        self.chinese_text_edit.setText(word.get_str_ch_interpretation())
+
+    def add_to_vocabulary_word(self):
+        pass
+
+    def add_to_familiar_word(self):
+        pass
 
     # 将各个部件添加到窗口
     def look_up_add_to_window(self):
-        self.right_widget.addWidget(self.look_up_ui_widget)
-
-        self.look_up_ui_layout.addWidget(self.right_bar_widget, 0, 0, 1, 9)
-        self.look_up_ui_layout.addWidget(self.right_word_widget, 1, 0, 11, 10)
-
-
         # 向搜索模块添加搜索Label和搜索框LineEdit
         self.right_bar_layout.addWidget(self.search_line_edit, 0, 0, 1, 8)
         self.right_bar_layout.addWidget(self.search_button, 0, 9, 1, 1)
 
         # 向单词模块添加单词Label、音标Label、语境Label、英解Label、中解Label
-        self.right_word_layout.addWidget(self.word_text_edit, 0, 0, 3, 10)
-        self.right_word_layout.addWidget(self.yb_text_edit, 3, 0, 1, 10)
-        self.right_word_layout.addWidget(self.context_text_edit, 4, 0, 2, 10)
-        self.right_word_layout.addWidget(self.english_text_edit, 6, 0, 3, 10)
-        self.right_word_layout.addWidget(self.chinese_text_edit, 9, 0, 3, 10)
+        self.right_word_layout.addWidget(self.word_text_edit, 0, 0, 2, 5)
+        self.right_word_layout.addWidget(self.yb_text_edit, 2, 0, 2, 5)
+        self.right_word_layout.addWidget(self.english_text_edit, 0, 5, 4, 5)
+        self.right_word_layout.addWidget(self.context_text_edit, 5, 0, 6, 5)
+        self.right_word_layout.addWidget(self.chinese_text_edit, 5, 5, 6, 5)
 
-        self.look_up_ui_layout.addWidget(self.right_bar_widget, 0, 0, 1, 9)
-        self.look_up_ui_layout.addWidget(self.right_word_widget, 1, 0, 11, 10)
+        self.look_up_down_layout.addWidget(self.new_button, 0, 0, 0, 5)
+        self.look_up_down_layout.addWidget(self.old_button, 0, 6, 0, 5)
+
+        self.look_up_ui_layout.addWidget(self.right_bar_widget, 0, 0, 1, 10)
+        self.look_up_ui_layout.addWidget(self.right_word_widget, 1, 0, 10, 10)
+        self.look_up_ui_layout.addWidget(self.look_up_down_widget, 11, 0, 11, 10)
 
         self.right_widget.addWidget(self.look_up_ui_widget)
 
@@ -584,9 +612,9 @@ class DecideUi(QMainWindow):
     def mark_search(self):
         word = Word(self.word_name_text_edit.toPlainText())
         self.word_name_text_edit.setPlainText(word.get_name())
-        self.word_context_text_edit.setPlainText(word.get_context(True))
-        self.word_ch_text_edit.setPlainText(word.get_ch_interpretation(True))
-        self.word_en_text_edit.setPlainText(word.get_en_interpretation(True))
+        self.word_context_text_edit.setPlainText(word.get_str_context(True))
+        self.word_ch_text_edit.setPlainText(word.get_str_ch_interpretation(True))
+        self.word_en_text_edit.setPlainText(word.get_str_en_interpretation(True))
 
     def last_one(self):
         self.count -= 1
@@ -650,9 +678,9 @@ class DecideUi(QMainWindow):
         QApplication.processEvents()
         word = self.unknown_words[self.count]
         self.word_name_text_edit.setPlainText(word.get_name())
-        self.word_context_text_edit.setPlainText(word.get_context())
-        self.word_ch_text_edit.setPlainText(word.get_ch_interpretation())
-        self.word_en_text_edit.setPlainText(word.get_en_interpretation())
+        self.word_context_text_edit.setPlainText(word.get_str_context()[0])
+        self.word_ch_text_edit.setPlainText(word.get_str_ch_interpretation())
+        self.word_en_text_edit.setPlainText(word.get_str_en_interpretation())
         QApplication.processEvents()
 
     def closeEvent(self, event):
@@ -698,9 +726,9 @@ class ReciteUi(QMainWindow):
     def recite_response_ui(self):
         self.recite_add_to_window()
 
-        self.last_button.clicked.connected(self.recite_last_one)
-        self.next_button.clicked.connected(self.recite_next_one)
-        self.ensure_button.clicked.connected(self.recite_ensure)
+        self.last_button.clicked.connect(self.recite_last_one)
+        self.next_button.clicked.connect(self.recite_next_one)
+        self.ensure_button.clicked.connect(self.recite_ensure)
 
         self.recite_beautify()
 
@@ -724,8 +752,6 @@ class ReciteUi(QMainWindow):
         self.recite_ui_in_layout.addWidget(self.context_text_edit, 2, 1, 2, 10)
         self.recite_ui_in_layout.addWidget(self.english_text_edit, 3, 1, 5, 10)
         self.recite_ui_in_layout.addWidget(self.chinese_text_edit, 7, 1, 3, 10)
-
-        # self.recite_ui_popup_layout.addWidget(self.recite_ui_in_widget, 0, 0, 10, 11)
 
     def recite_beautify(self):
         pass

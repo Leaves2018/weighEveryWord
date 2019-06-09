@@ -1,5 +1,5 @@
 import re
-from vocabulary import Word
+from vocabulary2 import Word
 from process_raw_text import decorate_raw_text
 from wordlist import generate_word_list
 from update import *
@@ -14,7 +14,7 @@ def first(raw_text):
     vocabulary_words = []
     with open("./vocabulary/vocabulary_words.txt", mode='r+', encoding='UTF-8') as vw:
         for line in vw.readlines():
-            text = line.lower().split('-')
+            text = line.lower().split('----')
             vocabulary_words.append(text[0])
 
     unfamiliar_words = []

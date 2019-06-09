@@ -38,8 +38,16 @@ def process(words, filename):
     md.write("## " + filename + "\n\n")
     for i in range(len(words)):
         word = words[i]
-        md.write(str(i) + ". **" + word.get_name() + "**:" + "\n\n"
-                 + "    " + " > " + word.get_context() + "\n\n"
-                 + "    " + " - " + word.get_en_interpretation() + "\n\n"
-                 + "    " + " - " + word.get_ch_interpretation() + "\n\n")
+        # md.write(str(i) + ". **" + word.get_name() + "**:" + "\n\n"
+        #          + "    " + " > " + word.get_context() + "\n\n"
+        #          + "    " + " - " + word.get_en_interpretation() + "\n\n"
+        #          + "    " + " - " + word.get_ch_interpretation() + "\n\n")
+        md.write(str(i) + word.get_name() + "\n")
     md.close()
+
+
+def transfer(text=[]):
+    s = " 1. "
+    for i in text:
+        s += i + "; "
+    return s

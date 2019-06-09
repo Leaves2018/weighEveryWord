@@ -5,7 +5,7 @@ import sys
 import qtawesome as qta
 from weigh2 import *
 import re
-from vocabulary import Word
+from vocabulary2 import Word
 
 
 class MainUi(QMainWindow):
