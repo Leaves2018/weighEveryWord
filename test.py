@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 from PyQt5 import QtCore, QtGui, QtWidgets
+from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import *
+from PyQt5.QtCore import Qt
 import sys
 import qtawesome as qta
 from vocabulary2 import Word
@@ -28,11 +30,13 @@ class MainUi(QMainWindow):
 
         # 左侧菜单栏（多UI共用）：left_ui
         self.left_label_1 = QLabel("功能选项")
+        self.left_label_1.setAlignment(Qt.AlignCenter)
         self.left_button_1 = QPushButton(qta.icon("fa5s.flag", color="white"), "标记")
         self.left_button_2 = QPushButton(qta.icon("fa5s.book", color="white"), "背诵")
         self.left_button_3 = QPushButton(qta.icon("fa5s.search", color="white"), "查询")
 
         self.left_label_2 = QLabel("输出设置与帮助")
+        self.left_label_2.setAlignment(Qt.AlignCenter)
         self.left_button_4 = QPushButton(qta.icon("fa5s.cog", color="white"), "设置")
         self.left_button_5 = QPushButton(qta.icon("fa5s.question", color="white"), "帮助")
 
@@ -92,8 +96,53 @@ class MainUi(QMainWindow):
 
         # 3.4 "设置"页面：settings_ui
         self.settings_ui_widget = QWidget()
-        self.settings_ui_layout = QGridLayout(self.settings_ui_widget)
-        self.test_label_4 = QLabel("这里是设置页面")
+        self.settings_ui_layout = QVBoxLayout(self.settings_ui_widget)
+        self.test_label_shuci = QLabel("设置熟词")
+        self.test_label_shuci.setFont(QFont("Roman times", 16, QFont.Bold))
+        self.shuci_xiaoxue_checkbox = QCheckBox('小学词汇')
+        self.shuci_chuzhong_checkbox = QCheckBox('初中词汇')
+        self.shuci_gaozhong_checkbox = QCheckBox('高中词汇')
+        self.shuci_siliuji_checkbox = QCheckBox('英语CET4、6词汇')
+
+        self.down_process_bar_1 = QtWidgets.QProgressBar()  # 播放进度部件
+        self.down_process_bar_1.setRange(0, 1001)
+        self.down_process_bar_1.setValue(1000)
+        self.down_process_bar_1.setFixedHeight(2)  # 设置进度条高度
+        self.down_process_bar_1.setTextVisible(False)  # 不显示进度条文字
+
+        self.test_label_goal = QLabel("学习目标")
+        self.test_label_goal.setFont(QFont("Roman times", 16, QFont.Bold))
+        self.goal_IELTS_checkbox = QCheckBox('雅思词汇')
+        self.goal_TOEFL_checkbox = QCheckBox('托福词汇')
+
+        self.down_process_bar_2 = QtWidgets.QProgressBar()  # 播放进度部件
+        self.down_process_bar_2.setRange(0, 1001)
+        self.down_process_bar_2.setValue(1000)
+        self.down_process_bar_2.setFixedHeight(2)  # 设置进度条高度
+        self.down_process_bar_2.setTextVisible(False)  # 不显示进度条文字
+
+        self.test_label_output = QLabel("输出样式")
+        self.test_label_output.setFont(QFont("Roman times", 16, QFont.Bold))
+        self.sample_output_button_1 = QToolButton()
+        self.sample_output_button_1.setText("样式1")  # 设置按钮文本
+        self.sample_output_button_1.setIcon(QtGui.QIcon('./r1.jpg'))  # 设置按钮图标
+        self.sample_output_button_1.setIconSize(QtCore.QSize(600, 100))  # 设置图标大小
+        self.sample_output_button_1.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
+
+        self.sample_output_button_2 = QToolButton()
+        self.sample_output_button_2.setText("样式2")  # 设置按钮文本
+        self.sample_output_button_2.setIcon(QtGui.QIcon('./r1.jpg'))  # 设置按钮图标
+        self.sample_output_button_2.setIconSize(QtCore.QSize(600, 100))  # 设置图标大小
+        self.sample_output_button_2.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
+
+        self.sample_output_button_3 = QToolButton()
+        self.sample_output_button_3.setText("样式3")  # 设置按钮文本
+        self.sample_output_button_3.setIcon(QtGui.QIcon('./r1.jpg'))  # 设置按钮图标
+        self.sample_output_button_3.setIconSize(QtCore.QSize(600, 100))  # 设置图标大小
+        self.sample_output_button_3.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
+
+        self.initial_value_button = QPushButton("恢复默认值")
+        self.ensure_value_button = QPushButton("确认")
 
         # 3.5 "帮助"页面：help_ui
         self.help_ui_widget = QWidget()
@@ -303,7 +352,7 @@ class MainUi(QMainWindow):
         self.recite_add_to_window()
         self.recite_beautify()
 
-    def recite_count_try(self):
+    def recite_start(self):
         try:
             self.word_count = int(self.word_count_text_edit.toPlainText())
         except ValueError:
@@ -317,8 +366,6 @@ class MainUi(QMainWindow):
         finally:
             self.word_count_text_edit.clear()
 
-    def recite_start(self):
-        self.word_count = int(self.word_count_text_edit.toPlainText())
         res = QtWidgets.QMessageBox.question(self, '提示',
                                              "确认就背这" + str(self.word_count) + "个单词吗？", QtWidgets.QMessageBox.Yes |
                                              QMessageBox.No)
@@ -423,11 +470,40 @@ class MainUi(QMainWindow):
         )
 
     def settings_ui(self):
+        self.initial_value_button.clicked.connect(self.restore_initial_value)
+        self.ensure_value_button.clicked.connect(self.ensure_value)
+
         self.settings_add_to_window()
         self.settings_beautify()
 
+    def restore_initial_value(self):
+        pass
+
+    def ensure_value(self):
+        pass
+
     def settings_add_to_window(self):
-        self.settings_ui_layout.addWidget(self.test_label_4, 0, 0,)
+        self.settings_ui_layout.addWidget(self.test_label_shuci)
+        self.settings_ui_layout.addWidget(self.shuci_xiaoxue_checkbox)
+        self.settings_ui_layout.addWidget(self.shuci_chuzhong_checkbox)
+        self.settings_ui_layout.addWidget(self.shuci_gaozhong_checkbox)
+        self.settings_ui_layout.addWidget(self.shuci_siliuji_checkbox)
+
+        self.settings_ui_layout.addWidget(self.down_process_bar_1)
+
+        self.settings_ui_layout.addWidget(self.test_label_goal)
+        self.settings_ui_layout.addWidget(self.goal_IELTS_checkbox)
+        self.settings_ui_layout.addWidget(self.goal_TOEFL_checkbox)
+
+        self.settings_ui_layout.addWidget(self.down_process_bar_2)
+
+        self.settings_ui_layout.addWidget(self.test_label_output)
+        self.settings_ui_layout.addWidget(self.sample_output_button_1)
+        self.settings_ui_layout.addWidget(self.sample_output_button_2)
+        self.settings_ui_layout.addWidget(self.sample_output_button_3)
+        self.settings_ui_layout.addWidget(self.initial_value_button)
+        self.settings_ui_layout.addWidget(self.ensure_value_button)
+
         self.right_widget.addWidget(self.settings_ui_widget)
 
     def settings_beautify(self):
@@ -699,9 +775,6 @@ class ReciteUi(QMainWindow):
         super().__init__()
         self.word_count = word_count
 
-        self.recite_ui_popup_widget = QWidget()
-        self.recite_ui_popup_layout = QGridLayout(self.recite_ui_popup_widget)
-
         self.recite_ui_in_widget = QWidget()
         self.recite_ui_in_layout = QGridLayout(self.recite_ui_in_widget)
 
@@ -743,9 +816,9 @@ class ReciteUi(QMainWindow):
 
     def recite_add_to_window(self):
 
-        self.recite_ui_in_layout.addWidget(self.last_button, 5, 0, 1, 1)
-        self.recite_ui_in_layout.addWidget(self.next_button, 5, 11, 1, 1)
-        self.recite_ui_in_layout.addWidget(self.ensure_button, 0, 1, 2, 10)
+        self.recite_ui_in_layout.addWidget(self.last_button, 4, 0, 1, 1)
+        self.recite_ui_in_layout.addWidget(self.next_button, 4, 11, 1, 1)
+        self.recite_ui_in_layout.addWidget(self.ensure_button, 0, 10, 1, 1)
 
         self.recite_ui_in_layout.addWidget(self.word_text_edit, 0, 1, 2, 9)
         self.recite_ui_in_layout.addWidget(self.yb_text_edit, 1, 1, 2, 10)

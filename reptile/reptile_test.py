@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtWidgets import *
+from PyQt5.QtCore import Qt
 import sys
 import qtawesome as qta
 from vocabulary import Word
@@ -28,11 +29,13 @@ class MainUi(QMainWindow):
 
         # 左侧菜单栏（多UI共用）：left_ui
         self.left_label_1 = QLabel("功能选项")
+        self.left_label_1.setAlignment(Qt.AlignCenter)
         self.left_button_1 = QPushButton(qta.icon("fa5s.flag", color="white"), "标记")
         self.left_button_2 = QPushButton(qta.icon("fa5s.book", color="white"), "背诵")
         self.left_button_3 = QPushButton(qta.icon("fa5s.search", color="white"), "查询")
 
         self.left_label_2 = QLabel("输出设置与帮助")
+        self.left_label_2.setAlignment(Qt.AlignCenter)
         self.left_button_4 = QPushButton(qta.icon("fa5s.cog", color="white"), "设置")
         self.left_button_5 = QPushButton(qta.icon("fa5s.question", color="white"), "帮助")
 
@@ -57,7 +60,7 @@ class MainUi(QMainWindow):
         self.recite_ui_layout = QGridLayout(self.recite_ui_widget)
 
         self.word_count_question_label = QLabel("你今天想背几个单词呀？")
-        self.word_count_text_edit = QLineEdit()
+        self.word_count_text_edit = QTextEdit()
         self.word_recite_button = QPushButton("开始背单词")
         # self.test_label_2 = QLabel("这里是背诵页面")
 
@@ -84,7 +87,37 @@ class MainUi(QMainWindow):
         # 3.4 "设置"页面：settings_ui
         self.settings_ui_widget = QWidget()
         self.settings_ui_layout = QGridLayout(self.settings_ui_widget)
-        self.test_label_4 = QLabel("这里是设置页面")
+        self.test_label_shuci = QLabel("设置熟词")
+        self.shuci_xiaoxue_checkbox = QCheckBox('小学词汇')
+        self.shuci_chuzhong_checkbox = QCheckBox('初中词汇')
+        self.shuci_gaozhong_checkbox = QCheckBox('高中词汇')
+        self.shuci_siliuji_checkbox = QCheckBox('英语CET4、6词汇')
+
+        self.test_label_goal = QLabel("学习目标")
+        self.goal_IELTS_checkbox = QCheckBox('雅思词汇')
+        self.goal_TOEFL_checkbox = QCheckBox('托福词汇')
+
+        self.test_label_output = QLabel("输出样式")
+        self.sample_output_button_1 = QToolButton()
+        self.sample_output_button_1.setText("样式1")  # 设置按钮文本
+        self.sample_output_button_1.setIcon(QtGui.QIcon('./r1.jpg'))  # 设置按钮图标
+        self.sample_output_button_1.setIconSize(QtCore.QSize(100, 100))  # 设置图标大小
+        self.sample_output_button_1.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
+
+        self.sample_output_button_2 = QToolButton()
+        self.sample_output_button_2.setText("样式2")  # 设置按钮文本
+        self.sample_output_button_2.setIcon(QtGui.QIcon('./r1.jpg'))  # 设置按钮图标
+        self.sample_output_button_2.setIconSize(QtCore.QSize(100, 100))  # 设置图标大小
+        self.sample_output_button_2.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
+
+        self.sample_output_button_3 = QToolButton()
+        self.sample_output_button_3.setText("样式3")  # 设置按钮文本
+        self.sample_output_button_3.setIcon(QtGui.QIcon('./r1.jpg'))  # 设置按钮图标
+        self.sample_output_button_3.setIconSize(QtCore.QSize(100, 100))  # 设置图标大小
+        self.sample_output_button_3.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
+
+        self.initial_value_button = QPushButton("恢复默认值")
+        self.ensure_value_button = QPushButton("确认")
 
         # 3.5 "帮助"页面：help_ui
         self.help_ui_widget = QWidget()
@@ -103,8 +136,7 @@ class MainUi(QMainWindow):
 
     def main_ui(self):
         # 设置窗口大小
-        self.setFixedSize(960, 700)
-        # self.showMaximized()
+        self.setBaseSize(960, 700)
         # 设置窗口主部件
         self.setCentralWidget(self.main_widget)
         # 设置窗口名称
@@ -139,18 +171,19 @@ class MainUi(QMainWindow):
         self.left_beautify()
 
     def left_add_to_window(self):
+        # 向左侧部件添加标签及按钮
+
+        self.left_layout.addWidget(self.left_label_1, 0, 0, 1, 3)
+        self.left_layout.addWidget(self.left_button_1, 1, 0, 2, 3)
+        self.left_layout.addWidget(self.left_button_2, 3, 0, 2, 3)
+        self.left_layout.addWidget(self.left_button_3, 5, 0, 2, 3)
+
+        self.left_layout.addWidget(self.left_label_2, 7, 0, 1, 3)
+        self.left_layout.addWidget(self.left_button_4, 8, 0, 2, 3)
+        self.left_layout.addWidget(self.left_button_5, 10, 0, 2, 3)
+
         # 左侧部件在第0行第0列，占12行2列
         self.main_layout.addWidget(self.left_widget, 0, 0, 12, 2)
-
-        # 向左侧部件添加标签及按钮
-        self.left_layout.addWidget(self.left_label_1, 0, 0, 2, 3)
-        self.left_layout.addWidget(self.left_button_1, 2, 0, 2, 3)
-        self.left_layout.addWidget(self.left_button_2, 4, 0, 2, 3)
-        self.left_layout.addWidget(self.left_button_3, 6, 0, 2, 3)
-
-        self.left_layout.addWidget(self.left_label_2, 8, 0, 2, 3)
-        self.left_layout.addWidget(self.left_button_4, 10, 0, 2, 3)
-        self.left_layout.addWidget(self.left_button_5, 12, 0, 2, 3)
 
     def left_beautify(self):
         self.left_widget.setStyleSheet('''
@@ -201,14 +234,24 @@ class MainUi(QMainWindow):
         # 右侧部件在第0行第3列，占12行10列
         self.main_layout.addWidget(self.right_widget, 0, 3, 12, 10)
 
-        # self.right_widget.addWidget(self.mark_ui_widget)
-        # self.right_widget.addWidget(self.recite_ui_widget)
-        # self.right_widget.addWidget(self.look_up_ui_widget)
-        # self.right_widget.addWidget(self.settings_ui_widget)
-        # self.right_widget.addWidget(self.help_ui_widget)
-
     def right_beautify(self):
-        pass
+        self.right_widget.setStyleSheet('''
+            QWidget#right_widget{
+                color:#232C51;
+                background:white;
+                border-top:1px solid darkGray;
+                border-bottom:1px solid darkGray;
+                border-right:1px solid darkGray;
+                border-top-right-radius:10px;
+                border-bottom-right-radius:10px;
+            }
+            QLabel#right_label{
+                border:none;
+                font-size:16px;
+                font-weight:700;
+                font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+            }
+        ''')
 
     def mark_ui(self):
         self.input_text_edit.setPlaceholderText("请输入要标记生词的文本")
@@ -279,14 +322,14 @@ class MainUi(QMainWindow):
         pass
 
     def recite_ui(self):
-
         self.word_recite_button.clicked.connect(self.recite_start)
+
         self.recite_add_to_window()
         self.recite_beautify()
 
     def recite_start(self):
         try:
-            self.word_count = int(self.word_count_text_edit.text())
+            self.word_count = int(self.word_count_text_edit.toPlainText())
         except ValueError:
             res = QtWidgets.QMessageBox.information(self, '提示，您输入的不是数字',
                                                     "请重新输入要背的单词数目（以阿拉伯数字形式）", QtWidgets.QMessageBox.Yes |
@@ -299,7 +342,7 @@ class MainUi(QMainWindow):
             self.word_count_text_edit.clear()
 
         res = QtWidgets.QMessageBox.question(self, '提示',
-                                             "确认要背" + self.word_count +"个单词？", QtWidgets.QMessageBox.Yes |
+                                             "确认就背这" + str(self.word_count) + "个单词吗？", QtWidgets.QMessageBox.Yes |
                                              QMessageBox.No)
         if res == QtWidgets.QMessageBox.Yes:
             self.rui = ReciteUi(word_count=self.word_count)
@@ -308,7 +351,6 @@ class MainUi(QMainWindow):
             return 0
 
     def recite_add_to_window(self):
-        # self.recite_ui_layout.addWidget(self.test_label_2, 0, 0, )
         self.right_widget.addWidget(self.recite_ui_widget)
         self.recite_ui_layout.addWidget(self.word_count_question_label, 0, 0, 1, 10)
         self.recite_ui_layout.addWidget(self.word_count_text_edit, 1, 0, 1, 8)
@@ -350,38 +392,24 @@ class MainUi(QMainWindow):
         self.look_up_ui_layout.addWidget(self.right_bar_widget, 0, 0, 1, 9)
         self.look_up_ui_layout.addWidget(self.right_word_widget, 1, 0, 11, 10)
 
-
         # 向搜索模块添加搜索Label和搜索框LineEdit
         self.right_bar_layout.addWidget(self.search_line_edit, 0, 0, 1, 8)
         self.right_bar_layout.addWidget(self.search_button, 0, 9, 1, 1)
 
         # 向单词模块添加单词Label、音标Label、语境Label、英解Label、中解Label
-        self.right_word_layout.addWidget(self.word_text_edit, 0, 0, 2, 10)
-        self.right_word_layout.addWidget(self.yb_text_edit, 1, 0, 2, 10)
-        self.right_word_layout.addWidget(self.context_text_edit, 2, 0, 2, 10)
-        self.right_word_layout.addWidget(self.english_text_edit, 3, 0, 5, 10)
-        self.right_word_layout.addWidget(self.chinese_text_edit, 7, 0, 3, 10)
+        self.right_word_layout.addWidget(self.word_text_edit, 0, 0, 3, 10)
+        self.right_word_layout.addWidget(self.yb_text_edit, 3, 0, 1, 10)
+        self.right_word_layout.addWidget(self.context_text_edit, 4, 0, 2, 10)
+        self.right_word_layout.addWidget(self.english_text_edit, 6, 0, 3, 10)
+        self.right_word_layout.addWidget(self.chinese_text_edit, 9, 0, 3, 10)
+
+        self.look_up_ui_layout.addWidget(self.right_bar_widget, 0, 0, 1, 9)
+        self.look_up_ui_layout.addWidget(self.right_word_widget, 1, 0, 11, 10)
+
+        self.right_widget.addWidget(self.look_up_ui_widget)
 
     # 美化各种控件显示样式（QSS）
     def look_up_beautify(self):
-        self.right_widget.setStyleSheet('''
-            QWidget#right_widget{
-                color:#232C51;
-                background:white;
-                border-top:1px solid darkGray;
-                border-bottom:1px solid darkGray;
-                border-right:1px solid darkGray;
-                border-top-right-radius:10px;
-                border-bottom-right-radius:10px;
-            }
-            QLabel#right_label{
-                border:none;
-                font-size:16px;
-                font-weight:700;
-                font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-            }
-        ''')
-
         self.search_line_edit.setStyleSheet(
             '''QLineEdit{
                     border:1px solid gray;
@@ -397,11 +425,13 @@ class MainUi(QMainWindow):
         )
 
     def settings_ui(self):
+        self.
+
         self.settings_add_to_window()
         self.settings_beautify()
 
     def settings_add_to_window(self):
-        self.settings_ui_layout.addWidget(self.test_label_4, 0, 0,)
+        self.settings_ui_layout.addWidget(self.test_label_4, 0, 0, )
         self.right_widget.addWidget(self.settings_ui_widget)
 
     def settings_beautify(self):
@@ -422,7 +452,7 @@ class MainUi(QMainWindow):
 
     def help_add_to_window(self):
         self.help_ui_layout.addWidget(self.contact_text_browser, 0, 0, 3, 10)
-        self.help_ui_layout.addWidget(self.support_qr_code_button, 3, 0,)
+        self.help_ui_layout.addWidget(self.support_qr_code_button, 3, 0, )
         self.right_widget.addWidget(self.help_ui_widget)
 
     def help_beautify(self):
@@ -523,7 +553,7 @@ class DecideUi(QMainWindow):
 
         self.new_button.setObjectName("down_widget")
         self.new_button.clicked.connect(self.shengci)
-        self.new_button.setShortcut('Ctrl+'+chr(32))
+        self.new_button.setShortcut('Ctrl+' + chr(32))
 
         self.old_button.setObjectName("down_widget")
         self.old_button.clicked.connect(self.shuci)
@@ -557,9 +587,9 @@ class DecideUi(QMainWindow):
 
     def closeEvent(self, event):
         res = QtWidgets.QMessageBox.question(self, '警告',
-                                         "你要确定退出吗？", QtWidgets.QMessageBox.Yes |
-                                         QtWidgets.QMessageBox.No,
-                                         QtWidgets.QMessageBox.No)
+                                             "你要确定退出吗？", QtWidgets.QMessageBox.Yes |
+                                             QtWidgets.QMessageBox.No,
+                                             QtWidgets.QMessageBox.No)
         if res == QtWidgets.QMessageBox.Yes:
             event.accept()
         else:
@@ -567,13 +597,13 @@ class DecideUi(QMainWindow):
 
     def output(self):
         res = QMessageBox.question(self, '提示',
-                                             "单词列表已保存至桌面\n"
-                                             "仍然有一些Bug，请谅解:)\n"
-                                             "持续开发中:)您可以联系开发者提供反馈意见\n"
-                                             "yuanyufei1999@gmail.com\n"
-                                             "zhaonanfeng@foxmail.com", QMessageBox.Yes |
-                                             QMessageBox.No,
-                                             QMessageBox.No)
+                                   "单词列表已保存至桌面\n"
+                                   "仍然有一些Bug，请谅解:)\n"
+                                   "持续开发中:)您可以联系开发者提供反馈意见\n"
+                                   "yuanyufei1999@gmail.com\n"
+                                   "zhaonanfeng@foxmail.com", QMessageBox.Yes |
+                                   QMessageBox.No,
+                                   QMessageBox.No)
         if res == QMessageBox.Yes:
             self.mark_return()
 
@@ -601,7 +631,7 @@ class DecideUi(QMainWindow):
     def next_one(self):
         self.count += 1
         try:
-           self.progress_bar.setValue(100.0 * self.count / len(self.unknown_words))
+            self.progress_bar.setValue(100.0 * self.count / len(self.unknown_words))
         except ZeroDivisionError:
             self.show_dialog("该文本中没有未知词")
         if self.count >= len(self.unknown_words):
@@ -659,9 +689,9 @@ class DecideUi(QMainWindow):
 
     def closeEvent(self, event):
         res = QMessageBox.question(self, '警告',
-                                         "你要确定退出吗？", QtWidgets.QMessageBox.Yes |
-                                         QtWidgets.QMessageBox.No,
-                                         QtWidgets.QMessageBox.No)
+                                   "你要确定退出吗？", QtWidgets.QMessageBox.Yes |
+                                   QtWidgets.QMessageBox.No,
+                                   QtWidgets.QMessageBox.No)
         if res == QMessageBox.Yes:
             event.accept()
         else:
@@ -669,20 +699,62 @@ class DecideUi(QMainWindow):
 
 
 class ReciteUi(QMainWindow):
-    def __init__(self, word_count):
+    def __init__(self, word_count=0):
         super().__init__()
-
         self.word_count = word_count
 
-        self.recite_ui_popup_widget = QWidget()
-        self.recite_ui_popup_layout = QGridLayout(self.recite_ui_popup_widget)
+        self.recite_ui_in_widget = QWidget()
+        self.recite_ui_in_layout = QGridLayout(self.recite_ui_in_widget)
+
+        self.last_button = QPushButton(qta.icon("fa5s.angle-left", color="black"), "")
+        self.next_button = QPushButton(qta.icon("fa5s.angle-right", color="black"), "")
+        self.word_text_edit = QTextEdit("Word")
+        self.yb_text_edit = QTextEdit("Phonetic Symbol")
+        self.context_text_edit = QTextEdit("Context")
+        self.english_text_edit = QTextEdit("English Interpretation")
+        self.chinese_text_edit = QTextEdit("Chinese Interpretation")
+        self.ensure_button = QPushButton("确认")
 
         self.init_ui()
 
     def init_ui(self):
         self.setFixedSize(960, 700)
-        self.setCentralWidget(self.recite_ui_popup_widget)
+        self.setCentralWidget(self.recite_ui_in_widget)
         self.setWindowTitle("单词背诵")
+        self.recite_response_ui()
+        self.recite_next_one()
+
+    def recite_response_ui(self):
+        self.recite_add_to_window()
+
+        self.last_button.clicked.connect(self.recite_last_one)
+        self.next_button.clicked.connect(self.recite_next_one)
+        self.ensure_button.clicked.connect(self.recite_ensure)
+
+        self.recite_beautify()
+
+    def recite_ensure(self):
+        pass
+
+    def recite_next_one(self):
+        pass
+
+    def recite_last_one(self):
+        pass
+
+    def recite_add_to_window(self):
+        self.recite_ui_in_layout.addWidget(self.last_button, 4, 0, 1, 1)
+        self.recite_ui_in_layout.addWidget(self.next_button, 4, 11, 1, 1)
+        self.recite_ui_in_layout.addWidget(self.ensure_button, 0, 10, 1, 1)
+
+        self.recite_ui_in_layout.addWidget(self.word_text_edit, 0, 1, 2, 9)
+        self.recite_ui_in_layout.addWidget(self.yb_text_edit, 1, 1, 2, 10)
+        self.recite_ui_in_layout.addWidget(self.context_text_edit, 2, 1, 2, 10)
+        self.recite_ui_in_layout.addWidget(self.english_text_edit, 3, 1, 5, 10)
+        self.recite_ui_in_layout.addWidget(self.chinese_text_edit, 7, 1, 3, 10)
+
+    def recite_beautify(self):
+        pass
 
 
 def main():
