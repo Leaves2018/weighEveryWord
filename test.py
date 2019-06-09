@@ -5,8 +5,6 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt
 import sys
 import qtawesome as qta
-from vocabulary2 import Word
-import re
 from weigh2 import *
 
 
@@ -426,7 +424,8 @@ class MainUi(QMainWindow):
         word = Word(text)
         self.word_text_edit.setText(word.get_name())
         self.yb_text_edit.setText(word.get_yb())
-        self.context_text_edit.setText(word.get_str_context())
+        self.context_text_edit.setText(word.get_context())
+        # self.context_text_edit.setText(word.get_str_context())
         self.english_text_edit.setText(word.get_str_en_interpretation())
         self.chinese_text_edit.setText(word.get_str_ch_interpretation())
 
@@ -590,6 +589,7 @@ class DecideUi(QMainWindow):
         self.temp = []
         self.count = -1
         self.filename = ""
+        self.word = Word()
 
         self.mark_decide_ui_widget = QWidget()
         self.mark_decide_ui_layout = QGridLayout(self.mark_decide_ui_widget)
@@ -605,6 +605,7 @@ class DecideUi(QMainWindow):
         self.mark_mid_layout = QGridLayout(self.mark_mid_widget)
 
         self.word_name_text_edit = QTextEdit()
+        self.word_yb_text_edit = QTextEdit()
         self.word_context_text_edit = QTextEdit()
         self.word_ch_text_edit = QTextEdit()
         self.word_en_text_edit = QTextEdit()
@@ -621,11 +622,6 @@ class DecideUi(QMainWindow):
 
         print("init_ui:" + self.s)
         self.init_ui()
-
-    # def receive(self, s="", unfamiliar_words=[], unknown_words=[]):
-    #     self.s = s
-    #     self.unfamiliar_words = unfamiliar_words
-    #     self.unknown_words = unknown_words
 
     def init_ui(self):
         self.setFixedSize(960, 700)
@@ -653,6 +649,9 @@ class DecideUi(QMainWindow):
 
         self.word_name_text_edit.setPlaceholderText("抱歉，无单词名称")
         self.word_name_text_edit.setFontPointSize(36)
+
+        self.word_yb_text_edit.setPlaceholderText("抱歉，未查询到音标")
+        self.word_yb_text_edit.setFontPointSize(36)
 
         self.word_context_text_edit.setPlaceholderText("抱歉，无语境信息")
         self.word_context_text_edit.setFontPointSize(18)
@@ -688,10 +687,11 @@ class DecideUi(QMainWindow):
 
         self.mark_mid_layout.addWidget(self.last_button, 9, 0, 1, 1)
         self.mark_mid_layout.addWidget(self.next_button, 9, 18, 1, 1)
-        self.mark_mid_layout.addWidget(self.word_name_text_edit, 1, 1, 4, 7)
+        self.mark_mid_layout.addWidget(self.word_name_text_edit, 1, 1, 2, 7)
+        self.mark_mid_layout.addWidget(self.word_yb_text_edit, 3, 1, 2, 7)
         self.mark_mid_layout.addWidget(self.word_context_text_edit, 6, 1, 6, 7)
-        self.mark_mid_layout.addWidget(self.word_ch_text_edit, 1, 8, 4, 7)
-        self.mark_mid_layout.addWidget(self.word_en_text_edit, 6, 8, 6, 7)
+        self.mark_mid_layout.addWidget(self.word_en_text_edit, 1, 8, 4, 7)
+        self.mark_mid_layout.addWidget(self.word_ch_text_edit, 6, 8, 6, 7)
 
         self.mark_down_layout.addWidget(self.progress_bar, 0, 0, 1, 18)
         self.mark_down_layout.addWidget(self.new_button, 1, 0, 1, 9)
@@ -733,15 +733,18 @@ class DecideUi(QMainWindow):
         self.close()
 
     def mark_search(self):
-        word = Word(self.word_name_text_edit.toPlainText())
-        self.word_name_text_edit.setPlainText(word.get_name())
-        self.word_context_text_edit.setPlainText(word.get_str_context(True))
-        self.word_ch_text_edit.setPlainText(word.get_str_ch_interpretation(True))
-        self.word_en_text_edit.setPlainText(word.get_str_en_interpretation(True))
+        self.word = Word(self.word_name_text_edit.toPlainText())
+        self.word_yb_text_edit.setPlainText(self.word.get_yb(True))
+        self.word_context_text_edit.setPlainText(self.word.get_context(True))
+        self.word_ch_text_edit.setPlainText(self.word.get_str_ch_interpretation(True))
+        self.word_en_text_edit.setPlainText(self.word.get_str_en_interpretation(True))
 
     def last_one(self):
         self.count -= 1
-        self.progress_bar.setValue(100.0 * self.count / len(self.unknown_words))
+        try:
+            self.progress_bar.setValue(100.0 * self.count / len(self.unknown_words))
+        except ZeroDivisionError:
+            return 0
         if self.count < 0:
             self.count += 1
         else:
@@ -752,7 +755,7 @@ class DecideUi(QMainWindow):
         try:
            self.progress_bar.setValue(100.0 * self.count / len(self.unknown_words))
         except ZeroDivisionError:
-            self.show_dialog("该文本中没有未知词")
+            return 0
         if self.count >= len(self.unknown_words):
             self.show_dialog()
             self.count -= 1
@@ -764,18 +767,18 @@ class DecideUi(QMainWindow):
         text = self.word_name_text_edit.toPlainText()
 
         if text not in self.temp:
-            word = Word(name=self.word_name_text_edit.toPlainText(), context=self.word_context_text_edit.toPlainText(),
-                        ch_interpretation=self.word_ch_text_edit.toPlainText(),
-                        en_interpretation=self.word_en_text_edit.toPlainText())
-            self.new_words.append(word)
-            self.temp.append(text)
+            # word = Word(name=self.word_name_text_edit.toPlainText(), context=self.word_context_text_edit.toPlainText(),
+            #             ch_interpretation=self.word_ch_text_edit.toPlainText(),
+            #             en_interpretation=self.word_en_text_edit.toPlainText())
+            self.new_words.append(self.word)
+            self.temp.append(self.word.get_name())
         self.next_one()
 
     def shuci(self):
         text = self.word_name_text_edit.toPlainText()
         self.hint_label.setText("上一个单词为" + text + "已被判断为熟词")
         if text not in self.old_words:
-            self.old_words.append(text)
+            self.old_words.append(self.word.get_name())
         self.next_one()
 
     def finish(self):
@@ -797,13 +800,15 @@ class DecideUi(QMainWindow):
             return True
         return False
 
-    def display(self):
+    def display(self, flag=False):
         QApplication.processEvents()
-        word = self.unknown_words[self.count]
-        self.word_name_text_edit.setPlainText(word.get_name())
-        self.word_context_text_edit.setPlainText(word.get_str_context()[0])
-        self.word_ch_text_edit.setPlainText(word.get_str_ch_interpretation())
-        self.word_en_text_edit.setPlainText(word.get_str_en_interpretation())
+        self.word = self.unknown_words[self.count]
+        self.word_name_text_edit.setPlainText(self.word.get_name())
+        self.word_yb_text_edit.setPlainText(self.word.get_yb(flag))
+        # self.word_context_text_edit.setPlainText(self.word.get_str_context())
+        self.word_context_text_edit.setPlainText(self.word.get_context(flag))
+        self.word_ch_text_edit.setPlainText(self.word.get_str_ch_interpretation(flag))
+        self.word_en_text_edit.setPlainText(self.word.get_str_en_interpretation(flag))
         QApplication.processEvents()
 
     def closeEvent(self, event):

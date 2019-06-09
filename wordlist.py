@@ -4,7 +4,7 @@ import markdown
 import os
 
 
-def GetDesktopPath():
+def get_desktop_path():
     return os.path.join(os.path.expanduser("~"), 'Desktop')
 
 
@@ -26,8 +26,7 @@ def generate_word_list(words, filename):
     # 转为 html 文本
     html = markdown.markdown(text)
     # 保存为文件
-    # output_file = codecs.open("./output/Vocabulary of " + filename + '.html', mode="w+", encoding="utf-8")
-    output_file = codecs.open(GetDesktopPath() + "/Vocabulary of " + filename + '.html', mode="w+", encoding="utf-8")
+    output_file = codecs.open(get_desktop_path() + "/Vocabulary of " + filename + '.html', mode="w+", encoding="utf-8")
     output_file.write(css + html)
     output_file.close()
 
@@ -42,12 +41,9 @@ def process(words, filename):
         #          + "    " + " > " + word.get_context() + "\n\n"
         #          + "    " + " - " + word.get_en_interpretation() + "\n\n"
         #          + "    " + " - " + word.get_ch_interpretation() + "\n\n")
-        md.write(str(i) + word.get_name() + "\n")
+        md.write(str(i) + ". **" + word.get_name() + "**:" + word.get_yb() + "\n\n"
+                 # + "    " + word.get_str_context() + "\n\n"
+                 + "    " + word.get_context() + "\n\n"
+                 + "    " + word.get_str_en_interpretation() + "\n\n"
+                 + "    " + word.get_str_ch_interpretation() + "\n\n")
     md.close()
-
-
-def transfer(text=[]):
-    s = " 1. "
-    for i in text:
-        s += i + "; "
-    return s

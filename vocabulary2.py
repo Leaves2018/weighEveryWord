@@ -33,23 +33,29 @@ class Word:
         self.yb = yb
 
     # 获取语境（如果没有提供语境，将自动从有道词典获取例句）
+    # def get_context(self, flag=False):
+    #     if flag or not self.context:
+    #         text = example_mean(self.name)
+    #         temp = []
+    #         if isinstance(text, str):
+    #             temp.append(text)
+    #             text = temp
+    #         for i in range(len(text)):
+    #             text[i] = re.sub(self.name, " *" + self.name + "* ", text[i])
+    #         self.context = text
+    #     return self.context
+
+    # def get_str_context(self, flag=False):
+    #     text = ""
+    #     for sentence in self.get_context(flag):
+    #         text += " > " + sentence + "\n"
+    #     return text
+
     def get_context(self, flag=False):
         if flag or not self.context:
             text = example_mean(self.name)
-            temp = []
-            if isinstance(text, str):
-                temp.append(text)
-                text = temp
-            for i in range(len(text)):
-                text[i] = re.sub(self.name, " *" + self.name + "* ", text[i])
-            self.context = text
+            self.context = re.sub(self.name, " *" + self.name + "* ", text)
         return self.context
-
-    def get_str_context(self, flag=False):
-        text = ""
-        for sentence in self.get_context(flag):
-            text += " > " + sentence + "\n"
-        return text
 
     # 设置语境（该词所在句或段）
     def set_context(self, context=[]):
@@ -65,8 +71,10 @@ class Word:
 
     def get_str_en_interpretation(self, flag=False):
         text = ""
+        count = 0
         for sentence in self.get_en_interpretation(flag):
-            text += " - " + sentence + "\n"
+            count += 1
+            text += "(" + str(count) + ")" + sentence
         return text
 
     def set_en_interpretation(self, eng_interpretation=[]):
@@ -80,8 +88,10 @@ class Word:
 
     def get_str_ch_interpretation(self, flag=False):
         text = ""
+        count = 0
         for sentence in self.get_ch_interpretation(flag):
-            text += " - " + sentence + "\n"
+            count += 1
+            text += "(" + str(count) + ")" + sentence
         return text
 
     def set_ch_interpretation(self, ch_interpretation=[]):
