@@ -189,7 +189,7 @@ class MainUi(QMainWindow):
         self.word_label.setText(word.get_name())
         self.phonetic_symbol_label.setText(word.get_yb())
         self.context_label.setText(word.get_context())
-        self.english_label.setText(word.get_eng_interpretation())
+        self.english_label.setText(word.get_en_interpretation())
         self.chinese_label.setText(word.get_ch_interpretation())
 
     # 将各个部件添加到窗口

@@ -86,13 +86,13 @@ class MainInter(QtWidgets.QMainWindow):
         self.up_button_1 = QtWidgets.QPushButton("上一个")
         self.up_button_1.setObjectName('left_button')
         self.up_button_1.setCheckable(True)
-        self.up_button_1.clicked.connect(self.lastone)
+        self.up_button_1.clicked.connect(self.last_one)
         # self.up_button_1.setShortcut(chr())
 
         self.up_button_2 = QtWidgets.QPushButton("下一个")
         self.up_button_2.setObjectName('left_button')
         self.up_button_2.setCheckable(True)
-        self.up_button_2.clicked.connect(self.nextone)
+        self.up_button_2.clicked.connect(self.next_one)
         # self.up_button_2.setShortcut(chr())
 
         self.up_button_return = QtWidgets.QPushButton("返回")
@@ -155,18 +155,18 @@ class MainInter(QtWidgets.QMainWindow):
 
         self.down_layout.addWidget(self.btn_vocabulary_word, 1, 0, 1, 9)
         self.down_layout.addWidget(self.btn_familiar_word, 1, 9, 1, 9)
-        self.nextone()
+        self.next_one()
 
     def search(self):
         word = Word()
         word.name = self.word_name_output.toPlainText()
         word.get_context(True)
         word.get_ch_interpretation(True)
-        word.get_eng_interpretation(True)
+        word.get_en_interpretation(True)
         self.word_name_output.setPlainText(word.get_name())
         self.word_context_output.setPlainText(word.get_context())
         self.word_ch_output.setPlainText(word.get_ch_interpretation())
-        self.word_en_output.setPlainText(word.get_eng_interpretation())
+        self.word_en_output.setPlainText(word.get_en_interpretation())
 
     def display(self):
         QtWidgets.QApplication.processEvents()
@@ -174,10 +174,10 @@ class MainInter(QtWidgets.QMainWindow):
         self.word_name_output.setPlainText(word.get_name())
         self.word_context_output.setPlainText(word.get_context())
         self.word_ch_output.setPlainText(word.get_ch_interpretation())
-        self.word_en_output.setPlainText(word.get_eng_interpretation())
+        self.word_en_output.setPlainText(word.get_en_interpretation())
         QtWidgets.QApplication.processEvents()
 
-    def lastone(self):
+    def last_one(self):
         self.count -= 1
         self.down_process_bar.setValue(100.0 * self.count / len(self.unknown_words))
         if self.count < 0:
@@ -185,7 +185,7 @@ class MainInter(QtWidgets.QMainWindow):
         else:
             self.display()
 
-    def testDialog_1(self):
+    def test_dialog_1(self):
         res = QtWidgets.QMessageBox.question(self, '提示',
                                              "已接收到文本，初步处理完毕。\n"
                                              "请快速浏览并手动修改不合理的分词:)\n"
@@ -197,7 +197,7 @@ class MainInter(QtWidgets.QMainWindow):
         else:
             pass
 
-    def testDialog_2(self):
+    def test_dialog_2(self):
         res = QtWidgets.QMessageBox.question(self, '提示',
                                              "未接收到文本，请确认输入正确", QtWidgets.QMessageBox.Yes |
                                              QtWidgets.QMessageBox.No,
@@ -207,7 +207,7 @@ class MainInter(QtWidgets.QMainWindow):
         else:
             pass
 
-    def showDialog(self, text="提示"):
+    def show_dialog(self, text="提示"):
         text, ok = QtWidgets.QInputDialog.getText(self, text, '生熟词已判断完毕，请输入文件名:')
 
         if ok:
@@ -220,11 +220,11 @@ class MainInter(QtWidgets.QMainWindow):
             return True
         return False
 
-    def nextone(self):
+    def next_one(self):
         self.count += 1
         self.down_process_bar.setValue(100.0 * self.count / len(self.unknown_words))
         if self.count >= len(self.unknown_words):
-            self.showDialog()
+            self.show_dialog()
             self.count -= 1
         else:
             self.display()
@@ -236,17 +236,17 @@ class MainInter(QtWidgets.QMainWindow):
         if text not in self.temp:
             word = Word(name=self.word_name_output.toPlainText(), context=self.word_context_output.toPlainText(),
                         ch_interpretation=self.word_ch_output.toPlainText(),
-                        eng_interpretation=self.word_en_output.toPlainText())
+                        en_interpretation=self.word_en_output.toPlainText())
             self.new_words.append(word)
             self.temp.append(text)
-        self.nextone()
+        self.next_one()
 
     def shuci(self):
         self.up_label.setText("上一个单词为" + self.word_name_output.toPlainText() + "已被判断为熟词")
         text = self.word_name_output.toPlainText()
         if text not in self.old_words:
             self.old_words.append(text)
-        self.nextone()
+        self.next_one()
 
     def finish(self):
         update_familiar_words(old_words=self.old_words)
@@ -259,9 +259,9 @@ class MainInter(QtWidgets.QMainWindow):
         text = re.sub('[^a-zA-Z\']+', ' ', self.s)
         if text:
             self.up_bar_widget_input.setText(text)
-            self.testDialog_1()
+            self.test_dialog_1()
         else:
-            self.testDialog_2()
+            self.test_dialog_2()
 
     def clear(self):
         self.up_bar_widget_input.clear()

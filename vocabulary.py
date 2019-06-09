@@ -1,14 +1,15 @@
 from youdao_reptile import *
 import re
 
+
 # 单词类
 class Word:
     # 四个基本属性：名称、语境、英解、中解、出现频次，默认值均为空字符串或0（如果设置为None，在转str时可能会报错）
-    def __init__(self, name="", yb="", context="", eng_interpretation="", ch_interpretation="", count=0):
+    def __init__(self, name="", yb="", context="", en_interpretation=[], ch_interpretation=[], count=0):
         self.name = name
         self.yb = yb
         self.context = context
-        self.eng_interpretation = eng_interpretation
+        self.en_interpretation = en_interpretation
         self.ch_interpretation = ch_interpretation
         self.count = count
 
@@ -18,7 +19,7 @@ class Word:
     def set_name(self):
         self.get_context(True)
         self.get_ch_interpretation(True)
-        self.get_eng_interpretation(True)
+        self.get_en_interpretation(True)
         return self.name
 
     def get_yb(self, flag=False):
@@ -41,34 +42,39 @@ class Word:
         self.context = context
 
     # 获取英解（如果还没有查询单词的英解，则先查询存储再返回）
-    def get_eng_interpretation(self, flag=False):
-        if flag or not self.eng_interpretation:
+    def get_en_interpretation(self, flag=False):
+        s = ""
+        if flag or not self.en_interpretation:
             text = en_mean(self.name)
-            s = ""
             for i in range(len(text)):
-                s += str(i+1) + ". " + text[i] + "\n"
-            self.eng_interpretation = s
-        return self.eng_interpretation
+                s += "~" + text[i] + "\n"
+            self.en_interpretation = text
+        return s
 
-    def set_eng_interpretation(self, eng_interpretation):
-        self.eng_interpretation = eng_interpretation
+    def get_list_en_interpretation(self, flag=False):
+        if flag or not self.en_interpretation:
+            self.en_interpretation = en_mean(self.name)
+        return self.en_interpretation
+
+    def set_en_interpretation(self, eng_interpretation):
+        self.en_interpretation = eng_interpretation
 
     # 获取中解（如果还没有查询单词的中解，则先查询存储再返回）
     def get_ch_interpretation(self, flag=False):
+        s = ""
         if flag or not self.ch_interpretation:
             text = ch_mean(self.name)
-            s = ""
             for i in range(len(text)):
-                s += str(i+1) + ". " + text[i] + "\n"
-            self.ch_interpretation = s
-        return self.ch_interpretation
+                s += "~" + text[i] + "\n"
+            self.ch_interpretation = text
+        return s
 
     def set_ch_interpretation(self, ch_interpretation):
         self.ch_interpretation = ch_interpretation
 
     def to_string(self):
-        return "{}_{}_{}_{}_{}"\
-            .format(self.name, self.context, self.eng_interpretation, self.ch_interpretation, str(self.count))
+        return "{}_{}_{}_{}"\
+            .format(self.name, self.context, self.get_en_interpretation(), self.get_ch_interpretation())
 
     def to_tuple(self):
-        return self.name, self.context, self.eng_interpretation, self.ch_interpretation, str(self.count)
+        return self.name, self.context, self.en_interpretation, self.ch_interpretation, str(self.count)

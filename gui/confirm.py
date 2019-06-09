@@ -33,13 +33,13 @@ def decide(self):
     self.up_button_1.setObjectName('left_button')
     self.up_button_1.setCheckable(True)
     self.up_button_1.toggle()
-    self.up_button_1.clicked.connect(self.lastone)
+    self.up_button_1.clicked.connect(self.last_one)
 
     self.up_button_2 = QtWidgets.QPushButton(qtawesome.icon('fa.sellsy', color='white'), "下一个")
     self.up_button_2.setObjectName('left_button')
     self.up_button_2.setCheckable(True)
     self.up_button_2.toggle()
-    self.up_button_2.clicked.connect(self.nextone)
+    self.up_button_2.clicked.connect(self.next_one)
 
     self.up_button_return = QtWidgets.QPushButton(qtawesome.icon('fa.music', color='white'), "返回")
     self.up_button_return.setObjectName('left_button')

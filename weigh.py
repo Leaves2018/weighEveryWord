@@ -49,7 +49,7 @@ def second(new_words, unknown_words):
         print('--------------------')
         print(word.get_name())
         print(word.get_context())
-        print(word.get_eng_interpretation())
+        print(word.get_en_interpretation())
         print(word.get_ch_interpretation())
         print('--------------------')
         choice = bool(input("熟词敲回车，生词按空格\n"))

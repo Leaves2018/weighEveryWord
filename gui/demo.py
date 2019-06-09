@@ -192,7 +192,7 @@ class MainInter(QtWidgets.QMainWindow):
         self.word_name_output.setPlainText(word.get_name())
         self.word_context_output.setPlainText(word.get_context())
         self.word_ch_output.setPlainText(word.get_ch_interpretation())
-        self.word_en_output.setPlainText(word.get_eng_interpretation())
+        self.word_en_output.setPlainText(word.get_en_interpretation())
 
     def last_one(self):
         self.count -= 1
@@ -220,7 +220,7 @@ class MainInter(QtWidgets.QMainWindow):
 
     def choose_familiar(self):
         word = Word(name=self.word_name_output.toPlainText(), context=self.word_context_output.toPlainText(),
-                    ch_interpretation=self.word_ch_output.toPlainText(), eng_interpretation=self.word_en_output.toPlainText())
+                    ch_interpretation=self.word_ch_output.toPlainText(), en_interpretation=self.word_en_output.toPlainText())
         self.new_words.append(word)
         self.next_one()
 

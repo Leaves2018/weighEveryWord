@@ -40,6 +40,6 @@ def process(words, filename):
         word = words[i]
         md.write(str(i) + ". **" + word.get_name() + "**:" + "\n\n"
                  + "    " + " > " + word.get_context() + "\n\n"
-                 + "    " + " - " + word.get_eng_interpretation() + "\n\n"
+                 + "    " + " - " + word.get_en_interpretation() + "\n\n"
                  + "    " + " - " + word.get_ch_interpretation() + "\n\n")
     md.close()
