@@ -871,7 +871,8 @@ class ReciteUi(QMainWindow):
 
         self.last_button = QPushButton(qta.icon("fa5s.angle-left", color="black"), "")
         self.next_button = QPushButton(qta.icon("fa5s.angle-right", color="black"), "")
-        self.word_text_edit = QTextEdit("Word")
+        self.word_line_edit = QLineEdit("Word")
+        self.word_line_edit.returnPressed.connect(self.recite_ensure)
         self.yb_text_edit = QTextEdit("Phonetic Symbol")
         self.context_text_edit = QTextEdit("Context")
         self.english_text_edit = QTextEdit("English Interpretation")
@@ -899,7 +900,7 @@ class ReciteUi(QMainWindow):
 
     def word_display(self):
         word = self.words[self.random]
-        self.word_text_edit.setPlainText(word.get_name())
+        self.word_line_edit.setPlainText(word.get_name())
 
     def english_display(self):
         word = self.words[self.random]
@@ -907,7 +908,7 @@ class ReciteUi(QMainWindow):
 
     def context_display(self):
         word = self.words[self.random]
-        self.context_text_editn.setPlainText(word.get_context())
+        self.context_text_editn.setPlainText(re.sub(self.word.get_name(), '_' * len(self.word.get_name()), self.word.get_context))
 
     def chinese_display(self):
         word = self.words[self.random]
@@ -918,10 +919,10 @@ class ReciteUi(QMainWindow):
         self.yb_text_edit.setPlainText(word.get_yb())
 
     def random_get(self):
-        self.random = random.randint(0, len(self.words))
+        self.random = random.randint(0, len(self.words)-1)
 
     def recite_word_get(self):
-        with open("./vocabulary/vocabulary.txt", "r+", encoding="UTF-8") as f:
+        with open("./vocabulary/vocabulary_words.txt", "r+", encoding="UTF-8") as f:
             f.seek(0)
             for sentence in f.readlines():
                 if not sentence[0].isalpha():
@@ -932,7 +933,7 @@ class ReciteUi(QMainWindow):
     def recite_ensure(self):
         self.guess_count += 1
         word = self.words[self.random]
-        if self.word_text_edit.toPlainText() == word.get_name():
+        if self.word_line_edit.toPlainText() == word.get_name():
             self.niubi_dialog()
         else:
             self.laji_dialog()
@@ -970,13 +971,14 @@ class ReciteUi(QMainWindow):
             if self.guess_count == 1:
                 self.right_words.append(word.get_name())
             else:
-                word.count_plus()
+                return 0
+                # word.count_plus()
             self.recite_next_one()
         else:
             return 0
 
     def recite_next_one(self):
-        self.word_text_edit.clear()
+        self.word_line_edit.clear()
         self.english_text_edit.clear()
         self.context_text_edit.clear()
         self.chinese_text_edit.clear()
@@ -1023,9 +1025,9 @@ class ReciteUi(QMainWindow):
 
         self.recite_ui_in_layout.addWidget(self.last_button, 8, 0, 1, 1)
         self.recite_ui_in_layout.addWidget(self.next_button, 8, 11, 1, 1)
-        self.recite_ui_in_layout.addWidget(self.ensure_button, 0, 10, 2, 1)
+        self.recite_ui_in_layout.addWidget(self.ensure_button, 0, 10, 1, 1)
 
-        self.recite_ui_in_layout.addWidget(self.word_text_edit, 0, 1, 2, 9)
+        self.recite_ui_in_layout.addWidget(self.word_line_edit, 0, 1, 2, 9)
         self.recite_ui_in_layout.addWidget(self.english_text_edit, 2, 1, 5, 10)
         self.recite_ui_in_layout.addWidget(self.context_text_edit, 7, 1, 2, 10)
         self.recite_ui_in_layout.addWidget(self.chinese_text_edit, 9, 1, 3, 10)
