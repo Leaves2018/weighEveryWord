@@ -104,6 +104,10 @@ class MainUi(QMainWindow):
         # 3.4 "设置"页面：settings_ui
         self.settings_ui_widget = QWidget()
         self.settings_ui_layout = QVBoxLayout(self.settings_ui_widget)
+
+        self.settings_button_widget = QWidget()
+        self.settings_button_layout = QHBoxLayout(self.settings_button_widget)
+
         self.test_label_shuci = QLabel("设置熟词")
         self.test_label_shuci.setFont(QFont("Roman times", 16, QFont.Bold))
         self.shuci_xiaoxue_checkbox = QCheckBox('小学词汇')
@@ -132,20 +136,32 @@ class MainUi(QMainWindow):
         self.test_label_output.setFont(QFont("Roman times", 16, QFont.Bold))
         self.sample_output_button_1 = QToolButton()
         # self.sample_output_button_1.setText("样式1")  # 设置按钮文本
-        self.sample_output_button_1.setIcon(QtGui.QIcon('./sample_format/sample_format_1.png'))  # 设置按钮图标
-        self.sample_output_button_1.setIconSize(QtCore.QSize(1000, 150))  # 设置图标大小
+        img_1 = QtGui.QImage(r'./sample_format/sample_format_1.png')
+        pixmap_1 = QtGui.QPixmap(img_1)
+        fitPixmap_1 = pixmap_1.scaled(600, 160, QtCore.Qt.IgnoreAspectRatio, QtCore.Qt.SmoothTransformation)
+        icon_1 = QtGui.QIcon(fitPixmap_1)
+        self.sample_output_button_1.setIcon(icon_1)  # 设置按钮图标
+        self.sample_output_button_1.setIconSize(QtCore.QSize(600, 160))  # 设置图标大小
         self.sample_output_button_1.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
 
         self.sample_output_button_2 = QToolButton()
         # self.sample_output_button_2.setText("样式2")  # 设置按钮文本
-        self.sample_output_button_2.setIcon(QtGui.QIcon('./sample_format/sample_format_2.png'))  # 设置按钮图标
-        self.sample_output_button_2.setIconSize(QtCore.QSize(1000, 150))  # 设置图标大小
+        img_2 = QtGui.QImage(r'./sample_format/sample_format_2.png')
+        pixmap_2 = QtGui.QPixmap(img_2)
+        fitPixmap_2 = pixmap_2.scaled(600, 160, QtCore.Qt.IgnoreAspectRatio, QtCore.Qt.SmoothTransformation)
+        icon_2 = QtGui.QIcon(fitPixmap_2)
+        self.sample_output_button_2.setIcon(icon_2)  # 设置按钮图标
+        self.sample_output_button_2.setIconSize(QtCore.QSize(600, 160))  # 设置图标大小
         self.sample_output_button_2.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
 
         self.sample_output_button_3 = QToolButton()
         # self.sample_output_button_3.setText("样式3")  # 设置按钮文本
-        self.sample_output_button_3.setIcon(QtGui.QIcon('./sample_format/sample_format_3.png'))  # 设置按钮图标
-        self.sample_output_button_3.setIconSize(QtCore.QSize(1000, 150))  # 设置图标大小
+        img_3 = QtGui.QImage(r'./sample_format/sample_format_3.png')
+        pixmap_3 = QtGui.QPixmap(img_3)
+        fitPixmap_3 = pixmap_3.scaled(600, 160, QtCore.Qt.IgnoreAspectRatio, QtCore.Qt.SmoothTransformation)
+        icon_3 = QtGui.QIcon(fitPixmap_3)
+        self.sample_output_button_3.setIcon(icon_3)  # 设置按钮图标
+        self.sample_output_button_3.setIconSize(QtCore.QSize(600, 160))  # 设置图标大小
         self.sample_output_button_3.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
         self.sample_output_button_3.setStyleSheet("border-image")
 
@@ -580,8 +596,10 @@ class MainUi(QMainWindow):
         self.settings_ui_layout.addWidget(self.sample_output_button_1)
         self.settings_ui_layout.addWidget(self.sample_output_button_2)
         self.settings_ui_layout.addWidget(self.sample_output_button_3)
-        self.settings_ui_layout.addWidget(self.initial_value_button)
-        self.settings_ui_layout.addWidget(self.ensure_value_button)
+
+        self.settings_ui_layout.addWidget(self.settings_button_widget)
+        self.settings_button_layout.addWidget(self.initial_value_button)
+        self.settings_button_layout.addWidget(self.ensure_value_button)
 
         self.right_widget.addWidget(self.settings_ui_widget)
 
