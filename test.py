@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+import random
+
 from PyQt5 import QtCore, QtGui, QtWidgets
 from PyQt5.QtGui import QFont
 from PyQt5.QtWidgets import *
@@ -23,6 +25,7 @@ class MainUi(QMainWindow):
         self.gaozhong_selected = False
         self.siliuji_selected = False
         self.sample = 1
+
 
         # 一、声明窗口主部件及其布局
         self.main_widget = QWidget()
@@ -857,6 +860,11 @@ class ReciteUi(QMainWindow):
     def __init__(self, word_count=0):
         super().__init__()
         self.word_count = word_count
+        self.words = []
+        self.random = 0
+        self.count = 0
+        self.guess_count = 0
+        self.right_words = []
 
         self.recite_ui_in_widget = QWidget()
         self.recite_ui_in_layout = QGridLayout(self.recite_ui_in_widget)
@@ -888,14 +896,127 @@ class ReciteUi(QMainWindow):
 
         self.recite_beautify()
 
+    def word_display(self):
+        word = self.words[self.random]
+        self.word_text_edit.setPlainText(word.get_name())
+
+    def english_display(self):
+        word = self.words[self.random]
+        self.english_text_edit.setPlainText(word.get_en_interpretation())
+
+    def context_display(self):
+        word = self.words[self.random]
+        self.context_text_editn.setPlainText(word.get_context())
+
+    def chinese_display(self):
+        word = self.words[self.random]
+        self.chinese_text_edit.setPlainText(word.get_ch_interpretation())
+
+    def yb_display(self):
+        word = self.words[self.random]
+        self.yb_text_edit.setPlainText(word.get_yb())
+
+    def random_get(self):
+        self.random = random.randint(0,self.word_count)
+
+    def recite_word_get(self):
+        with open("./vocabulary/vocabulary.txt", "r+", encoding="UTF-8") as f:
+            f.seek(0)
+            for sentence in f.readlines():
+                if not sentence[0].isalpha():
+                    continue
+                word = Word(*sentence.split("----"))
+                self.words.append(word)
+
     def recite_ensure(self):
-        pass
+        self.guess_count += 1
+        word = self.words[self.random]
+        if self.word_text_edit.toPlainText() == word.get_name():
+            self.niubi_dialog()
+        else:
+            self.laji_dialog()
+
+    def laji_dialog(self):
+        res = QMessageBox.information(self, '提示',
+                                      "好可惜啊，就差一点点了，再试一次呗！", QtWidgets.QMessageBox.Yes |
+                                      QtWidgets.QMessageBox.No,
+                                      QtWidgets.QMessageBox.Yes)
+        if res == QMessageBox.Yes:
+            if self.guess_count == 1:
+                self.context_display()
+            elif self.guess_count == 2:
+                self.context_display()
+                self.chinese_display()
+            elif self.guess_count == 3:
+                self.context_display()
+                self.chinese_display()
+                self.yb_display()
+            elif self.guess_count == 4:
+                self.context_display()
+                self.chinese_display()
+                self.yb_display()
+                self.word_display()
+        else:
+            self.context_display()
+
+    def niubi_dialog(self):
+        res = QMessageBox.information(self, '提示',
+                                      "厉害啊，你答对了耶！", QtWidgets.QMessageBox.Yes |
+                                      QtWidgets.QMessageBox.No,
+                                      QtWidgets.QMessageBox.Yes)
+        if res == QMessageBox.Yes:
+            word = self.words[self.random]
+            if self.guess_count == 1:
+                self.right_words.append(word.get_name())
+            else:
+                word.count_plus()
+            self.recite_next_one()
+        else:
+            return 0
 
     def recite_next_one(self):
-        pass
+        self.word_text_edit.clear()
+        self.english_text_edit.clear()
+        self.context_text_edit.clear()
+        self.chinese_text_edit.clear()
+        self.yb_text_edit.clear()
+        self.guess_count = 0
+        self.count += 1
+        self.random_get()
+        if self.count > self.word_count:
+            self.show_dialog()
+            self.count -= 1
+        else:
+            self.english_display()
+
+    def show_dialog(self, text="提示"):
+        res = QMessageBox.information(self, '提示',
+                                   "你已经背完了" + str(self.word_count) + "个单词啦，买包辣条奖励一下自己吧！", QtWidgets.QMessageBox.Yes |
+                                   QtWidgets.QMessageBox.No,
+                                   QtWidgets.QMessageBox.Yes)
+        if res == QMessageBox.Yes:
+            return 0
+        else:
+            return 0
+
+    def closeEvent(self, event):
+        res = QtWidgets.QMessageBox.question(self, '警告',
+                                             "你要确定退出吗？", QtWidgets.QMessageBox.Yes |
+                                             QtWidgets.QMessageBox.No,
+                                             QtWidgets.QMessageBox.Yes)
+        if res == QtWidgets.QMessageBox.Yes:
+            with open("./familiar/familiar_words.txt", "a+", encoding="UTF-8") as f:
+                f.writelines(self.right_words)
+            event.accept()
+        else:
+            event.ignore()
 
     def recite_last_one(self):
-        pass
+        self.count -= 1
+        if self.count < 0:
+            self.count += 1
+        else:
+            self.english_display()
 
     def recite_add_to_window(self):
 
