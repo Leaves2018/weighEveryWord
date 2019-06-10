@@ -918,23 +918,23 @@ class ReciteUi(QMainWindow):
 
     def word_display(self):
         word = self.words[self.random]
-        self.word_line_edit.setPlainText(word.get_name())
+        self.word_line_edit.setText(word.get_name())
 
     def english_display(self):
         word = self.words[self.random]
-        self.english_text_edit.setPlainText(word.get_en_interpretation())
+        self.english_text_edit.setText(word.get_en_interpretation())
 
     def context_display(self):
         word = self.words[self.random]
-        self.context_text_editn.setPlainText(re.sub(self.word.get_name(), '_' * len(self.word.get_name()), self.word.get_context))
+        self.context_text_edit.setText(re.sub(word.get_name(), '_' * len(word.get_name()), word.get_context()))
 
     def chinese_display(self):
         word = self.words[self.random]
-        self.chinese_text_edit.setPlainText(word.get_ch_interpretation())
+        self.chinese_text_edit.setText(word.get_ch_interpretation())
 
     def yb_display(self):
         word = self.words[self.random]
-        self.yb_text_edit.setPlainText(word.get_yb())
+        self.yb_text_edit.setText(word.get_yb())
 
     def random_get(self):
         self.random = random.randint(0, len(self.words)-1)
@@ -951,7 +951,7 @@ class ReciteUi(QMainWindow):
     def recite_ensure(self):
         self.guess_count += 1
         word = self.words[self.random]
-        if self.word_line_edit.toPlainText() == word.get_name():
+        if self.word_line_edit.text() == word.get_name():
             self.niubi_dialog()
         else:
             self.laji_dialog()
