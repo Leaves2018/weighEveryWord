@@ -5,9 +5,8 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt
 import sys
 import qtawesome as qta
-from weigh2 import *
+from weigh3 import *
 
-# 目前test为程序运行入口
 
 class MainUi(QMainWindow):
     def __init__(self):
@@ -311,6 +310,7 @@ class MainUi(QMainWindow):
         text = re.sub('[^a-zA-Z\']+', ' ', self.s)
         if text:
             self.input_text_edit.setText(text)
+            self.input_text_edit.setFontPointSize(15)
             self.test_dialog_1()
         else:
             self.test_dialog_2()

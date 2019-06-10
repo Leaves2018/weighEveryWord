@@ -16,7 +16,8 @@ class Word:
     def get_name(self):
         return self.name if not isinstance(self.name, type(None)) else "None"
 
-    def set_name(self):
+    def set_name(self, name):
+        self.name = name
         self.get_context(True)
         self.get_yb(True)
         self.get_ch_interpretation(True)
@@ -101,6 +102,9 @@ class Word:
 
     def set_count(self, count=0):
         self.count = count
+
+    def count_plus(self, n=1):
+        self.count += n
 
     def to_string(self):
         return "{}----{}----{}----{}----{}----{}"\

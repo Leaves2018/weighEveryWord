@@ -21,21 +21,29 @@ def first(raw_text):
 
     unfamiliar_words = []
     unknown_words = []
-    temp = []
     for sentence in sentences(raw_text):
-        words = re.split('[^a-zA-Z]+', sentence)
+        words = set(re.split('[^a-zA-Z]+', sentence))
         for word in words:
-            if word is "" or word in temp:
+            if word is "":
                 continue
-            new_word = Word(name=word, context=re.sub(word, '*'+word+'*', sentence.strip()))
-            i = 2 if len(word) < 8 else 4
-            if familiar_words.search(word.lower()[:-i]):
+            new_word = Word(name=word, context=re.sub(word, '*' + word + '*', sentence.strip()))
+            i = 0
+            if len(word) < 4:
+                i = 1
+            elif len(word) < 8:
+                i = 2
+            elif len(word) < 10:
+                i = 3
+            elif len(word) < 14:
+                i = 4
+            elif len(word) < 20:
+                i = 5
+            if familiar_words.starts_with(word.lower()[:-i]):
                 continue
-            elif vocabulary_words.search(word.lower()[:-i]):
+            elif vocabulary_words.starts_with(word.lower()[:-i]):
                 unfamiliar_words.append(new_word)
             else:
                 unknown_words.append(new_word)
-                temp.append(word)
     return unfamiliar_words, unknown_words
 
 
