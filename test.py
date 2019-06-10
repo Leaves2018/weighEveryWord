@@ -23,6 +23,7 @@ class MainUi(QMainWindow):
         self.chuzhong_selected = False
         self.gaozhong_selected = False
         self.siliuji_selected = False
+        self.sample = 0
 
         # 一、声明窗口主部件及其布局
         self.main_widget = QWidget()
@@ -128,22 +129,23 @@ class MainUi(QMainWindow):
         self.test_label_output = QLabel("输出样式")
         self.test_label_output.setFont(QFont("Roman times", 16, QFont.Bold))
         self.sample_output_button_1 = QToolButton()
-        self.sample_output_button_1.setText("样式1")  # 设置按钮文本
-        self.sample_output_button_1.setIcon(QtGui.QIcon('./r1.jpg'))  # 设置按钮图标
-        self.sample_output_button_1.setIconSize(QtCore.QSize(600, 100))  # 设置图标大小
-        self.sample_output_button_1.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
+        # self.sample_output_button_1.setText("样式1")  # 设置按钮文本
+        self.sample_output_button_1.setIcon(QtGui.QIcon('./sample_format/sample_format_1.png'))  # 设置按钮图标
+        self.sample_output_button_1.setIconSize(QtCore.QSize(1000, 150))  # 设置图标大小
+        self.sample_output_button_1.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
 
         self.sample_output_button_2 = QToolButton()
-        self.sample_output_button_2.setText("样式2")  # 设置按钮文本
-        self.sample_output_button_2.setIcon(QtGui.QIcon('./r1.jpg'))  # 设置按钮图标
-        self.sample_output_button_2.setIconSize(QtCore.QSize(600, 100))  # 设置图标大小
-        self.sample_output_button_2.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
+        # self.sample_output_button_2.setText("样式2")  # 设置按钮文本
+        self.sample_output_button_2.setIcon(QtGui.QIcon('./sample_format/sample_format_2.png'))  # 设置按钮图标
+        self.sample_output_button_2.setIconSize(QtCore.QSize(1000, 150))  # 设置图标大小
+        self.sample_output_button_2.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
 
         self.sample_output_button_3 = QToolButton()
-        self.sample_output_button_3.setText("样式3")  # 设置按钮文本
-        self.sample_output_button_3.setIcon(QtGui.QIcon('./r1.jpg'))  # 设置按钮图标
-        self.sample_output_button_3.setIconSize(QtCore.QSize(600, 100))  # 设置图标大小
-        self.sample_output_button_3.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
+        # self.sample_output_button_3.setText("样式3")  # 设置按钮文本
+        self.sample_output_button_3.setIcon(QtGui.QIcon('./sample_format/sample_format_3.png'))  # 设置按钮图标
+        self.sample_output_button_3.setIconSize(QtCore.QSize(1000, 150))  # 设置图标大小
+        self.sample_output_button_3.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
+        self.sample_output_button_3.setStyleSheet("border-image")
 
         self.initial_value_button = QPushButton("恢复默认值")
         self.ensure_value_button = QPushButton("确认")
@@ -482,8 +484,22 @@ class MainUi(QMainWindow):
         self.shuci_gaozhong_checkbox.stateChanged.connect(self.shuci_gaozhong)
         self.shuci_siliuji_checkbox.stateChanged.connect(self.shuci_siliuji)
 
+        self.sample_output_button_1.clicked.connect(self.sample_1_output)
+        self.sample_output_button_2.clicked.connect(self.sample_2_output)
+        self.sample_output_button_3.clicked.connect(self.sample_3_output)
+
         self.settings_add_to_window()
         self.settings_beautify()
+
+    def sample_1_output(self):
+        self.sample = 1
+
+    def sample_2_output(self):
+        self.sample = 2
+
+    def sample_3_output(self):
+        self.sample = 3
+
 
     def shuci_xiaoxue(self):
         self.xiaoxue_selected = True
@@ -506,9 +522,18 @@ class MainUi(QMainWindow):
         self.chuzhong_selected = True
         self.gaozhong_selected = True
         self.siliuji_selected = False
+        with open("./css/css.txt", "w+", encoding="UTF-8") as f:
+            f1 = open("./css/css1.txt", encoding="UTF-8")
+            f.writelines(f1.readlines())
 
     def ensure_value(self):
         res = QtWidgets.QMessageBox.question(self, '警告',
+                                             "您选择了"
+                                             + ("《小学词汇》" if self.xiaoxue_selected else "")
+                                             + ("《初中词汇》" if self.chuzhong_selected else "")
+                                             + ("《高中词汇》" if self.gaozhong_selected else "")
+                                             + ("《四六级词汇》" if self.siliuji_selected else "" + "\n")
+                                             + "样式" + self.sample + "\n"
                                              "此操作会清空你的熟词本,并初始化为你所勾选的单词本。\n"
                                              "按下确认以执行操作", QtWidgets.QMessageBox.Yes |
                                              QtWidgets.QMessageBox.No,
@@ -524,8 +549,12 @@ class MainUi(QMainWindow):
                 gaozhong = open('./familiar/gaozhong.txt', 'r+',
                                 encoding='UTF-8').read() if self.gaozhong_selected else "\n"
                 f.writelines(gaozhong)
-                cet = open('./familiar/cet.txt', 'r+', encoding='UTF-8').read() if self.siliuji_selected else "\n"
+                cet = open('./familiar/cet.txt', 'r+',
+                                encoding='UTF-8').read() if self.siliuji_selected else "\n"
                 f.writelines(cet)
+            with open("./css/css.txt", "w+", encoding="UTF-8") as f:
+                f1 = open("./css/css" + str(self.sample) + ".txt", encoding="UTF-8")
+                f.writelines(f1.readlines())
         else:
             return 0
 
