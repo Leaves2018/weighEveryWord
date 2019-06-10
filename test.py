@@ -398,10 +398,11 @@ class MainUi(QMainWindow):
                     continue
                 word = Word(*sentence.split("----"))
                 self.temp_words.append(word)
-        if self.word_count <=0 or self.word_count >len(self.words):
+        if self.word_count <= 0 or self.word_count >len(self.words):
             res = QtWidgets.QMessageBox.information(self, '提示，您输入的数字小于零或大于您生词本的生词数量',
                                                     QtWidgets.QMessageBox.Yes |
-                                                    QMessageBox.No,QMessageBox.Yes)
+                                                    QMessageBox.No,
+                                                    QMessageBox.Yes)
             if res == QtWidgets.QMessageBox.Yes:
                 self.word_count_text_edit.clear()
             else:
@@ -957,11 +958,13 @@ class ReciteUi(QMainWindow):
 
     def recite_word_get(self):
         with open("./vocabulary/vocabulary_words.txt", "r+", encoding="UTF-8") as f:
-            f.seek(0)
             for sentence in f.readlines():
                 if not sentence[0].isalpha():
                     continue
-                word = Word(*sentence.split("----"))
+                text = sentence.split("----")
+                word = Word(name=text[0], yb=text[1], context=text[2])
+                word.set_en_interpretation(re.split("[)(1-9]+", text[3])[1:])
+                word.set_ch_interpretation(re.split("[)(1-9]+", text[4])[1:])
                 self.words.append(word)
 
     def recite_ensure(self):
