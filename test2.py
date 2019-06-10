@@ -1,109 +1,79 @@
-import sys
-from PyQt5.QtWidgets import *
-from PyQt5.QtCore import *
-from PyQt5.QtGui import *
+class TrieNode:
+
+    def __init__(self):
+        self.root = {}
+        self.word_end = -1
 
 
-################################################
-#######创建主窗口
-################################################
-class FirstMainWindow(QMainWindow):
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.setWindowTitle('主界面')
+class Trie:
+    def __init__(self):
+        """
+        Initialize your data structure here.
+        """
+        self.root = TrieNode()
 
-        ###### 创建界面 ######
-        self.centralwidget = QWidget()
-        self.setCentralWidget(self.centralwidget)
+    def insert(self, word):
+        """
+        Inserts a word into the trie.
+        :type word: str
+        :rtype: void
+        """
+        node = self.root
+        for chars in word:
+            child = node.data.get(chars)
+            if not child:
+                node.data[chars] = TrieNode()
+            node = node.data[chars]
+        node.is_word = True
 
-        self.Layout = QVBoxLayout(self.centralwidget)
+    def search(self, word):
+        """
+        Returns if the word is in the trie.
+        :type word: str
+        :rtype: bool
+        """
+        node = self.root
+        for chars in word:
+            node = node.data.get(chars)
+            if not node:
+                return False
+        return node.is_word  # 判断单词是否是完整的存在在trie树中
 
-        # 设置顶部三个按钮
-        self.topwidget = QWidget()
-        self.Layout.addWidget(self.topwidget)
-        self.buttonLayout = QHBoxLayout(self.topwidget)
+    def startsWith(self, prefix):
+        """
+        Returns if there is any word in the trie that starts with the given prefix.
+        :type prefix: str
+        :rtype: bool
+        """
+        node = self.root
+        for chars in prefix:
+            node = node.data.get(chars)
+            if not node:
+                return False
+        return True
 
-        self.pushButton1 = QPushButton()
-        self.pushButton1.setText("第一面板")
-        self.buttonLayout.addWidget(self.pushButton1)
+    def get_start(self, prefix):
+        """
+          Returns words started with prefix
+          :param prefix:
+          :return: words (list)
+        """
 
-        self.pushButton2 = QPushButton()
-        self.pushButton2.setText("第二面板")
-        self.buttonLayout.addWidget(self.pushButton2)
+        def get_key(pre, pre_node):
+            word_list = []
+            if pre_node.is_word:
+                word_list.append(pre)
+            for x in pre_node.data.keys():
+                word_list.extend(get_key(pre + str(x), pre_node.data.get(x)))
+            return word_list
 
-        self.pushButton3 = QPushButton()
-        self.pushButton3.setText("第三面板")
-        self.buttonLayout.addWidget(self.pushButton3)
-
-        # 设置stackedWidget
-        self.stackedWidget = QStackedWidget()
-        self.Layout.addWidget(self.stackedWidget)
-
-        # 设置第一个面板
-        self.form1 = QWidget()
-        self.formLayout1 = QHBoxLayout(self.form1)
-        self.label1 = QLabel()
-        self.label1.setText("第一个面板，哈哈哈！")
-        self.label1.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
-        self.label1.setAlignment(Qt.AlignCenter)
-        self.label1.setFont(QFont("Roman times", 50, QFont.Bold))
-        self.formLayout1.addWidget(self.label1)
-
-        # 设置第二个面板
-        self.form2 = QWidget()
-        self.formLayout2 = QHBoxLayout(self.form2)
-        self.label2 = QLabel()
-        self.label2.setText("第二个面板，哼哼哼！")
-        self.label2.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
-        self.label2.setAlignment(Qt.AlignCenter)
-        self.label2.setFont(QFont("Roman times", 50, QFont.Bold))
-        self.formLayout2.addWidget(self.label2)
-
-        # 设置第三个面板
-        self.form3 = QWidget()
-        self.formLayout3 = QHBoxLayout(self.form3)
-        self.label3 = QLabel()
-        self.label3.setText("第三个面板，哄哄哄！")
-        self.label3.setSizePolicy(QSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding))
-        self.label3.setAlignment(Qt.AlignCenter)
-        self.label3.setFont(QFont("Roman times", 50, QFont.Bold))
-        self.formLayout3.addWidget(self.label3)
-
-        # 将三个面板，加入stackedWidget
-        self.stackedWidget.addWidget(self.form1)
-        self.stackedWidget.addWidget(self.form2)
-        self.stackedWidget.addWidget(self.form3)
-
-        # 设置状态栏
-        self.statusBar().showMessage("当前用户：一心狮")
-
-        # 窗口最大化
-        self.showMaximized()
-
-        ###### 三个按钮事件 ######
-        self.pushButton1.clicked.connect(self.on_pushButton1_clicked)
-        self.pushButton2.clicked.connect(self.on_pushButton2_clicked)
-        self.pushButton3.clicked.connect(self.on_pushButton3_clicked)
-
-    # 按钮一：打开第一个面板
-    def on_pushButton1_clicked(self):
-        self.stackedWidget.setCurrentIndex(0)
-
-    # 按钮二：打开第二个面板
-    def on_pushButton2_clicked(self):
-        self.stackedWidget.setCurrentIndex(1)
-
-    # 按钮三：打开第三个面板
-    def on_pushButton3_clicked(self):
-        self.stackedWidget.setCurrentIndex(2)
-
-
-################################################
-#######程序入门
-################################################
-if __name__ == "__main__":
-    app = QApplication(sys.argv)
-    the_mainwindow = FirstMainWindow()
-    the_mainwindow.show()
-    sys.exit(app.exec_())
+        words = []
+        if not self.startsWith(prefix):
+            return words
+        if self.search(prefix):
+            words.append(prefix)
+            return words
+        node = self.root
+        for chars in prefix:
+            node = node.data.get(chars)
 
