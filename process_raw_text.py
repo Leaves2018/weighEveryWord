@@ -10,12 +10,7 @@ def get_desktop_path():
 
 def decorate_raw_text(words, filename):
     # TODO 定制CSS样式
-    css = '''
-    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-    <style type="text/css">
-    <!-- 此处省略掉markdown的css样式，因为太长了 -->
-    </style>
-    '''
+    css = open("./css/css.txt", "r+", encoding="UTF-8").read()
     process(words, filename)
     # 读取 markdown 文本
     input_file = codecs.open("./md/" + filename + ".md", mode="r+", encoding="UTF-8")

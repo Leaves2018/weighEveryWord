@@ -67,7 +67,43 @@ def third(new_words, filename):
 
 
 def sentences(text):
+    text = re.sub("\n", ".", text)
     s = re.split("[.!?]+", text)
     for sentence in s:
         yield sentence
 
+
+def get_match_and_apply_funcs(str_pattern, str_search, str_replace):
+    def match_rule(str_word):
+        return re.search(str_pattern, str_word)
+
+    def apply_rule(str_word):
+        return re.sub(str_search, str_replace, str_word)
+
+    return match_rule, apply_rule
+
+
+g_tl_pattern = (
+    ('[sxz]$', '$', 'es'),
+    ('[^aeioudgkprt]h$', '$', 'es'),
+    ('(qu|[^aeiou])y$', 'y$', 'ies'),
+    ('$', '$', 's')
+)
+
+g_ls_rules = [get_match_and_apply_funcs(str_pattern, str_search, str_replace) for (str_pattern, str_search, str_replace) in
+              g_tl_pattern]
+
+
+def get_plural(str_word):
+    if not str_word:
+        return ""
+
+    for fnMatch, fnApply in g_ls_rules:
+        if fnMatch(str_word):
+            return fnApply(str_word)
+
+
+# if "__main__" == __name__:
+#     str_val = "exhs";
+#     str_plural = get_plural(str_val)
+#     print("%s plural ==> %s" % (str_val, str_plural))
