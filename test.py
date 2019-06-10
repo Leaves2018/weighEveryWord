@@ -7,6 +7,7 @@ import sys
 import qtawesome as qta
 from weigh2 import *
 
+# 目前test为程序运行入口
 
 class MainUi(QMainWindow):
     def __init__(self):
