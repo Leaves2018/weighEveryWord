@@ -884,6 +884,7 @@ class ReciteUi(QMainWindow):
         self.setFixedSize(960, 700)
         self.setCentralWidget(self.recite_ui_in_widget)
         self.setWindowTitle("单词背诵")
+        self.recite_word_get()
         self.recite_response_ui()
         self.recite_next_one()
 
@@ -917,7 +918,7 @@ class ReciteUi(QMainWindow):
         self.yb_text_edit.setPlainText(word.get_yb())
 
     def random_get(self):
-        self.random = random.randint(0,self.word_count)
+        self.random = random.randint(0, len(self.words))
 
     def recite_word_get(self):
         with open("./vocabulary/vocabulary.txt", "r+", encoding="UTF-8") as f:
