@@ -399,14 +399,18 @@ class MainUi(QMainWindow):
                 word = Word(*sentence.split("----"))
                 self.temp_words.append(word)
         if self.word_count <= 0 or self.word_count >len(self.words):
-            res = QtWidgets.QMessageBox.information(self, '提示，您输入的数字小于零或大于您生词本的生词数量',
+            res = QtWidgets.QMessageBox.information(self, '提示', '您输入的数字小于零或大于您生词本的生词数量',
                                                     QtWidgets.QMessageBox.Yes |
                                                     QMessageBox.No,
-                                                    QMessageBox.Yes)
-            if res == QtWidgets.QMessageBox.Yes:
-                self.word_count_text_edit.clear()
-            else:
-                self.word_count_text_edit.clear()
+                                                    QtWidgets.QMessageBox.Yes)
+            self.word_count_text_edit.clear()
+            return 0
+            # if res == QtWidgets.QMessageBox.Yes:
+            #     self.word_count_text_edit.clear()
+            #     return 0
+            # else:
+            #     self.word_count_text_edit.clear()
+            #     return 0
 
         res = QtWidgets.QMessageBox.question(self, '提示',
                                              "确认就背这" + str(self.word_count) + "个单词吗？", QtWidgets.QMessageBox.Yes |
