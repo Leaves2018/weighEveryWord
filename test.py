@@ -988,10 +988,11 @@ class ReciteUi(QMainWindow):
             word = self.words[self.random]
             if self.guess_count == 1:
                 self.right_words.append(word.get_name())
+                self.recite_next_one()
             else:
-                return 0
+                self.recite_next_one()
                 # word.count_plus()
-            self.recite_next_one()
+
         else:
             return 0
 
