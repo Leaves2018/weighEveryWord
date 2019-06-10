@@ -25,7 +25,7 @@ class MainUi(QMainWindow):
         self.gaozhong_selected = False
         self.siliuji_selected = False
         self.sample = 1
-
+        self.temp_words = []
 
         # 一、声明窗口主部件及其布局
         self.main_widget = QWidget()
@@ -390,6 +390,22 @@ class MainUi(QMainWindow):
                 return 0
         finally:
             self.word_count_text_edit.clear()
+
+        with open("./vocabulary/vocabulary_words.txt", "r+", encoding="UTF-8") as f:
+            f.seek(0)
+            for sentence in f.readlines():
+                if not sentence[0].isalpha():
+                    continue
+                word = Word(*sentence.split("----"))
+                self.temp_words.append(word)
+        if self.word_count <=0 or self.word_count >len(self.words):
+            res = QtWidgets.QMessageBox.information(self, '提示，您输入的数字小于零或大于您生词本的生词数量',
+                                                    QtWidgets.QMessageBox.Yes |
+                                                    QMessageBox.No,QMessageBox.Yes)
+            if res == QtWidgets.QMessageBox.Yes:
+                self.word_count_text_edit.clear()
+            else:
+                self.word_count_text_edit.clear()
 
         res = QtWidgets.QMessageBox.question(self, '提示',
                                              "确认就背这" + str(self.word_count) + "个单词吗？", QtWidgets.QMessageBox.Yes |
@@ -922,7 +938,7 @@ class ReciteUi(QMainWindow):
 
     def english_display(self):
         word = self.words[self.random]
-        self.english_text_edit.setText(word.get_en_interpretation())
+        self.english_text_edit.setText(word.get_str_en_interpretation())
 
     def context_display(self):
         word = self.words[self.random]
@@ -930,7 +946,7 @@ class ReciteUi(QMainWindow):
 
     def chinese_display(self):
         word = self.words[self.random]
-        self.chinese_text_edit.setText(word.get_ch_interpretation())
+        self.chinese_text_edit.setText(word.get_str_ch_interpretation())
 
     def yb_display(self):
         word = self.words[self.random]
@@ -989,6 +1005,7 @@ class ReciteUi(QMainWindow):
             if self.guess_count == 1:
                 self.right_words.append(word.get_name())
                 self.recite_next_one()
+                self.words.remove(word)
             else:
                 self.recite_next_one()
                 # word.count_plus()
@@ -1029,6 +1046,8 @@ class ReciteUi(QMainWindow):
         if res == QtWidgets.QMessageBox.Yes:
             with open("./familiar/familiar_words.txt", "a+", encoding="UTF-8") as f:
                 f.writelines(self.right_words)
+            with open("./vocabulary/vocabulary_words.txt", "w+", encoding="UTF-8") as ff:
+                ff.writelines(self.words)
             event.accept()
         else:
             event.ignore()
