@@ -23,7 +23,7 @@ class MainUi(QMainWindow):
         self.chuzhong_selected = False
         self.gaozhong_selected = False
         self.siliuji_selected = False
-        self.sample = 0
+        self.sample = 1
 
         # 一、声明窗口主部件及其布局
         self.main_widget = QWidget()
@@ -533,7 +533,7 @@ class MainUi(QMainWindow):
                                              + ("《初中词汇》" if self.chuzhong_selected else "")
                                              + ("《高中词汇》" if self.gaozhong_selected else "")
                                              + ("《四六级词汇》" if self.siliuji_selected else "" + "\n")
-                                             + "样式" + self.sample + "\n"
+                                             + "样式" + str(self.sample) + "\n"
                                              "此操作会清空你的熟词本,并初始化为你所勾选的单词本。\n"
                                              "按下确认以执行操作", QtWidgets.QMessageBox.Yes |
                                              QtWidgets.QMessageBox.No,

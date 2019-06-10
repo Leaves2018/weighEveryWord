@@ -14,20 +14,19 @@ class Word:
         self.count = count
 
     def get_name(self):
-        return self.name
+        return self.name if not isinstance(self.name, type(None)) else "None"
 
     def set_name(self):
         self.get_context(True)
         self.get_yb(True)
         self.get_ch_interpretation(True)
         self.get_en_interpretation(True)
-        return self.name
 
     # 获取音标
     def get_yb(self, flag=False):
         if flag or not self.yb:
             self.yb = yb_mean(self.name)
-        return self.yb
+        return self.yb if not isinstance(self.yb, type(None)) else "None"
 
     def set_yb(self, yb):
         self.yb = yb
@@ -55,7 +54,7 @@ class Word:
         if flag or not self.context:
             text = example_mean(self.name)
             self.context = re.sub(self.name, " *" + self.name + "* ", text)
-        return self.context
+        return self.context if not isinstance(self.context, type(None)) else "None"
 
     # 设置语境（该词所在句或段）
     def set_context(self, context=[]):
@@ -67,7 +66,7 @@ class Word:
     def get_en_interpretation(self, flag=False):
         if flag or not self.en_interpretation:
             self.en_interpretation = en_mean(self.name)
-        return self.en_interpretation
+        return self.en_interpretation if not isinstance(self.en_interpretation, type(None)) else "None"
 
     def get_str_en_interpretation(self, flag=False):
         text = ""
@@ -75,7 +74,7 @@ class Word:
         for sentence in self.get_en_interpretation(flag):
             count += 1
             text += "(" + str(count) + ")" + sentence
-        return text
+        return text if not isinstance(text, type(None)) else "None"
 
     def set_en_interpretation(self, eng_interpretation=[]):
         self.en_interpretation = eng_interpretation
@@ -84,7 +83,7 @@ class Word:
     def get_ch_interpretation(self, flag=False):
         if flag or not self.ch_interpretation:
             self.ch_interpretation = ch_mean(self.name)
-        return self.ch_interpretation
+        return self.ch_interpretation if not isinstance(self.ch_interpretation, type(None)) else "None"
 
     def get_str_ch_interpretation(self, flag=False):
         text = ""
@@ -92,7 +91,7 @@ class Word:
         for sentence in self.get_ch_interpretation(flag):
             count += 1
             text += "(" + str(count) + ")" + sentence
-        return text
+        return text if not isinstance(text, type(None)) else "None"
 
     def set_ch_interpretation(self, ch_interpretation=[]):
         self.ch_interpretation = ch_interpretation
