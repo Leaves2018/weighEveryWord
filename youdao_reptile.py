@@ -49,7 +49,7 @@ def deal_page_ch(url):
                             return None
         return ch_list
     except:
-            return ""
+        return []
 
 # 获取网页上的单词的例句展示
 def deal_page_example(url):
@@ -79,7 +79,7 @@ def deal_page_en(url):
                     en_list.append(i.contents[0])
         return en_list
     except:
-        return ""
+        return []
 
 
 # 获取单词的中文意思

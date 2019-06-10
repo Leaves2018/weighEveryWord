@@ -870,15 +870,15 @@ class ReciteUi(QMainWindow):
 
     def recite_add_to_window(self):
 
-        self.recite_ui_in_layout.addWidget(self.last_button, 4, 0, 1, 1)
-        self.recite_ui_in_layout.addWidget(self.next_button, 4, 11, 1, 1)
-        self.recite_ui_in_layout.addWidget(self.ensure_button, 0, 10, 1, 1)
+        self.recite_ui_in_layout.addWidget(self.last_button, 8, 0, 1, 1)
+        self.recite_ui_in_layout.addWidget(self.next_button, 8, 11, 1, 1)
+        self.recite_ui_in_layout.addWidget(self.ensure_button, 0, 10, 2, 1)
 
         self.recite_ui_in_layout.addWidget(self.word_text_edit, 0, 1, 2, 9)
-        self.recite_ui_in_layout.addWidget(self.yb_text_edit, 1, 1, 2, 10)
-        self.recite_ui_in_layout.addWidget(self.context_text_edit, 2, 1, 2, 10)
-        self.recite_ui_in_layout.addWidget(self.english_text_edit, 3, 1, 5, 10)
-        self.recite_ui_in_layout.addWidget(self.chinese_text_edit, 7, 1, 3, 10)
+        self.recite_ui_in_layout.addWidget(self.english_text_edit, 2, 1, 5, 10)
+        self.recite_ui_in_layout.addWidget(self.context_text_edit, 7, 1, 2, 10)
+        self.recite_ui_in_layout.addWidget(self.chinese_text_edit, 9, 1, 3, 10)
+        self.recite_ui_in_layout.addWidget(self.yb_text_edit, 12, 1, 1, 10)
 
     def recite_beautify(self):
         pass
