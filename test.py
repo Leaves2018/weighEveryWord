@@ -857,7 +857,26 @@ class MainUi(QMainWindow):
         self.right_widget.addWidget(self.settings_ui_widget)
 
     def settings_beautify(self):
-
+        self.initial_value_button.setStyleSheet(
+            '''QPushButton{
+                    border-style: outset;
+                    border-width:2px;
+                    border-radius:10px;
+                    border-color: black;
+                    font: bold 14px;
+                    min-width:10em;
+                    padding:6px;
+            }''')
+        self.ensure_value_button.setStyleSheet(
+            '''QPushButton{
+                    border-style: outset;
+                    border-width:2px;
+                    border-radius:10px;
+                    border-color: black;
+                    font: bold 14px;
+                    min-width:10em;
+                    padding:6px;
+            }''')
 
 
     def help_ui(self):
@@ -1159,6 +1178,7 @@ class ReciteUi(QMainWindow):
         self.english_text_edit = QTextEdit("English Interpretation")
         self.chinese_text_edit = QTextEdit("Chinese Interpretation")
         self.ensure_button = QPushButton("确认")
+        self.ensure_shuci_button = QPushButton("熟词")
 
         self.init_ui()
 
@@ -1176,8 +1196,12 @@ class ReciteUi(QMainWindow):
         self.last_button.clicked.connect(self.recite_last_one)
         self.next_button.clicked.connect(self.recite_next_one)
         self.ensure_button.clicked.connect(self.recite_ensure)
+        self.ensure_shuci_button.clicked.connect(self.shuci_ensure)
 
         self.recite_beautify()
+
+    def shuci_ensure(self):
+        pass
 
     def word_display(self):
         word = self.words[self.random]
@@ -1185,6 +1209,9 @@ class ReciteUi(QMainWindow):
 
     def english_display(self):
         word = self.words[self.random]
+        if word.get_str_en_interpretation() is "":
+            self.count -= 1
+            self.recite_next_one()
         self.english_text_edit.setText(word.get_str_en_interpretation() if word.get_str_en_interpretation() is not "" else "抱歉，此单词无英文解释")
 
     def context_display(self):
@@ -1249,7 +1276,7 @@ class ReciteUi(QMainWindow):
                 self.right_words.append(word.get_name())
                 self.words.remove(word)
                 if len(self.words) == 0:
-
+                    self.show_dialog()
                 self.recite_next_one()
             else:
                 self.recite_next_one()
@@ -1318,6 +1345,7 @@ class ReciteUi(QMainWindow):
         self.recite_ui_in_layout.addWidget(self.context_text_edit, 7, 1, 2, 10)
         self.recite_ui_in_layout.addWidget(self.chinese_text_edit, 9, 1, 3, 10)
         self.recite_ui_in_layout.addWidget(self.yb_text_edit, 12, 1, 1, 10)
+        self.recite_ui_in_layout.addWidget(self.ensure_shuci_button, 13, 1, 1, 10)
 
     def recite_beautify(self):
         pass
