@@ -59,13 +59,13 @@ def first(raw_text):
             # 添加未知词
             else:
                 unknown_words.add(word)
-            uf = []
-            uk = []
-            for w in unfamiliar_words:
-                uf.append(vocabulary_words_dict.get(w))
+    uf = []
+    uk = []
+    for w in unfamiliar_words:
+        uf.append(vocabulary_words_dict.get(w))
 
-            for w in unknown_words:
-                uk.append(Word(name=w, context=context.get(w)))
+    for w in unknown_words:
+        uk.append(Word(name=w, context=context.get(w)))
 
     return uf, uk
 

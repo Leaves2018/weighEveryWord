@@ -263,6 +263,8 @@ class MainUi(QMainWindow):
         self.left_button_4.clicked.connect(self.on_settings_ui_clicked)
         self.left_button_5.clicked.connect(self.on_help_ui_clicked)
 
+        self.settings_read()
+
         # 将组件加入窗口
         self.left_add_to_window()
         # 进行美化
@@ -487,6 +489,16 @@ class MainUi(QMainWindow):
                     min-width:10em;
                     padding:6px;
             }''')
+        self.input_text_edit.setStyleSheet(
+            '''QTextEdit{
+                    border-style: outset;
+                    border-width:2px;
+                    border-radius:10px;
+                    border-color: black;
+                    font: bold 16px;
+                    min-width:10em;
+                    padding:6px;
+            }''')
 
     def recite_ui(self):
         self.word_count_line_edit.returnPressed.connect(self.recite_start)
@@ -529,6 +541,7 @@ class MainUi(QMainWindow):
         res = QtWidgets.QMessageBox.information(self, '提示',
                                                 "您的生词本已生成至桌面", QtWidgets.QMessageBox.Yes |
                                                 QMessageBox.No)
+
     # 打开背单词页面
     def recite_start(self):
         try:
@@ -688,7 +701,7 @@ class MainUi(QMainWindow):
 
         self.look_up_ui_layout.addWidget(self.right_bar_widget, 0, 0, 1, 10)
         self.look_up_ui_layout.addWidget(self.right_word_widget, 1, 0, 10, 10)
-        self.look_up_ui_layout.addWidget(self.look_up_down_widget, 11, 0, 11, 10)
+        # self.look_up_ui_layout.addWidget(self.look_up_down_widget, 11, 0, 11, 10)
 
         self.right_widget.addWidget(self.look_up_ui_widget)
 
@@ -720,13 +733,66 @@ class MainUi(QMainWindow):
         self.old_button.setStyleSheet(
             '''QPushButton{
                     border-style: outset;
-                    border-width:2px;
-                    border-radius:10px;
+                    border-width: 2px;
+                    border-radius: 10px;
                     border-color: black;
                     font: bold 14px;
                     min-width:10em;
                     padding:6px;
             }''')
+
+        self.word_text_edit.setStyleSheet(
+            '''QTextEdit{
+                border-style: outset;
+                border-width: 1px; 
+                border-radius: 10px;   
+                font: bold 24px;
+                min-width: 10em;
+                padding: 5px;
+            }'''
+        )
+
+        self.yb_text_edit.setStyleSheet(
+            '''QTextEdit{
+                border-style: outset;
+                border-width: 1px; 
+                border-radius: 10px;   
+                font: bold 24px;
+                min-width: 10em;
+                padding: 5px;
+            }'''
+        )
+        self.english_text_edit.setStyleSheet(
+            '''QTextEdit{
+                border-style: outset;
+                border-width: 1px; 
+                border-radius: 10px;   
+                font: 14px;
+                min-width: 10em;
+                padding: 5px;
+            }'''
+        )
+        self.chinese_text_edit.setStyleSheet(
+            '''QTextEdit{
+                border-style: outset;
+                border-width: 1px; 
+                border-radius: 10px;   
+                font: 14px;
+                min-width: 10em;
+                padding: 5px;
+            }'''
+        )
+        self.context_text_edit.setStyleSheet(
+            '''QTextEdit{
+                border-style: outset;
+                border-width: 1px; 
+                border-radius: 10px;   
+                font: 14px;
+                min-width: 10em;
+                padding: 5px;
+            }'''
+        )
+
 
     def settings_ui(self):
         self.initial_value_button.clicked.connect(self.restore_initial_value)
@@ -1031,7 +1097,56 @@ class DecideUi(QMainWindow):
         self.mark_decide_ui_layout.addWidget(self.mark_down_widget, 20, 0, 2, 18)
 
     def mark_decide_beautify(self):
-        pass
+        self.word_name_text_edit.setStyleSheet(
+            '''QTextEdit{
+                border-style: outset;
+                border-width: 1px; 
+                border-radius: 10px;   
+                font: bold 24px;
+                min-width: 10em;
+                padding: 5px;
+            }'''
+        )
+        self.word_yb_text_edit.setStyleSheet(
+            '''QTextEdit{
+                border-style: outset;
+                border-width: 1px; 
+                border-radius: 10px;   
+                font: bold 24px;
+                min-width: 10em;
+                padding: 5px;
+            }'''
+        )
+        self.word_en_text_edit.setStyleSheet(
+            '''QTextEdit{
+                border-style: outset;
+                border-width: 1px; 
+                border-radius: 10px;   
+                font: 14px;
+                min-width: 10em;
+                padding: 5px;
+            }'''
+        )
+        self.word_ch_text_edit.setStyleSheet(
+            '''QTextEdit{
+                border-style: outset;
+                border-width: 1px; 
+                border-radius: 10px;   
+                font: 14px;
+                min-width: 10em;
+                padding: 5px;
+            }'''
+        )
+        self.word_context_text_edit.setStyleSheet(
+            '''QTextEdit{
+                border-style: outset;
+                border-width: 1px; 
+                border-radius: 10px;   
+                font: 14px;
+                min-width: 10em;
+                padding: 5px;
+            }'''
+        )
 
     def closeEvent(self, event):
         res = QtWidgets.QMessageBox.question(self, '警告',
@@ -1201,7 +1316,10 @@ class ReciteUi(QMainWindow):
         self.recite_beautify()
 
     def shuci_ensure(self):
-        pass
+        word = self.words[self.random]
+        self.words.remove(word)
+        self.right_words.append(word.get_name())
+        self.recite_next_one()
 
     def word_display(self):
         word = self.words[self.random]
@@ -1227,7 +1345,10 @@ class ReciteUi(QMainWindow):
         self.yb_text_edit.setText(word.get_yb() if word.get_yb() is not "" else "抱歉，此单词无音标")
 
     def random_get(self):
-        self.random = random.randint(0, len(self.words)-1)
+        try:
+            self.random = random.randint(0, len(self.words)-1)
+        except ValueError:
+            self.close()
 
     def recite_word_get(self):
         with open("./vocabulary/vocabulary_words.txt", "r+", encoding="UTF-8") as f:
