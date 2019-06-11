@@ -490,7 +490,7 @@ class MainUi(QMainWindow):
         res = QtWidgets.QMessageBox.information(self, '提示',
                                                 "您的生词本已生成至桌面", QtWidgets.QMessageBox.Yes |
                                                 QMessageBox.No)
-
+    # 打开背单词页面
     def recite_start(self):
         try:
             self.word_count = int(self.word_count_line_edit.text())
