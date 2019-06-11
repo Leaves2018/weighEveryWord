@@ -641,19 +641,25 @@ class MainUi(QMainWindow):
                                 encoding='UTF-8').read() if self.shuci_siliuji_checkbox.isChecked() else "\n"
                 f.writelines(cet)
                 self.settings.append(self.shuci_siliuji_checkbox.isChecked())
+
+                self.settings.append(self.goal_example_checkbox.isChecked())
+                self.settings.append(self.goal_ying_checkbox.isChecked())
+                self.settings.append(self.goal_han_checkbox.isChecked())
             with open("./css/css.txt", "w+", encoding="UTF-8") as f:
                 f1 = open("./css/css" + str(self.sample) + ".txt", encoding="UTF-8")
                 f.writelines(f1.readlines())
+            self.settings.append(self.sample)
             self.settings_save()
         else:
             return 0
 
     def settings_save(self):
-        with open("./settings/settings.txt", "w+", encoding="UTF-8") as f:
-            f.writelines([i + "\n" for i in self.settings])
+        with open("./settings/settings.txt", "w", encoding="UTF-8") as f:
+            f.writelines([str(i) + "\n" for i in self.settings])
 
     # 从文件中读取复选框状态
     def settings_read(self):
+        self.settings = []
         try:
             with open("./settings/settings.txt", "r+", encoding="UTF-8") as f:
                 self.settings = f.readlines()
