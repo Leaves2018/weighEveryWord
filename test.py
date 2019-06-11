@@ -1041,8 +1041,8 @@ class ReciteUi(QMainWindow):
             word = self.words[self.random]
             if self.guess_count == 1:
                 self.right_words.append(word.get_name())
-                self.recite_next_one()
                 self.words.remove(word)
+                self.recite_next_one()
             else:
                 self.recite_next_one()
                 # word.count_plus()
@@ -1071,9 +1071,16 @@ class ReciteUi(QMainWindow):
                                    QtWidgets.QMessageBox.No,
                                    QtWidgets.QMessageBox.Yes)
         if res == QMessageBox.Yes:
-            return 0
+            self.make_close()
         else:
             return 0
+
+    def make_close(self):
+        with open("./familiar/familiar_words.txt", "a+", encoding="UTF-8") as f:
+            f.writelines(["\n" + i for i in self.right_words])
+        with open("./vocabulary/vocabulary_words.txt", "w+", encoding="UTF-8") as ff:
+            ff.writelines(self.words)
+        self.close()
 
     def closeEvent(self, event):
         res = QtWidgets.QMessageBox.question(self, '警告',
@@ -1081,10 +1088,6 @@ class ReciteUi(QMainWindow):
                                              QtWidgets.QMessageBox.No,
                                              QtWidgets.QMessageBox.Yes)
         if res == QtWidgets.QMessageBox.Yes:
-            with open("./familiar/familiar_words.txt", "a+", encoding="UTF-8") as f:
-                f.writelines(self.right_words)
-            with open("./vocabulary/vocabulary_words.txt", "w+", encoding="UTF-8") as ff:
-                ff.writelines(self.words)
             event.accept()
         else:
             event.ignore()
