@@ -650,7 +650,7 @@ class MainUi(QMainWindow):
 
     def settings_save(self):
         with open("./settings/settings.txt", "w+", encoding="UTF-8") as f:
-            f.writelines(self.settings)
+            f.writelines([i + "\n" for i in self.settings])
     # 从文件中读取复选框状态
     def settings_read(self):
         with open("./settings/settings.txt", "r+", encoding="UTF-8") as f:
