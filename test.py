@@ -25,6 +25,9 @@ class MainUi(QMainWindow):
         self.gaozhong_selected = False
         self.siliuji_selected = False
         self.sample = 1
+        self.example_check_state = True
+        self.ying_check_state = True
+        self.han_check_state = True
         # self.temp_words = []
 
         # 一、声明窗口主部件及其布局
@@ -149,10 +152,11 @@ class MainUi(QMainWindow):
         self.down_process_bar_1.setFixedHeight(2)  # 设置进度条高度
         self.down_process_bar_1.setTextVisible(False)  # 不显示进度条文字
 
-        self.test_label_goal = QLabel("学习目标")
-        self.test_label_goal.setFont(QFont("Roman times", 16, QFont.Bold))
-        self.goal_IELTS_checkbox = QCheckBox('雅思词汇')
-        self.goal_TOEFL_checkbox = QCheckBox('托福词汇')
+        self.test_label_choice = QLabel("输出选择")
+        self.test_label_choice.setFont(QFont("Roman times", 16, QFont.Bold))
+        self.goal_example_checkbox = QCheckBox('例句')
+        self.goal_ying_checkbox = QCheckBox('英解')
+        self.goal_han_checkbox = QCheckBox('汉解')
 
         self.down_process_bar_2 = QtWidgets.QProgressBar()  # 播放进度部件
         self.down_process_bar_2.setRange(0, 1001)
@@ -163,34 +167,34 @@ class MainUi(QMainWindow):
         self.test_label_output = QLabel("输出样式")
         self.test_label_output.setFont(QFont("Roman times", 16, QFont.Bold))
         self.sample_output_button_1 = QToolButton()
-        # self.sample_output_button_1.setText("样式1")  # 设置按钮文本
+        self.sample_output_button_1.setText("样式1")  # 设置按钮文本
         img_1 = QtGui.QImage(r'./sample_format/sample_format_1.png')
         pixmap_1 = QtGui.QPixmap(img_1)
         fitPixmap_1 = pixmap_1.scaled(600, 160, QtCore.Qt.IgnoreAspectRatio, QtCore.Qt.SmoothTransformation)
         icon_1 = QtGui.QIcon(fitPixmap_1)
         self.sample_output_button_1.setIcon(icon_1)  # 设置按钮图标
         self.sample_output_button_1.setIconSize(QtCore.QSize(600, 160))  # 设置图标大小
-        self.sample_output_button_1.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
+        self.sample_output_button_1.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
 
         self.sample_output_button_2 = QToolButton()
-        # self.sample_output_button_2.setText("样式2")  # 设置按钮文本
+        self.sample_output_button_2.setText("样式2")  # 设置按钮文本
         img_2 = QtGui.QImage(r'./sample_format/sample_format_2.png')
         pixmap_2 = QtGui.QPixmap(img_2)
         fitPixmap_2 = pixmap_2.scaled(600, 160, QtCore.Qt.IgnoreAspectRatio, QtCore.Qt.SmoothTransformation)
         icon_2 = QtGui.QIcon(fitPixmap_2)
         self.sample_output_button_2.setIcon(icon_2)  # 设置按钮图标
         self.sample_output_button_2.setIconSize(QtCore.QSize(600, 160))  # 设置图标大小
-        self.sample_output_button_2.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
+        self.sample_output_button_2.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
 
         self.sample_output_button_3 = QToolButton()
-        # self.sample_output_button_3.setText("样式3")  # 设置按钮文本
+        self.sample_output_button_3.setText("样式3")  # 设置按钮文本
         img_3 = QtGui.QImage(r'./sample_format/sample_format_3.png')
         pixmap_3 = QtGui.QPixmap(img_3)
         fitPixmap_3 = pixmap_3.scaled(600, 160, QtCore.Qt.IgnoreAspectRatio, QtCore.Qt.SmoothTransformation)
         icon_3 = QtGui.QIcon(fitPixmap_3)
         self.sample_output_button_3.setIcon(icon_3)  # 设置按钮图标
         self.sample_output_button_3.setIconSize(QtCore.QSize(600, 160))  # 设置图标大小
-        self.sample_output_button_3.setToolButtonStyle(QtCore.Qt.ToolButtonIconOnly)
+        self.sample_output_button_3.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
         self.sample_output_button_3.setStyleSheet("border-image")
 
         self.initial_value_button = QPushButton("恢复默认值")
@@ -576,6 +580,10 @@ class MainUi(QMainWindow):
         self.shuci_chuzhong_checkbox.stateChanged.connect(self.shuci_chuzhong)
         self.shuci_gaozhong_checkbox.stateChanged.connect(self.shuci_gaozhong)
         self.shuci_siliuji_checkbox.stateChanged.connect(self.shuci_siliuji)
+        self.goal_example_checkbox.stateChanged.connect(self.example_check)
+        self.goal_ying_checkbox.stateChanged.connect(self.ying_check)
+        self.goal_han_checkbox.stateChanged.connect(self.han_check)
+
 
         self.sample_output_button_1.clicked.connect(self.sample_1_output)
         self.sample_output_button_2.clicked.connect(self.sample_2_output)
@@ -593,6 +601,14 @@ class MainUi(QMainWindow):
     def sample_3_output(self):
         self.sample = 3
 
+    def example_check(self):
+        self.example_check_state = True
+
+    def ying_check(self):
+        self.ying_check_state = True
+
+    def han_check(self):
+        self.han_check_state = True
 
     def shuci_xiaoxue(self):
         self.xiaoxue_selected = True
@@ -611,6 +627,9 @@ class MainUi(QMainWindow):
         self.shuci_chuzhong_checkbox.setCheckState(Qt.Checked)
         self.shuci_gaozhong_checkbox.setCheckState(Qt.Checked)
         self.shuci_siliuji_checkbox.setCheckState(Qt.Unchecked)
+        self.goal_example_checkbox.setCheckState(Qt.Checked)
+        self.goal_ying_checkbox.setCheckState(Qt.Checked)
+        self.goal_han_checkbox.setCheckState(Qt.Checked)
         self.xiaoxue_selected = True
         self.chuzhong_selected = True
         self.gaozhong_selected = True
@@ -626,6 +645,9 @@ class MainUi(QMainWindow):
                                              + ("《初中词汇》" if self.chuzhong_selected else "")
                                              + ("《高中词汇》" if self.gaozhong_selected else "")
                                              + ("《四六级词汇》" if self.siliuji_selected else "" + "\n")
+                                             + ("《例句》" if self.example_check_state else "")
+                                             + ("《英解》" if self.ying_check_state else "")
+                                             + ("《中解》" if self.han_check_state else "" + "\n")
                                              + "样式" + str(self.sample) + "\n"
                                              "此操作会清空你的熟词本,并初始化为你所勾选的单词本。\n"
                                              "按下确认以执行操作", QtWidgets.QMessageBox.Yes |
@@ -660,11 +682,12 @@ class MainUi(QMainWindow):
 
         self.settings_ui_layout.addWidget(self.down_process_bar_1)
 
-        # self.settings_ui_layout.addWidget(self.test_label_goal)
-        # self.settings_ui_layout.addWidget(self.goal_IELTS_checkbox)
-        # self.settings_ui_layout.addWidget(self.goal_TOEFL_checkbox)
-        #
-        # self.settings_ui_layout.addWidget(self.down_process_bar_2)
+        self.settings_ui_layout.addWidget(self.test_label_choice)
+        self.settings_ui_layout.addWidget(self.goal_example_checkbox)
+        self.settings_ui_layout.addWidget(self.goal_ying_checkbox)
+        self.settings_ui_layout.addWidget(self.goal_han_checkbox)
+
+        self.settings_ui_layout.addWidget(self.down_process_bar_2)
 
         self.settings_ui_layout.addWidget(self.test_label_output)
         self.settings_ui_layout.addWidget(self.sample_output_button_1)
