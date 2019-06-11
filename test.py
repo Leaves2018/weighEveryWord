@@ -717,20 +717,20 @@ class MainUi(QMainWindow):
         try:
             with open("./settings/settings.txt", "r+", encoding="UTF-8") as f:
                 self.settings = f.readlines()
-                self.shuci_xiaoxue_checkbox.setCheckState(Qt.Checked) if self.settings[
-                    0] else self.shuci_xiaoxue_checkbox.setCheckState(Qt.Unchecked)
-                self.shuci_chuzhong_checkbox.setCheckState(Qt.Checked) if self.settings[
-                    1] else self.shuci_chuzhong_checkbox.setCheckState(Qt.Unchecked)
-                self.shuci_gaozhong_checkbox.setCheckState(Qt.Checked) if self.settings[
-                    2] else self.shuci_gaozhong_checkbox.setCheckState(Qt.Unchecked)
-                self.shuci_siliuji_checkbox.setCheckState(Qt.Checked) if self.settings[
-                    3] else self.shuci_siliuji_checkbox.setCheckState(Qt.Unchecked)
-                self.goal_example_checkbox.setCheckState(Qt.Checked) if self.settings[
-                    4] else self.goal_example_checkbox.setCheckState(Qt.Unchecked)
-                self.goal_ying_checkbox.setCheckState(Qt.Checked) if self.settings[
-                    5] else self.goal_ying_checkbox.setCheckState(Qt.Unchecked)
-                self.goal_han_checkbox.setCheckState(Qt.Checked) if self.settings[
-                    6] else self.goal_han_checkbox.setCheckState(Qt.Unchecked)
+                self.shuci_xiaoxue_checkbox.setCheckState(Qt.Checked if bool(self.settings[
+                    0]) else Qt.Unchecked)
+                self.shuci_chuzhong_checkbox.setCheckState(Qt.Checked if bool(self.settings[
+                    1]) else Qt.Unchecked)
+                self.shuci_gaozhong_checkbox.setCheckState(Qt.Checked if bool(self.settings[
+                    2]) else Qt.Unchecked)
+                self.shuci_siliuji_checkbox.setCheckState(Qt.Checked if bool(self.settings[
+                    3]) else Qt.Unchecked)
+                self.goal_example_checkbox.setCheckState(Qt.Checked if bool(self.settings[
+                    4]) else Qt.Unchecked)
+                self.goal_ying_checkbox.setCheckState(Qt.Checked if bool(self.settings[
+                    5]) else Qt.Unchecked)
+                self.goal_han_checkbox.setCheckState(Qt.Checked if bool(self.settings[
+                    6]) else Qt.Unchecked)
                 if self.settings[7] == 1:
                     self.sample_1_output()
                 elif self.settings[7] == 2:
