@@ -1079,7 +1079,7 @@ class ReciteUi(QMainWindow):
         with open("./familiar/familiar_words.txt", "a+", encoding="UTF-8") as f:
             f.writelines(["\n" + i for i in self.right_words])
         with open("./vocabulary/vocabulary_words.txt", "w+", encoding="UTF-8") as ff:
-            ff.writelines(self.words)
+            ff.writelines(["\n" + i.to_string for i in self.words])
         self.close()
 
     def closeEvent(self, event):
