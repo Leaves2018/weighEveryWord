@@ -20,11 +20,12 @@ class MainUi(QMainWindow):
         self.rui = None
         self.word_count = 0
         self.shuci_count = 0
+        self.sample = 1
+        self.settings = []
         self.xiaoxue_selected = False
         self.chuzhong_selected = False
         self.gaozhong_selected = False
         self.siliuji_selected = False
-        self.sample = 1
         self.example_check_state = True
         self.ying_check_state = True
         self.han_check_state = True
@@ -173,6 +174,7 @@ class MainUi(QMainWindow):
         fitPixmap_1 = pixmap_1.scaled(600, 160, QtCore.Qt.IgnoreAspectRatio, QtCore.Qt.SmoothTransformation)
         icon_1 = QtGui.QIcon(fitPixmap_1)
         self.sample_output_button_1.setIcon(icon_1)  # 设置按钮图标
+        self.sample_output_button_1.toggle()
         self.sample_output_button_1.setIconSize(QtCore.QSize(600, 160))  # 设置图标大小
         self.sample_output_button_1.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
 
@@ -183,6 +185,7 @@ class MainUi(QMainWindow):
         fitPixmap_2 = pixmap_2.scaled(600, 160, QtCore.Qt.IgnoreAspectRatio, QtCore.Qt.SmoothTransformation)
         icon_2 = QtGui.QIcon(fitPixmap_2)
         self.sample_output_button_2.setIcon(icon_2)  # 设置按钮图标
+        self.sample_output_button_2.toggle()
         self.sample_output_button_2.setIconSize(QtCore.QSize(600, 160))  # 设置图标大小
         self.sample_output_button_2.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
 
@@ -193,9 +196,9 @@ class MainUi(QMainWindow):
         fitPixmap_3 = pixmap_3.scaled(600, 160, QtCore.Qt.IgnoreAspectRatio, QtCore.Qt.SmoothTransformation)
         icon_3 = QtGui.QIcon(fitPixmap_3)
         self.sample_output_button_3.setIcon(icon_3)  # 设置按钮图标
+        self.sample_output_button_3.toggle()
         self.sample_output_button_3.setIconSize(QtCore.QSize(600, 160))  # 设置图标大小
         self.sample_output_button_3.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
-        self.sample_output_button_3.setStyleSheet("border-image")
 
         self.initial_value_button = QPushButton("恢复默认值")
         self.ensure_value_button = QPushButton("确认")
@@ -319,6 +322,7 @@ class MainUi(QMainWindow):
 
     def on_settings_ui_clicked(self):
         self.right_widget.setCurrentIndex(3)
+        self.settings_read()
 
     def on_help_ui_clicked(self):
         self.right_widget.setCurrentIndex(4)
@@ -575,14 +579,6 @@ class MainUi(QMainWindow):
     def settings_ui(self):
         self.initial_value_button.clicked.connect(self.restore_initial_value)
         self.ensure_value_button.clicked.connect(self.ensure_value)
-        # self.shuci_xiaoxue_checkbox.stateChanged.connect(self.shuci_xiaoxue)
-        # self.shuci_chuzhong_checkbox.stateChanged.connect(self.shuci_chuzhong)
-        # self.shuci_gaozhong_checkbox.stateChanged.connect(self.shuci_gaozhong)
-        # self.shuci_siliuji_checkbox.stateChanged.connect(self.shuci_siliuji)
-        # self.goal_example_checkbox.stateChanged.connect(self.example_check)
-        # self.goal_ying_checkbox.stateChanged.connect(self.ying_check)
-        # self.goal_han_checkbox.stateChanged.connect(self.han_check)
-
 
         self.sample_output_button_1.clicked.connect(self.sample_1_output)
         self.sample_output_button_2.clicked.connect(self.sample_2_output)
@@ -632,20 +628,46 @@ class MainUi(QMainWindow):
                 xiaoxue = open('./familiar/xiaoxue.txt', 'r+',
                                encoding='UTF-8').read() if self.shuci_xiaoxue_checkbox.isChecked() else "\n"
                 f.writelines(xiaoxue)
+                self.settings.append(self.shuci_xiaoxue_checkbox.isChecked())
                 chuzhong = open('./familiar/chuzhong.txt', 'r+',
                                 encoding='UTF-8').read() if self.shuci_chuzhong_checkbox.isChecked() else "\n"
                 f.writelines(chuzhong)
+                self.settings.append(self.shuci_chuzhong_checkbox.isChecked())
                 gaozhong = open('./familiar/gaozhong.txt', 'r+',
                                 encoding='UTF-8').read() if self.shuci_gaozhong_checkbox.isChecked() else "\n"
                 f.writelines(gaozhong)
+                self.settings.append(self.shuci_gaozhong_checkbox.isChecked())
                 cet = open('./familiar/cet.txt', 'r+',
                                 encoding='UTF-8').read() if self.shuci_siliuji_checkbox.isChecked() else "\n"
                 f.writelines(cet)
+                self.settings.append(self.shuci_siliuji_checkbox.isChecked())
             with open("./css/css.txt", "w+", encoding="UTF-8") as f:
                 f1 = open("./css/css" + str(self.sample) + ".txt", encoding="UTF-8")
                 f.writelines(f1.readlines())
+            self.settings_save()
         else:
             return 0
+
+    def settings_save(self):
+        with open("./settings/settings.txt", "w+", encoding="UTF-8") as f:
+            f.writelines(self.settings)
+
+    def settings_read(self):
+        with open("./settings/settings.txt", "r+", encoding="UTF-8") as f:
+            self.settings = f.readlines()
+        self.shuci_xiaoxue_checkbox.setCheckState(Qt.Checked) if self.settings[0] else self.shuci_xiaoxue_checkbox.setCheckState(Qt.Unchecked)
+        self.shuci_chuzhong_checkbox.setCheckState(Qt.Checked) if self.settings[1] else self.shuci_chuzhong_checkbox.setCheckState(Qt.Unchecked)
+        self.shuci_gaozhong_checkbox.setCheckState(Qt.Checked) if self.settings[2] else self.shuci_gaozhong_checkbox.setCheckState(Qt.Unchecked)
+        self.shuci_siliuji_checkbox.setCheckState(Qt.Checked) if self.settings[3] else self.shuci_siliuji_checkbox.setCheckState(Qt.Unchecked)
+        self.goal_example_checkbox.setCheckState(Qt.Checked) if self.settings[4] else self.goal_example_checkbox.setCheckState(Qt.Unchecked)
+        self.goal_ying_checkbox.setCheckState(Qt.Checked) if self.settings[5] else self.goal_ying_checkbox.setCheckState(Qt.Unchecked)
+        self.goal_han_checkbox.setCheckState(Qt.Checked) if self.settings[6] else self.goal_han_checkbox.setCheckState(Qt.Unchecked)
+        if self.settings[7] == 1:
+            self.sample_1_output()
+        elif self.settings[7] == 2:
+            self.sample_2_output()
+        elif self.settings[7] == 3:
+            self.sample_3_output()
 
     def settings_add_to_window(self):
         self.settings_ui_layout.addWidget(self.test_label_shuci)
