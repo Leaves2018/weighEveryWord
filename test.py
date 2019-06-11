@@ -989,7 +989,11 @@ class DecideUi(QMainWindow):
     def finish(self):
         update_familiar_words(old_words=self.old_words)
         update_vocabulary_words(new_words=self.new_words)
-        third(self.unfamiliar_words + self.new_words, self.filename)
+        third(self.unfamiliar_words + self.new_words,
+              self.filename,
+              self.show_context,
+              self.show_english,
+              self.show_chinese)
         self.output()
 
     def show_dialog(self, text="提示"):
