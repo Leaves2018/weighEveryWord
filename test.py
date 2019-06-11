@@ -413,7 +413,8 @@ class MainUi(QMainWindow):
     def mark_start(self):
         res = QtWidgets.QMessageBox.question(self, '提示',
                                              "文本已确认完毕？", QtWidgets.QMessageBox.Yes |
-                                             QtWidgets.QMessageBox.No)
+                                             QtWidgets.QMessageBox.No,
+                                             QtWidgets.QMessageBox.Yes)
         if res == QtWidgets.QMessageBox.Yes:
             self.unfamiliar_words, self.unknown_words = first(self.s)
             if len(self.unknown_words) == 0:
@@ -518,7 +519,8 @@ class MainUi(QMainWindow):
         output_file.close()
         res = QtWidgets.QMessageBox.information(self, '提示',
                                                 "您的熟词本已生成至桌面", QtWidgets.QMessageBox.Yes |
-                                                QMessageBox.No)
+                                                QMessageBox.No,
+                                                QtWidgets.QMessageBox.Yes)
 
     def shengci_output(self):
         temp_words = []
@@ -540,7 +542,8 @@ class MainUi(QMainWindow):
                            self.goal_han_checkbox.isChecked())
         res = QtWidgets.QMessageBox.information(self, '提示',
                                                 "您的生词本已生成至桌面", QtWidgets.QMessageBox.Yes |
-                                                QMessageBox.No)
+                                                QMessageBox.No,
+                                                QtWidgets.QMessageBox.Yes)
 
     # 打开背单词页面
     def recite_start(self):
@@ -549,7 +552,8 @@ class MainUi(QMainWindow):
         except ValueError:
             res = QtWidgets.QMessageBox.information(self, '提示，您输入的不是数字',
                                                     "请重新输入要背的单词数目（以阿拉伯数字形式）", QtWidgets.QMessageBox.Yes |
-                                                    QMessageBox.No)
+                                                    QMessageBox.No,
+                                                    QtWidgets.QMessageBox.Yes)
             if res == QtWidgets.QMessageBox.Yes:
                 return 0
             else:
@@ -733,8 +737,8 @@ class MainUi(QMainWindow):
         self.old_button.setStyleSheet(
             '''QPushButton{
                     border-style: outset;
-                    border-width: 2px;
-                    border-radius: 10px;
+                    border-width:2px;
+                    border-radius:10px;
                     border-color: black;
                     font: bold 14px;
                     min-width:10em;
@@ -1080,8 +1084,8 @@ class DecideUi(QMainWindow):
         self.mark_up_layout.addWidget(self.hint_label, 0, 1, 1, 10)
         self.mark_up_layout.addWidget(self.search_button, 0, 10, 1, 1)
 
-        self.mark_mid_layout.addWidget(self.last_button, 9, 0, 1, 1)
-        self.mark_mid_layout.addWidget(self.next_button, 9, 18, 1, 1)
+        self.mark_mid_layout.addWidget(self.last_button, 4, 0, 1, 1)
+        self.mark_mid_layout.addWidget(self.next_button, 4, 18, 1, 1)
         self.mark_mid_layout.addWidget(self.word_name_text_edit, 1, 1, 2, 7)
         self.mark_mid_layout.addWidget(self.word_yb_text_edit, 3, 1, 2, 7)
         self.mark_mid_layout.addWidget(self.word_context_text_edit, 6, 1, 6, 7)
@@ -1147,6 +1151,46 @@ class DecideUi(QMainWindow):
                 padding: 5px;
             }'''
         )
+        self.return_button.setStyleSheet(
+            '''QPushButton{
+                    border:none;
+                    color:black;
+            }''')
+        self.search_button.setStyleSheet(
+            '''QPushButton{
+                    border:none;
+                    color:black;
+            }''')
+        self.next_button.setStyleSheet(
+            '''QPushButton{
+                    border:none;
+                    color:black;
+            }''')
+        self.last_button.setStyleSheet(
+            '''QPushButton{
+                    border:none;
+                    color:black;
+            }''')
+        self.new_button.setStyleSheet(
+            '''QPushButton{
+                    border-style: outset;
+                    border-width:2px;
+                    border-radius:10px;
+                    border-color: black;
+                    font: bold 14px;
+                    min-width:10em;
+                    padding:6px;
+            }''')
+        self.old_button.setStyleSheet(
+            '''QPushButton{
+                    border-style: outset;
+                    border-width:2px;
+                    border-radius:10px;
+                    border-color: black;
+                    font: bold 14px;
+                    min-width:10em;
+                    padding:6px;
+            }''')
 
     def closeEvent(self, event):
         res = QtWidgets.QMessageBox.question(self, '警告',
@@ -1469,8 +1513,46 @@ class ReciteUi(QMainWindow):
         self.recite_ui_in_layout.addWidget(self.ensure_shuci_button, 13, 1, 1, 10)
 
     def recite_beautify(self):
-        pass
-
+        self.ensure_button.setStyleSheet(
+            '''QPushButton{
+                    border-style: outset;
+                    border-width:2px;
+                    border-radius:10px;
+                    border-color: black;
+                    font: bold 14px;
+                    min-width:10em;
+                    padding:6px;
+            }''')
+        self.ensure_shuci_button.setStyleSheet(
+            '''QPushButton{
+                    border-style: outset;
+                    border-width:2px;
+                    border-radius:10px;
+                    border-color: black;
+                    font: bold 14px;
+                    min-width:10em;
+                    padding:6px;
+            }''')
+        self.last_button.setStyleSheet(
+            '''QPushButton{
+                    border-style: outset;
+                    border-width:2px;
+                    border-radius:10px;
+                    border-color: black;
+                    font: bold 14px;
+                    min-width:10em;
+                    padding:6px;
+            }''')
+        self.next_button.setStyleSheet(
+            '''QPushButton{
+                    border-style: outset;
+                    border-width:2px;
+                    border-radius:10px;
+                    border-color: black;
+                    font: bold 14px;
+                    min-width:10em;
+                    padding:6px;
+            }''')
 
 def main():
     app = QApplication(sys.argv)
