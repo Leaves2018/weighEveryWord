@@ -70,12 +70,21 @@ class MainUi(QMainWindow):
         self.recite_in_widget = QWidget()
         self.recite_in_layout = QHBoxLayout(self.recite_in_widget)
 
+        self.shuci_in_widget = QWidget()
+        self.shuci_in_layout = QHBoxLayout(self.shuci_in_widget)
+
+        self.shengci_in_widget = QWidget()
+        self.shengci_in_layout = QHBoxLayout(self.shengci_in_widget)
+
         self.recite_label_cihuiliang = QLabel("词汇量")
         self.recite_label_cihuiliang.setFont(QFont("Roman times", 36, QFont.Bold))
         self.recite_label_shuciliang = QLabel("熟词量：" + str(self.shuci_len_return()))
         self.recite_label_shuciliang.setFont(QFont("Roman times", 18, QFont.Bold))
         self.recite_label_shengciliang = QLabel("生词量：" + str(self.shengci_len_return()))
         self.recite_label_shengciliang.setFont(QFont("Roman times", 18, QFont.Bold))
+
+        self.shuci_output_button = QPushButton("导出熟词本")
+        self.shengci_output_button = QPushButton("导出生词本")
 
         self.recite_label_bar_1 = QtWidgets.QProgressBar()  # 播放进度部件
         self.recite_label_bar_1.setRange(0, 1001)
@@ -410,8 +419,17 @@ class MainUi(QMainWindow):
         self.word_count_line_edit.returnPressed.connect(self.recite_start)
         self.word_recite_button.clicked.connect(self.recite_start)
 
+        self.shuci_output_button.clicked.connect(self.shuci_output)
+        self.shengci_output_button.clicked.connect(self.shengci_output)
+
         self.recite_add_to_window()
         self.recite_beautify()
+
+    def shuci_output(self):
+        pass
+
+    def shengci_output(self):
+        pass
 
     def recite_start(self):
         try:
@@ -437,7 +455,8 @@ class MainUi(QMainWindow):
 
         res = QtWidgets.QMessageBox.question(self, '提示',
                                              "确认就背这" + str(self.word_count) + "个单词吗？", QtWidgets.QMessageBox.Yes |
-                                             QMessageBox.No)
+                                             QMessageBox.No,
+                                             QtWidgets.QMessageBox.Yes)
         if res == QtWidgets.QMessageBox.Yes:
             self.rui = ReciteUi(word_count=self.word_count)
             self.rui.show()
@@ -447,8 +466,12 @@ class MainUi(QMainWindow):
     def recite_add_to_window(self):
         self.right_widget.addWidget(self.recite_ui_widget)
         self.recite_ui_layout.addWidget(self.recite_label_cihuiliang)
-        self.recite_ui_layout.addWidget(self.recite_label_shuciliang)
-        self.recite_ui_layout.addWidget(self.recite_label_shengciliang)
+        self.recite_ui_layout.addWidget(self.shuci_in_widget)
+        self.shuci_in_layout.addWidget(self.recite_label_shuciliang)
+        self.shuci_in_layout.addWidget(self.shuci_output_button)
+        self.recite_ui_layout.addWidget(self.shengci_in_widget)
+        self.shengci_in_layout.addWidget(self.recite_label_shengciliang)
+        self.shengci_in_layout.addWidget(self.shengci_output_button)
         self.recite_ui_layout.addWidget(self.recite_label_bar_1)
         self.recite_ui_layout.addWidget(self.recite_label_beisong)
         self.recite_ui_layout.addWidget(self.word_count_question_label)
@@ -1079,7 +1102,7 @@ class ReciteUi(QMainWindow):
         with open("./familiar/familiar_words.txt", "a+", encoding="UTF-8") as f:
             f.writelines(["\n" + i for i in self.right_words])
         with open("./vocabulary/vocabulary_words.txt", "w+", encoding="UTF-8") as ff:
-            ff.writelines(["\n" + i.to_string for i in self.words])
+            ff.writelines(["\n" + i.to_string() for i in self.words])
         self.close()
 
     def closeEvent(self, event):
