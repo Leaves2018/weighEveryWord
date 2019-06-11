@@ -27,6 +27,7 @@ def first(raw_text):
             if word is "":
                 continue
             new_word = Word(name=word, context=re.sub(word, '*' + word + '*', sentence.strip()))
+
             i = 0
             if len(word) < 4:
                 i = 1
@@ -38,13 +39,22 @@ def first(raw_text):
                 i = 4
             elif len(word) < 20:
                 i = 5
+
             if familiar_words.starts_with(word.lower()[:-i]):
                 continue
             elif vocabulary_words.starts_with(word.lower()[:-i]) and not vocabulary_words.search(word.lower()):
                 vocabulary_words.insert(word.lower())
                 unfamiliar_words.append(new_word)
             else:
-                unknown_words.append(new_word)
+                j = 0
+                for n in unknown_words:
+                    if n.get_name() == word:
+                        j += 1
+                if j == 0:
+                    unknown_words.append(new_word)
+                else:
+                    continue
+
     return unfamiliar_words, unknown_words
 
 
@@ -83,3 +93,5 @@ def sentences(text):
     s = re.split("[.!?]+", text)
     for sentence in s:
         yield sentence
+
+
