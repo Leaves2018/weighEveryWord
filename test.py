@@ -1458,8 +1458,8 @@ class ReciteUi(QMainWindow):
         self.yb_text_edit.clear()
         self.guess_count = 0
         self.count += 1
+        self.random_get()
         if self.count > self.word_count:
-            self.random_get()
             self.show_dialog()
             self.count -= 1
         else:
@@ -1513,16 +1513,6 @@ class ReciteUi(QMainWindow):
         self.recite_ui_in_layout.addWidget(self.ensure_shuci_button, 13, 1, 1, 10)
 
     def recite_beautify(self):
-        self.ensure_button.setStyleSheet(
-            '''QPushButton{
-                    border-style: outset;
-                    border-width:2px;
-                    border-radius:10px;
-                    border-color: black;
-                    font: bold 14px;
-                    min-width:10em;
-                    padding:6px;
-            }''')
         self.ensure_shuci_button.setStyleSheet(
             '''QPushButton{
                     border-style: outset;
@@ -1535,23 +1525,13 @@ class ReciteUi(QMainWindow):
             }''')
         self.last_button.setStyleSheet(
             '''QPushButton{
-                    border-style: outset;
-                    border-width:2px;
-                    border-radius:10px;
-                    border-color: black;
-                    font: bold 14px;
-                    min-width:10em;
-                    padding:6px;
+                    border:none;
+                    color:black;
             }''')
         self.next_button.setStyleSheet(
             '''QPushButton{
-                    border-style: outset;
-                    border-width:2px;
-                    border-radius:10px;
-                    border-color: black;
-                    font: bold 14px;
-                    min-width:10em;
-                    padding:6px;
+                    border:none;
+                    olor:black;
             }''')
 
 def main():
