@@ -410,7 +410,6 @@ class MainUi(QMainWindow):
                                              QtWidgets.QMessageBox.No)
         if res == QtWidgets.QMessageBox.Yes:
             self.unfamiliar_words, self.unknown_words = first(self.s)
-            print("mark_start:" + self.s)
             self.dui = DecideUi(s=self.s, unfamiliar_words=self.unfamiliar_words, unknown_words=self.unknown_words)
             self.dui.show()
         else:
@@ -576,13 +575,13 @@ class MainUi(QMainWindow):
     def settings_ui(self):
         self.initial_value_button.clicked.connect(self.restore_initial_value)
         self.ensure_value_button.clicked.connect(self.ensure_value)
-        self.shuci_xiaoxue_checkbox.stateChanged.connect(self.shuci_xiaoxue)
-        self.shuci_chuzhong_checkbox.stateChanged.connect(self.shuci_chuzhong)
-        self.shuci_gaozhong_checkbox.stateChanged.connect(self.shuci_gaozhong)
-        self.shuci_siliuji_checkbox.stateChanged.connect(self.shuci_siliuji)
-        self.goal_example_checkbox.stateChanged.connect(self.example_check)
-        self.goal_ying_checkbox.stateChanged.connect(self.ying_check)
-        self.goal_han_checkbox.stateChanged.connect(self.han_check)
+        # self.shuci_xiaoxue_checkbox.stateChanged.connect(self.shuci_xiaoxue)
+        # self.shuci_chuzhong_checkbox.stateChanged.connect(self.shuci_chuzhong)
+        # self.shuci_gaozhong_checkbox.stateChanged.connect(self.shuci_gaozhong)
+        # self.shuci_siliuji_checkbox.stateChanged.connect(self.shuci_siliuji)
+        # self.goal_example_checkbox.stateChanged.connect(self.example_check)
+        # self.goal_ying_checkbox.stateChanged.connect(self.ying_check)
+        # self.goal_han_checkbox.stateChanged.connect(self.han_check)
 
 
         self.sample_output_button_1.clicked.connect(self.sample_1_output)
@@ -601,27 +600,6 @@ class MainUi(QMainWindow):
     def sample_3_output(self):
         self.sample = 3
 
-    def example_check(self):
-        self.example_check_state = True
-
-    def ying_check(self):
-        self.ying_check_state = True
-
-    def han_check(self):
-        self.han_check_state = True
-
-    def shuci_xiaoxue(self):
-        self.xiaoxue_selected = True
-
-    def shuci_chuzhong(self):
-        self.chuzhong_selected = True
-
-    def shuci_gaozhong(self):
-        self.gaozhong_selected = True
-
-    def shuci_siliuji(self):
-        self.siliuji_selected = True
-
     def restore_initial_value(self):
         self.shuci_xiaoxue_checkbox.setCheckState(Qt.Checked)
         self.shuci_chuzhong_checkbox.setCheckState(Qt.Checked)
@@ -630,10 +608,6 @@ class MainUi(QMainWindow):
         self.goal_example_checkbox.setCheckState(Qt.Checked)
         self.goal_ying_checkbox.setCheckState(Qt.Checked)
         self.goal_han_checkbox.setCheckState(Qt.Checked)
-        self.xiaoxue_selected = True
-        self.chuzhong_selected = True
-        self.gaozhong_selected = True
-        self.siliuji_selected = False
         with open("./css/css.txt", "w+", encoding="UTF-8") as f:
             f1 = open("./css/css1.txt", encoding="UTF-8")
             f.writelines(f1.readlines())
@@ -641,13 +615,13 @@ class MainUi(QMainWindow):
     def ensure_value(self):
         res = QtWidgets.QMessageBox.question(self, '警告',
                                              "您选择了"
-                                             + ("《小学词汇》" if self.xiaoxue_selected else "")
-                                             + ("《初中词汇》" if self.chuzhong_selected else "")
-                                             + ("《高中词汇》" if self.gaozhong_selected else "")
-                                             + ("《四六级词汇》" if self.siliuji_selected else "" + "\n")
-                                             + ("《例句》" if self.example_check_state else "")
-                                             + ("《英解》" if self.ying_check_state else "")
-                                             + ("《中解》" if self.han_check_state else "" + "\n")
+                                             + ("《小学词汇》" if self.shuci_xiaoxue_checkbox.isChecked() else "")
+                                             + ("《初中词汇》" if self.shuci_chuzhong_checkbox.isChecked() else "")
+                                             + ("《高中词汇》" if self.shuci_gaozhong_checkbox.isChecked() else "")
+                                             + ("《四六级词汇》" if self.shuci_siliuji_checkbox.isChecked() else "" + "\n")
+                                             + ("《例句》" if self.goal_example_checkbox.isChecked() else "")
+                                             + ("《英解》" if self.goal_ying_checkbox.isChecked() else "")
+                                             + ("《汉解》" if self.goal_han_checkbox.isChecked() else "" + "\n")
                                              + "样式" + str(self.sample) + "\n"
                                              "此操作会清空你的熟词本,并初始化为你所勾选的单词本。\n"
                                              "按下确认以执行操作", QtWidgets.QMessageBox.Yes |
@@ -656,16 +630,16 @@ class MainUi(QMainWindow):
         if res == QtWidgets.QMessageBox.Yes:
             with open('./familiar/familiar_words.txt', 'w+', encoding='UTF-8') as f:
                 xiaoxue = open('./familiar/xiaoxue.txt', 'r+',
-                               encoding='UTF-8').read() if self.xiaoxue_selected else "\n"
+                               encoding='UTF-8').read() if self.shuci_xiaoxue_checkbox.isChecked() else "\n"
                 f.writelines(xiaoxue)
                 chuzhong = open('./familiar/chuzhong.txt', 'r+',
-                                encoding='UTF-8').read() if self.chuzhong_selected else "\n"
+                                encoding='UTF-8').read() if self.shuci_chuzhong_checkbox.isChecked() else "\n"
                 f.writelines(chuzhong)
                 gaozhong = open('./familiar/gaozhong.txt', 'r+',
-                                encoding='UTF-8').read() if self.gaozhong_selected else "\n"
+                                encoding='UTF-8').read() if self.shuci_gaozhong_checkbox.isChecked() else "\n"
                 f.writelines(gaozhong)
                 cet = open('./familiar/cet.txt', 'r+',
-                                encoding='UTF-8').read() if self.siliuji_selected else "\n"
+                                encoding='UTF-8').read() if self.shuci_siliuji_checkbox.isChecked() else "\n"
                 f.writelines(cet)
             with open("./css/css.txt", "w+", encoding="UTF-8") as f:
                 f1 = open("./css/css" + str(self.sample) + ".txt", encoding="UTF-8")
