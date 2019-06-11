@@ -25,7 +25,7 @@ class MainUi(QMainWindow):
         self.gaozhong_selected = False
         self.siliuji_selected = False
         self.sample = 1
-        self.temp_words = []
+        # self.temp_words = []
 
         # 一、声明窗口主部件及其布局
         self.main_widget = QWidget()
@@ -65,10 +65,29 @@ class MainUi(QMainWindow):
 
         # 3.2 "背诵"页面：recite_ui
         self.recite_ui_widget = QWidget()
-        self.recite_ui_layout = QGridLayout(self.recite_ui_widget)
+        self.recite_ui_layout = QVBoxLayout(self.recite_ui_widget)
 
+        self.recite_in_widget = QWidget()
+        self.recite_in_layout = QHBoxLayout(self.recite_in_widget)
+
+        self.recite_label_cihuiliang = QLabel("词汇量")
+        self.recite_label_cihuiliang.setFont(QFont("Roman times", 36, QFont.Bold))
+        self.recite_label_shuciliang = QLabel("熟词量：" + str(self.shuci_len_return()))
+        self.recite_label_shuciliang.setFont(QFont("Roman times", 18, QFont.Bold))
+        self.recite_label_shengciliang = QLabel("生词量：" + str(self.shengci_len_return()))
+        self.recite_label_shengciliang.setFont(QFont("Roman times", 18, QFont.Bold))
+
+        self.recite_label_bar_1 = QtWidgets.QProgressBar()  # 播放进度部件
+        self.recite_label_bar_1.setRange(0, 1001)
+        self.recite_label_bar_1.setValue(1000)
+        self.recite_label_bar_1.setFixedHeight(2)  # 设置进度条高度
+        self.recite_label_bar_1.setTextVisible(False)  # 不显示进度条文字
+
+        self.recite_label_beisong = QLabel("背诵生词")
+        self.recite_label_beisong.setFont(QFont("Roman times", 36, QFont.Bold))
         self.word_count_question_label = QLabel("你今天想背几个单词呀？")
-        self.word_count_text_edit = QTextEdit()
+        self.word_count_question_label.setFont(QFont("Roman times", 18, QFont.Bold))
+        self.word_count_line_edit = QLineEdit()
         self.word_recite_button = QPushButton("开始背单词")
         # self.test_label_2 = QLabel("这里是背诵页面")
 
@@ -183,6 +202,20 @@ class MainUi(QMainWindow):
         self.settings_ui()
         self.help_ui()
 
+    def shengci_len_return(self):
+        with open("./vocabulary/vocabulary_words.txt", "r+", encoding="UTF-8") as f:
+            temp_words = []
+            for sentence in f.readlines():
+                if not sentence[0].isalpha():
+                    continue
+                word = Word(*sentence.split("----"))
+                temp_words.append(word)
+        return len(temp_words)
+
+    def shuci_len_return(self):
+        with open("./familiar/familiar_words.txt", "r+", encoding="UTF-8") as f:
+            return len(f.readlines())
+
     def main_ui(self):
         # 设置窗口大小
         self.setBaseSize(960, 700)
@@ -265,6 +298,8 @@ class MainUi(QMainWindow):
 
     def on_recite_ui_clicked(self):
         self.right_widget.setCurrentIndex(1)
+        self.recite_label_shuciliang.setText("熟词量：" + str(self.shuci_len_return()))
+        self.recite_label_shengciliang.setText("生词量：" + str(self.shengci_len_return()))
 
     def on_look_up_ui_clicked(self):
         self.right_widget.setCurrentIndex(2)
@@ -372,6 +407,7 @@ class MainUi(QMainWindow):
         pass
 
     def recite_ui(self):
+        self.word_count_line_edit.returnPressed.connect(self.recite_start)
         self.word_recite_button.clicked.connect(self.recite_start)
 
         self.recite_add_to_window()
@@ -379,7 +415,7 @@ class MainUi(QMainWindow):
 
     def recite_start(self):
         try:
-            self.word_count = int(self.word_count_text_edit.toPlainText())
+            self.word_count = int(self.word_count_line_edit.text())
         except ValueError:
             res = QtWidgets.QMessageBox.information(self, '提示，您输入的不是数字',
                                                     "请重新输入要背的单词数目（以阿拉伯数字形式）", QtWidgets.QMessageBox.Yes |
@@ -389,28 +425,15 @@ class MainUi(QMainWindow):
             else:
                 return 0
         finally:
-            self.word_count_text_edit.clear()
+            self.word_count_line_edit.clear()
 
-        with open("./vocabulary/vocabulary_words.txt", "r+", encoding="UTF-8") as f:
-            f.seek(0)
-            for sentence in f.readlines():
-                if not sentence[0].isalpha():
-                    continue
-                word = Word(*sentence.split("----"))
-                self.temp_words.append(word)
-        if self.word_count <= 0 or self.word_count >len(self.words):
+        if self.word_count <= 0 or self.word_count > self.shengci_len_return():
             res = QtWidgets.QMessageBox.information(self, '提示', '您输入的数字小于零或大于您生词本的生词数量',
                                                     QtWidgets.QMessageBox.Yes |
                                                     QMessageBox.No,
                                                     QtWidgets.QMessageBox.Yes)
-            self.word_count_text_edit.clear()
+            self.word_count_line_edit.clear()
             return 0
-            # if res == QtWidgets.QMessageBox.Yes:
-            #     self.word_count_text_edit.clear()
-            #     return 0
-            # else:
-            #     self.word_count_text_edit.clear()
-            #     return 0
 
         res = QtWidgets.QMessageBox.question(self, '提示',
                                              "确认就背这" + str(self.word_count) + "个单词吗？", QtWidgets.QMessageBox.Yes |
@@ -423,9 +446,16 @@ class MainUi(QMainWindow):
 
     def recite_add_to_window(self):
         self.right_widget.addWidget(self.recite_ui_widget)
-        self.recite_ui_layout.addWidget(self.word_count_question_label, 0, 0, 1, 10)
-        self.recite_ui_layout.addWidget(self.word_count_text_edit, 1, 0, 1, 8)
-        self.recite_ui_layout.addWidget(self.word_recite_button, 1, 8, 1, 2)
+        self.recite_ui_layout.addWidget(self.recite_label_cihuiliang)
+        self.recite_ui_layout.addWidget(self.recite_label_shuciliang)
+        self.recite_ui_layout.addWidget(self.recite_label_shengciliang)
+        self.recite_ui_layout.addWidget(self.recite_label_bar_1)
+        self.recite_ui_layout.addWidget(self.recite_label_beisong)
+        self.recite_ui_layout.addWidget(self.word_count_question_label)
+
+        self.recite_ui_layout.addWidget(self.recite_in_widget)
+        self.recite_in_layout.addWidget(self.word_count_line_edit)
+        self.recite_in_layout.addWidget(self.word_recite_button)
 
     def recite_beautify(self):
         pass

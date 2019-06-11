@@ -1,3 +1,17 @@
 # test_1
 
-There is an  **enormous**  difference in the  **ways**  in which various public officials respond to public  **pressures** , and in the means and  **methods**  they employ to deal with them. The  **best**  possess understanding of the  **forces**  that must be  **taken**  into account,  **determination**  not to be  **swerved**  from the path of public interest, a  **willingness**  to make  **enemies**  along with a gift for avoiding them and faith that public support will be forthcoming for the correct course. The poorest are overhesitant, evasive, preoccupied with their relationships with their colleagues, superiors, the press or the political support on which they lean. They will make no move unless the gallery is packed. They confront all embarrassments with a stale general formula.
+The Dusty Drawer
+Harry Miles Muheim
+1
+Norman Logan paid for his apple pie and coffee, then carried his tray toward the front of the cafeteria. From a distance, he recognized the back of william Tritt's large head. The tables near Tritt were empty, and Logan had no desire to eat with him, but they had some unfinished business that Logan wanted to clear up. He stopped at Tritt's table and asked Do you mind if I join you?,
+2
+Tritt looked up as he always looked up from inside his teller's cage in the bank across the street. He acted like a servant-like a precise  **butler**  that Logan used to see in movies--but behind the film of  **obsequiousness**  was an attitude of vast supe- riority that always set Logan on edge.
+3
+ "Why, yes, Mr. Logan. Do sit down. Only please, I must ask you not to mention that two hundred dollars again.
+ sWell, we'lI see about that, said Logan  **pulling**  out a chair and seating him- self. "Rather late for lunch, isn't it?"
+ "Oh, Ive had lunch, Tritt said. "This is just a snack." He cut a large piece of  roast beef from the slab in front of him and thrust it into his mouth."Idon't believe I've seen you all summer, "he added, chewing the meat.
+ 4
+"I took a job upstate, Logan said. " We were trying to stop some kind of  **blight**  in the apple orchards.
+ "Is that so?" Tritt looked like a concerned  **bloodhound** .
+ "I wanted to do some research out West, "Logan went on, "but I couldnt get any money from the university.
+ sYou'll be back for the new term, won't you?,
