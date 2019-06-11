@@ -72,6 +72,8 @@ class Word:
         text = ""
         count = 0
         for sentence in self.get_en_interpretation(flag):
+            if sentence == "":
+                continue
             count += 1
             text += "(" + str(count) + ")" + sentence
         return text if not isinstance(text, type(None)) else "None"
@@ -89,6 +91,8 @@ class Word:
         text = ""
         count = 0
         for sentence in self.get_ch_interpretation(flag):
+            if sentence == "":
+                continue
             count += 1
             text += "(" + str(count) + ")" + sentence
         return text if not isinstance(text, type(None)) else "None"
