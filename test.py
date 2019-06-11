@@ -8,6 +8,11 @@ from PyQt5.QtCore import Qt
 import sys
 import qtawesome as qta
 from weigh3 import *
+import os
+
+
+def get_desktop_path():
+    return os.path.join(os.path.expanduser("~"), 'Desktop')
 
 
 class MainUi(QMainWindow):
@@ -414,8 +419,37 @@ class MainUi(QMainWindow):
                                              QtWidgets.QMessageBox.No)
         if res == QtWidgets.QMessageBox.Yes:
             self.unfamiliar_words, self.unknown_words = first(self.s)
-            self.dui = DecideUi(s=self.s, unfamiliar_words=self.unfamiliar_words, unknown_words=self.unknown_words)
+            if len(self.unknown_words) == 0:
+                # 如果没有未知词，则不进入DecideUi。直接判断是否有生词，有则生成单词本，没有则再提示改文章也没有生词。
+                self.show_dialog(text2="该文本中没有未知词，无需您手动判断")
+                if len(self.unfamiliar_words) == 0:
+                    self.show_dialog(text2="该文本中也没有生词，该文本无需标记")
+                else:
+                    filename, ok = QInputDialog.getText(self, "提示", "生词标记完成，原文及单词表将保存至桌面。\n"
+                                                                    "请输入文件名称：")
+                    if ok:
+                        third(self.unfamiliar_words,
+                              filename,
+                              self.goal_example_checkbox.isChecked(),
+                              self.goal_ying_checkbox.isChecked(),
+                              self.goal_han_checkbox.isChecked())
+                return 0
+
+            self.dui = DecideUi(s=self.s,
+                                unfamiliar_words=self.unfamiliar_words,
+                                unknown_words=self.unknown_words,
+                                show_context=self.goal_example_checkbox.isChecked(),
+                                show_english=self.goal_ying_checkbox.isChecked(),
+                                show_chinese=self.goal_han_checkbox.isChecked())
             self.dui.show()
+
+    def show_dialog(self, text1="提示", text2="不符合条件"):
+        res = QMessageBox.information(self, text1,
+                                   text2, QtWidgets.QMessageBox.Yes |
+                                   QtWidgets.QMessageBox.No,
+                                   QtWidgets.QMessageBox.Yes)
+        if res == QMessageBox.Yes:
+            self.make_close()
         else:
             return 0
 
@@ -433,10 +467,30 @@ class MainUi(QMainWindow):
         self.recite_beautify()
 
     def shuci_output(self):
-        pass
+        familiar_words = open("./familiar/familiar_words.txt", "r+", encoding="UTF-8")
+        output_file = open(get_desktop_path() + "/familiar_words.txt", mode="w+", encoding="UTF-8")
+        output_file.write(familiar_words.read())
+        familiar_words.close()
+        output_file.close()
 
     def shengci_output(self):
-        pass
+        temp_words = []
+        with open("./vocabulary/vocabulary_words.txt", "r+", encoding="UTF-8") as f:
+            for sentence in f.readlines():
+                if not sentence[0].isalpha():
+                    continue
+                text = sentence.split("----")
+                word = Word(name=text[0], yb=text[1], context=text[2])
+                word.set_en_interpretation(re.split("[)(1-9]+", text[3])[1:])
+                word.set_ch_interpretation(re.split("[)(1-9]+", text[4])[1:])
+                temp_words.append(word)
+        output_file1 = open(get_desktop_path() + "/vocabulary_words.txt", mode="w+", encoding="UTF-8")
+        output_file1.writelines(["\n" + i.to_string() for i in temp_words])
+        output_file1.close()
+        generate_word_list(temp_words, "生词本",
+                           self.goal_example_checkbox.isChecked(),
+                           self.goal_ying_checkbox.isChecked(),
+                           self.goal_han_checkbox.isChecked())
 
     def recite_start(self):
         try:
@@ -626,19 +680,19 @@ class MainUi(QMainWindow):
         if res == QtWidgets.QMessageBox.Yes:
             with open('./familiar/familiar_words.txt', 'w+', encoding='UTF-8') as f:
                 xiaoxue = open('./familiar/xiaoxue.txt', 'r+',
-                               encoding='UTF-8').read() if self.shuci_xiaoxue_checkbox.isChecked() else "\n"
+                               encoding='UTF-8').readlines() if self.shuci_xiaoxue_checkbox.isChecked() else "\n"
                 f.writelines(xiaoxue)
                 self.settings.append(self.shuci_xiaoxue_checkbox.isChecked())
                 chuzhong = open('./familiar/chuzhong.txt', 'r+',
-                                encoding='UTF-8').read() if self.shuci_chuzhong_checkbox.isChecked() else "\n"
+                                encoding='UTF-8').readlines() if self.shuci_chuzhong_checkbox.isChecked() else "\n"
                 f.writelines(chuzhong)
                 self.settings.append(self.shuci_chuzhong_checkbox.isChecked())
                 gaozhong = open('./familiar/gaozhong.txt', 'r+',
-                                encoding='UTF-8').read() if self.shuci_gaozhong_checkbox.isChecked() else "\n"
+                                encoding='UTF-8').readlines() if self.shuci_gaozhong_checkbox.isChecked() else "\n"
                 f.writelines(gaozhong)
                 self.settings.append(self.shuci_gaozhong_checkbox.isChecked())
                 cet = open('./familiar/cet.txt', 'r+',
-                                encoding='UTF-8').read() if self.shuci_siliuji_checkbox.isChecked() else "\n"
+                                encoding='UTF-8').readlines() if self.shuci_siliuji_checkbox.isChecked() else "\n"
                 f.writelines(cet)
                 self.settings.append(self.shuci_siliuji_checkbox.isChecked())
 
@@ -739,7 +793,8 @@ class MainUi(QMainWindow):
 
 
 class DecideUi(QMainWindow):
-    def __init__(self, s="", unfamiliar_words=[], unknown_words=[]):
+    def __init__(self, s="", unfamiliar_words=[], unknown_words=[],
+                 show_context=False, show_english=False, show_chinese=False):
         super().__init__()
 
         self.s = s
@@ -751,6 +806,10 @@ class DecideUi(QMainWindow):
         self.count = -1
         self.filename = ""
         self.word = Word()
+
+        self.show_context = show_context
+        self.show_english = show_english
+        self.show_chinese = show_chinese
 
         self.mark_decide_ui_widget = QWidget()
         self.mark_decide_ui_layout = QGridLayout(self.mark_decide_ui_widget)

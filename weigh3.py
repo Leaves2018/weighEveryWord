@@ -40,7 +40,8 @@ def first(raw_text):
                 i = 5
             if familiar_words.starts_with(word.lower()[:-i]):
                 continue
-            elif vocabulary_words.starts_with(word.lower()[:-i]):
+            elif vocabulary_words.starts_with(word.lower()[:-i]) and not vocabulary_words.search(word.lower()):
+                vocabulary_words.insert(word.lower())
                 unfamiliar_words.append(new_word)
             else:
                 unknown_words.append(new_word)
@@ -72,9 +73,9 @@ def second(unknown_words):
     return new_words
 
 
-def third(new_words, filename):
+def third(new_words, filename, show_context=False, show_english=False, show_chinese=False):
     decorate_raw_text(new_words, filename)
-    generate_word_list(new_words, filename)
+    generate_word_list(new_words, filename, show_context, show_english, show_chinese)
 
 
 def sentences(text):

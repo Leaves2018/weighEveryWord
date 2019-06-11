@@ -10,11 +10,11 @@ def get_desktop_path():
 
 # 输入：txt文件名（以MarkDown进行标记）
 # 输出：html文件名
-def generate_word_list(words, filename):
+def generate_word_list(words, filename, show_context=False, show_english=False, show_chinese=False):
     # TODO 定制CSS样式
     css = open("./css/css.txt", "r+", encoding="UTF-8").read()
 
-    process(words, filename)
+    process(words, filename, show_context, show_english, show_chinese)
     # 读取 markdown 文本
     input_file = codecs.open("./md/Vocabulary of " + filename + ".md", mode="r+", encoding="UTF-8")
     text = input_file.read()
@@ -27,7 +27,7 @@ def generate_word_list(words, filename):
     output_file.close()
 
 
-def process(words, filename):
+def process(words, filename, show_context=False, show_english=False, show_chinese=False):
     md = open("./md/Vocabulary of " + filename + ".md", mode="w+", encoding="UTF-8")
     md.write("# Vocabulary\n\n")
     md.write("## " + filename + "\n\n")
@@ -39,7 +39,7 @@ def process(words, filename):
         #          + "    " + " - " + word.get_ch_interpretation() + "\n\n")
         md.write(str(i) + ". **" + word.get_name() + "**:" + word.get_yb() + "\n\n"
                  # + "    " + word.get_str_context() + "\n\n"
-                 + "    " + "**例句**：" + word.get_context() + "\n\n"
-                 + "    " + "**英解**：" + word.get_str_en_interpretation() + "\n\n"
-                 + "    " + "**汉解**：" + word.get_str_ch_interpretation() + "\n\n")
+                 + (("    " + "**例句**：" + word.get_context() + "\n\n") if show_context else "\n")
+                 + (("    " + "**英解**：" + word.get_str_en_interpretation() + "\n\n") if show_english else "\n")
+                 + (("    " + "**汉解**：" + word.get_str_ch_interpretation() + "\n\n") if show_chinese else "\n"))
     md.close()
