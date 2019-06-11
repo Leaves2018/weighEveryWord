@@ -13,11 +13,18 @@ def first(raw_text):
         for line in fw.readlines():
             familiar_words.insert(line.strip().lower())
 
-    vocabulary_words = Trie()
-    with open("./vocabulary/vocabulary_words.txt", mode='r+', encoding='UTF-8') as vw:
-        for line in vw.readlines():
-            text = line.lower().split('----')
-            vocabulary_words.insert(text[0])
+    vocabulary_words_trie = Trie()
+    vocabulary_words_dict = dict()
+    with open("./vocabulary/vocabulary_words.txt", "r+", encoding="UTF-8") as f:
+        for sentence in f.readlines():
+            if not sentence[0].isalpha():
+                continue
+            text = sentence.split("----")
+            word = Word(name=text[0], yb=text[1], context=text[2])
+            word.set_en_interpretation(re.split("[)(1-9]+", text[3])[1:])
+            word.set_ch_interpretation(re.split("[)(1-9]+", text[4])[1:])
+            vocabulary_words_trie.insert(word.name)
+            vocabulary_words_dict[word.name] = word
 
     unfamiliar_words = []
     unknown_words = []
@@ -27,27 +34,25 @@ def first(raw_text):
             if word is "":
                 continue
             new_word = Word(name=word, context=re.sub(word, '*' + word + '*', sentence.strip()))
-
-            i = 0
+            ignore_letters = 0
             if len(word) < 4:
-                i = 1
+                ignore_letters = 1
             elif len(word) < 8:
-                i = 2
+                ignore_letters = 2
             elif len(word) < 10:
-                i = 3
+                ignore_letters = 3
             elif len(word) < 14:
-                i = 4
+                ignore_letters = 4
             elif len(word) < 20:
-                i = 5
-
-            if familiar_words.starts_with(word.lower()[:-i]):
+                ignore_letters = 5
+            if familiar_words.starts_with(word.lower()[:-ignore_letters]):
                 continue
-            elif vocabulary_words.starts_with(word.lower()[:-i]) and not vocabulary_words.search(word.lower()):
-                vocabulary_words.insert(word.lower())
-                unfamiliar_words.append(new_word)
+            elif vocabulary_words_trie.starts_with(word.lower()[:-ignore_letters]):
+                temp_word = vocabulary_words_dict.get(vocabulary_words_trie.get_start(word.lower())[0], new_word)
+                temp_word.context = new_word.context
+                unfamiliar_words.append(vocabulary_words_dict.get(word))
             else:
                 unknown_words.append(new_word)
-
     return unfamiliar_words, unknown_words
 
 

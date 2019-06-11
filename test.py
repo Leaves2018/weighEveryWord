@@ -7,7 +7,7 @@ from PyQt5.QtWidgets import *
 from PyQt5.QtCore import Qt
 import sys
 import qtawesome as qta
-from weigh3 import *
+from weigh5 import *
 import os
 
 
@@ -414,18 +414,24 @@ class MainUi(QMainWindow):
             self.unfamiliar_words, self.unknown_words = first(self.s)
             if len(self.unknown_words) == 0:
                 # 如果没有未知词，则不进入DecideUi。直接判断是否有生词，有则生成单词本，没有则再提示改文章也没有生词。
-                self.show_dialog(text2="该文本中没有未知词，无需您手动判断")
+                self.show_dialog(text2="该文本中没有未知词，无需您手动判断。\n"
+                                       "将自动生成本文生词单词表。")
                 if len(self.unfamiliar_words) == 0:
                     self.show_dialog(text2="该文本中也没有生词，该文本无需标记")
                 else:
                     filename, ok = QInputDialog.getText(self, "提示", "生词标记完成，原文及单词表将保存至桌面。\n"
                                                                     "请输入文件名称：")
                     if ok:
+                        f = open("./input/" + str(filename) + ".txt", mode="w+",
+                                 encoding="UTF-8")
+                        f.write(self.s)
+                        f.close()
                         third(self.unfamiliar_words,
                               filename,
                               self.goal_example_checkbox.isChecked(),
                               self.goal_ying_checkbox.isChecked(),
                               self.goal_han_checkbox.isChecked())
+
                 return 0
 
             self.dui = DecideUi(s=self.s,
@@ -442,7 +448,7 @@ class MainUi(QMainWindow):
                                    QtWidgets.QMessageBox.No,
                                    QtWidgets.QMessageBox.Yes)
         if res == QMessageBox.Yes:
-            self.make_close()
+            return 0
         else:
             return 0
 

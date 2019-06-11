@@ -58,9 +58,8 @@ class Word:
         return self.context if not isinstance(self.context, type(None)) else "None"
 
     # 设置语境（该词所在句或段）
-    def set_context(self, context=[]):
-        for i in range(len(context)):
-            context[i] = re.sub(self.name, " *" + self.name + "* ", context[i])
+    def set_context(self, context):
+        context = re.sub(self.name, " *" + self.name + "* ", context)
         self.context = context
 
     # 获取英解（如果还没有查询单词的英解，则先查询存储再返回）
