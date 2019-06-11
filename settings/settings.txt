@@ -1,8 +1,8 @@
+True
+True
+True
 False
 False
+True
 False
-False
-False
-False
-False
-2
+3

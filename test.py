@@ -651,6 +651,7 @@ class MainUi(QMainWindow):
         self.goal_example_checkbox.setCheckState(Qt.Checked)
         self.goal_ying_checkbox.setCheckState(Qt.Checked)
         self.goal_han_checkbox.setCheckState(Qt.Checked)
+        self.sample = 1
         with open("./css/css.txt", "w+", encoding="UTF-8") as f:
             f1 = open("./css/css1.txt", encoding="UTF-8")
             f.writelines(f1.readlines())
@@ -1074,19 +1075,19 @@ class ReciteUi(QMainWindow):
 
     def english_display(self):
         word = self.words[self.random]
-        self.english_text_edit.setText(word.get_str_en_interpretation())
+        self.english_text_edit.setText(word.get_str_en_interpretation() if word.get_str_en_interpretation() is not "" else "抱歉，此单词无英文解释")
 
     def context_display(self):
         word = self.words[self.random]
-        self.context_text_edit.setText(re.sub(word.get_name(), '_' * len(word.get_name()), word.get_context()))
+        self.context_text_edit.setText(re.sub(word.get_name(), '_' * len(word.get_name()), word.get_context()) if word.get_context() is not "" else "抱歉，此单词无例句")
 
     def chinese_display(self):
         word = self.words[self.random]
-        self.chinese_text_edit.setText(word.get_str_ch_interpretation())
+        self.chinese_text_edit.setText(word.get_str_ch_interpretation() if word.get_str_ch_interpretation() is not "" else "抱歉，此单词无中文解释")
 
     def yb_display(self):
         word = self.words[self.random]
-        self.yb_text_edit.setText(word.get_yb())
+        self.yb_text_edit.setText(word.get_yb() if word.get_yb() is not "" else "抱歉，此单词无音标")
 
     def random_get(self):
         self.random = random.randint(0, len(self.words)-1)
@@ -1119,16 +1120,10 @@ class ReciteUi(QMainWindow):
             if self.guess_count == 1:
                 self.context_display()
             elif self.guess_count == 2:
-                self.context_display()
                 self.chinese_display()
             elif self.guess_count == 3:
-                self.context_display()
-                self.chinese_display()
                 self.yb_display()
             elif self.guess_count == 4:
-                self.context_display()
-                self.chinese_display()
-                self.yb_display()
                 self.word_display()
         else:
             self.context_display()
