@@ -37,7 +37,7 @@ def first(raw_text):
             context[word] = re.sub(word, '*' + word + '*', sentence.strip())
 
             i = 0
-            if len(word) < 4:
+            if len(word) < 5:
                 i = 1
             elif len(word) < 8:
                 i = 2

@@ -69,14 +69,20 @@ class Word:
         return self.en_interpretation if not isinstance(self.en_interpretation, type(None)) else "None"
 
     def get_str_en_interpretation(self, flag=False):
-        text = ""
-        count = 0
-        for sentence in self.get_en_interpretation(flag):
-            if sentence == "":
-                continue
-            count += 1
-            text += "(" + str(count) + ")" + sentence
-        return text if not isinstance(text, type(None)) else "None"
+        try:
+            if type(self.en_interpretation) is str:
+                return self.en_interpretation
+            elif type(self.en_interpretation) is list:
+                text = ""
+                count = 0
+                for sentence in self.get_en_interpretation(flag):
+                    if sentence == "":
+                        continue
+                    count += 1
+                    text += "(" + str(count) + ")" + sentence
+                return text if not isinstance(text, type(None)) else "None"
+        except:
+            raise Exception("类型不匹配。英语解释应该为字符串或列表类型")
 
     def set_en_interpretation(self, eng_interpretation=[]):
         self.en_interpretation = eng_interpretation
@@ -88,14 +94,20 @@ class Word:
         return self.ch_interpretation if not isinstance(self.ch_interpretation, type(None)) else "None"
 
     def get_str_ch_interpretation(self, flag=False):
-        text = ""
-        count = 0
-        for sentence in self.get_ch_interpretation(flag):
-            if sentence == "":
-                continue
-            count += 1
-            text += "(" + str(count) + ")" + sentence
-        return text if not isinstance(text, type(None)) else "None"
+        try:
+            if type(self.ch_interpretation) is str:
+                return self.ch_interpretation
+            elif type(self.ch_interpretation) is list:
+                text = ""
+                count = 0
+                for sentence in self.get_ch_interpretation(flag):
+                    if sentence == "":
+                        continue
+                    count += 1
+                    text += "(" + str(count) + ")" + sentence
+                return text if not isinstance(text, type(None)) else "None"
+        except:
+            raise Exception("类型不匹配。中文解释应该为字符串或列表类型")
 
     def set_ch_interpretation(self, ch_interpretation=[]):
         self.ch_interpretation = ch_interpretation
