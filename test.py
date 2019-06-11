@@ -465,6 +465,9 @@ class MainUi(QMainWindow):
         output_file.write(familiar_words.read())
         familiar_words.close()
         output_file.close()
+        res = QtWidgets.QMessageBox.information(self, '提示',
+                                                "您的熟词本已生成至桌面", QtWidgets.QMessageBox.Yes |
+                                                QMessageBox.No)
 
     def shengci_output(self):
         temp_words = []
@@ -484,6 +487,9 @@ class MainUi(QMainWindow):
                            self.goal_example_checkbox.isChecked(),
                            self.goal_ying_checkbox.isChecked(),
                            self.goal_han_checkbox.isChecked())
+        res = QtWidgets.QMessageBox.information(self, '提示',
+                                                "您的生词本已生成至桌面", QtWidgets.QMessageBox.Yes |
+                                                QMessageBox.No)
 
     def recite_start(self):
         try:
