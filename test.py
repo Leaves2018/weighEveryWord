@@ -651,23 +651,34 @@ class MainUi(QMainWindow):
     def settings_save(self):
         with open("./settings/settings.txt", "w+", encoding="UTF-8") as f:
             f.writelines([i + "\n" for i in self.settings])
+
     # 从文件中读取复选框状态
     def settings_read(self):
-        with open("./settings/settings.txt", "r+", encoding="UTF-8") as f:
-            self.settings = f.readlines()
-        self.shuci_xiaoxue_checkbox.setCheckState(Qt.Checked) if self.settings[0] else self.shuci_xiaoxue_checkbox.setCheckState(Qt.Unchecked)
-        self.shuci_chuzhong_checkbox.setCheckState(Qt.Checked) if self.settings[1] else self.shuci_chuzhong_checkbox.setCheckState(Qt.Unchecked)
-        self.shuci_gaozhong_checkbox.setCheckState(Qt.Checked) if self.settings[2] else self.shuci_gaozhong_checkbox.setCheckState(Qt.Unchecked)
-        self.shuci_siliuji_checkbox.setCheckState(Qt.Checked) if self.settings[3] else self.shuci_siliuji_checkbox.setCheckState(Qt.Unchecked)
-        self.goal_example_checkbox.setCheckState(Qt.Checked) if self.settings[4] else self.goal_example_checkbox.setCheckState(Qt.Unchecked)
-        self.goal_ying_checkbox.setCheckState(Qt.Checked) if self.settings[5] else self.goal_ying_checkbox.setCheckState(Qt.Unchecked)
-        self.goal_han_checkbox.setCheckState(Qt.Checked) if self.settings[6] else self.goal_han_checkbox.setCheckState(Qt.Unchecked)
-        if self.settings[7] == 1:
-            self.sample_1_output()
-        elif self.settings[7] == 2:
-            self.sample_2_output()
-        elif self.settings[7] == 3:
-            self.sample_3_output()
+        try:
+            with open("./settings/settings.txt", "r+", encoding="UTF-8") as f:
+                self.settings = f.readlines()
+                self.shuci_xiaoxue_checkbox.setCheckState(Qt.Checked) if self.settings[
+                    0] else self.shuci_xiaoxue_checkbox.setCheckState(Qt.Unchecked)
+                self.shuci_chuzhong_checkbox.setCheckState(Qt.Checked) if self.settings[
+                    1] else self.shuci_chuzhong_checkbox.setCheckState(Qt.Unchecked)
+                self.shuci_gaozhong_checkbox.setCheckState(Qt.Checked) if self.settings[
+                    2] else self.shuci_gaozhong_checkbox.setCheckState(Qt.Unchecked)
+                self.shuci_siliuji_checkbox.setCheckState(Qt.Checked) if self.settings[
+                    3] else self.shuci_siliuji_checkbox.setCheckState(Qt.Unchecked)
+                self.goal_example_checkbox.setCheckState(Qt.Checked) if self.settings[
+                    4] else self.goal_example_checkbox.setCheckState(Qt.Unchecked)
+                self.goal_ying_checkbox.setCheckState(Qt.Checked) if self.settings[
+                    5] else self.goal_ying_checkbox.setCheckState(Qt.Unchecked)
+                self.goal_han_checkbox.setCheckState(Qt.Checked) if self.settings[
+                    6] else self.goal_han_checkbox.setCheckState(Qt.Unchecked)
+                if self.settings[7] == 1:
+                    self.sample_1_output()
+                elif self.settings[7] == 2:
+                    self.sample_2_output()
+                elif self.settings[7] == 3:
+                    self.sample_3_output()
+        except:
+            self.restore_initial_value()
 
     def settings_add_to_window(self):
         self.settings_ui_layout.addWidget(self.test_label_shuci)
