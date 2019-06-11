@@ -100,6 +100,8 @@ class MainUi(QMainWindow):
         self.word_count_question_label.setFont(QFont("Roman times", 18, QFont.Bold))
         self.word_count_line_edit = QLineEdit()
         self.word_recite_button = QPushButton("开始背单词")
+
+
         # self.test_label_2 = QLabel("这里是背诵页面")
 
         # 3.3 "查询"页面：look_up_ui
@@ -453,7 +455,38 @@ class MainUi(QMainWindow):
             return 0
 
     def mark_beautify(self):
-        pass
+        self.clear_button.setStyleSheet(
+            '''QPushButton{
+                    border-style: outset;
+                    border-width:2px;
+                    border-radius:10px;
+                    border-color: black;
+                    font: bold 14px;
+                    min-width:10em;
+                    padding:6px;
+            }''')
+
+        self.clean_button.setStyleSheet(
+            '''QPushButton{
+                    border-style: outset;
+                    border-width:2px;
+                    border-radius:10px;
+                    border-color: black;
+                    font: bold 14px;
+                    min-width:10em;
+                    padding:6px;
+            }''')
+
+        self.start_button.setStyleSheet(
+            '''QPushButton{
+                    border-style: outset;
+                    border-width:2px;
+                    border-radius:10px;
+                    border-color: black;
+                    font: bold 14px;
+                    min-width:10em;
+                    padding:6px;
+            }''')
 
     def recite_ui(self):
         self.word_count_line_edit.returnPressed.connect(self.recite_start)
@@ -547,7 +580,47 @@ class MainUi(QMainWindow):
         self.recite_in_layout.addWidget(self.word_recite_button)
 
     def recite_beautify(self):
-        pass
+        self.shuci_output_button.setStyleSheet(
+            '''QPushButton{
+                    border-style: outset;
+                    border-width:2px;
+                    border-radius:10px;
+                    border-color: black;
+                    font: bold 14px;
+                    min-width:10em;
+                    padding:6px;
+            }''')
+
+        self.shengci_output_button.setStyleSheet(
+            '''QPushButton{
+                    border-style: outset;
+                    border-width:2px;
+                    border-radius:10px;
+                    border-color: black;
+                    font: bold 14px;
+                    min-width:10em;
+                    padding:6px;
+            }''')
+
+        self.word_count_line_edit.setStyleSheet(
+            '''QLineEdit{
+                    border:1px solid gray;
+                    width:300px;
+                    border-radius:10px;
+                    padding:2px 4px;
+            }''')
+
+        self.word_recite_button.setStyleSheet(
+            '''QPushButton{
+                    background-color: orange;
+                    border-style: outset;
+                    border-width:2px;
+                    border-radius:10px;
+                    border-color: beige;
+                    font: bold 14px;
+                    min-width:10em;
+                    padding:6px;
+            }''')
 
     def look_up_ui(self):
         # 搜索模块
@@ -840,7 +913,7 @@ class DecideUi(QMainWindow):
         self.init_ui()
 
     def init_ui(self):
-        self.setFixedSize(960, 700)
+        self.setBaseSize(960, 700)
         self.setCentralWidget(self.mark_decide_ui_widget)
         self.setWindowTitle("生熟词判断")
         self.mark_decide_ui()
@@ -1069,7 +1142,7 @@ class ReciteUi(QMainWindow):
         self.init_ui()
 
     def init_ui(self):
-        self.setFixedSize(960, 700)
+        self.setBaseSize(960, 700)
         self.setCentralWidget(self.recite_ui_in_widget)
         self.setWindowTitle("单词背诵")
         self.recite_word_get()
