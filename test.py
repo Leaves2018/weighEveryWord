@@ -713,7 +713,6 @@ class MainUi(QMainWindow):
 
     # 从文件中读取复选框状态
     def settings_read(self):
-        self.settings = []
         try:
             with open("./settings/settings.txt", "r+", encoding="UTF-8") as f:
                 self.settings = f.readlines()
@@ -737,6 +736,7 @@ class MainUi(QMainWindow):
                     self.sample_2_output()
                 elif self.settings[7] == 3:
                     self.sample_3_output()
+            self.settings = []
         except:
             self.restore_initial_value()
 
