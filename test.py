@@ -707,6 +707,26 @@ class MainUi(QMainWindow):
             QPushButton{border:none;color:black;}
             '''
         )
+        self.new_button.setStyleSheet(
+            '''QPushButton{
+                    border-style: outset;
+                    border-width:2px;
+                    border-radius:10px;
+                    border-color: black;
+                    font: bold 14px;
+                    min-width:10em;
+                    padding:6px;
+            }''')
+        self.old_button.setStyleSheet(
+            '''QPushButton{
+                    border-style: outset;
+                    border-width:2px;
+                    border-radius:10px;
+                    border-color: black;
+                    font: bold 14px;
+                    min-width:10em;
+                    padding:6px;
+            }''')
 
     def settings_ui(self):
         self.initial_value_button.clicked.connect(self.restore_initial_value)
@@ -837,7 +857,8 @@ class MainUi(QMainWindow):
         self.right_widget.addWidget(self.settings_ui_widget)
 
     def settings_beautify(self):
-        pass
+
+
 
     def help_ui(self):
         self.contact_text_browser.setText("如遇到使用上的问题或者开发建议，欢迎联系开发者：\n"
@@ -1227,6 +1248,8 @@ class ReciteUi(QMainWindow):
             if self.guess_count == 1:
                 self.right_words.append(word.get_name())
                 self.words.remove(word)
+                if len(self.words) == 0:
+
                 self.recite_next_one()
             else:
                 self.recite_next_one()
@@ -1243,8 +1266,8 @@ class ReciteUi(QMainWindow):
         self.yb_text_edit.clear()
         self.guess_count = 0
         self.count += 1
-        self.random_get()
         if self.count > self.word_count:
+            self.random_get()
             self.show_dialog()
             self.count -= 1
         else:
