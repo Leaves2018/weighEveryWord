@@ -7,6 +7,7 @@ def func(s):
     return a[1]
 
 
+
 # 转换编码格式，获取网页
 def get_page(url):
     a = requests.get(url)
