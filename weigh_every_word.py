@@ -434,7 +434,7 @@ class MainUi(QMainWindow):
                         f.close()
                         third(self.unfamiliar_words,
                               filename,
-                              self.goal_example_youdao_checkbox.isChecked(),
+                              self.goal_example_original_checkbox.isChecked(),
                               self.goal_ying_checkbox.isChecked(),
                               self.goal_han_checkbox.isChecked())
 
@@ -539,7 +539,7 @@ class MainUi(QMainWindow):
         output_file1.writelines(["\n" + i.to_string() for i in temp_words])
         output_file1.close()
         generate_word_list(temp_words, "生词本",
-                           self.goal_example_youdao_checkbox.isChecked(),
+                           self.goal_example_original_checkbox.isChecked(),
                            self.goal_ying_checkbox.isChecked(),
                            self.goal_han_checkbox.isChecked())
         res = QtWidgets.QMessageBox.information(self, '提示',
@@ -870,10 +870,10 @@ class MainUi(QMainWindow):
                 f.writelines(cet)
                 settings.append(self.shuci_siliuji_checkbox.isChecked())
 
-                settings.append(self.goal_example_original_checkbox.isChecked())
-                settings.append(self.goal_example_youdao_checkbox.isChecked())
                 settings.append(self.goal_ying_checkbox.isChecked())
                 settings.append(self.goal_han_checkbox.isChecked())
+                settings.append(self.goal_example_original_checkbox.isChecked())
+                settings.append(self.goal_example_youdao_checkbox.isChecked())
 
             with open("./css/css.txt", "w+", encoding="UTF-8") as f:
                 f1 = open("./css/css" + str(self.sample) + ".txt", encoding="UTF-8")
@@ -1264,9 +1264,11 @@ class DecideUi(QMainWindow):
         text = self.word_name_text_edit.toPlainText()
 
         if text not in self.temp:
-            # word = Word(name=self.word_name_text_edit.toPlainText(), context=self.word_context_text_edit.toPlainText(),
-            #             ch_interpretation=self.word_ch_text_edit.toPlainText(),
-            #             en_interpretation=self.word_en_text_edit.toPlainText())
+            self.word = Word(name=self.word_name_text_edit.toPlainText(),
+                             yb=self.word_yb_text_edit.toPlainText(),
+                             context=self.word_context_text_edit.toPlainText(),
+                             ch_interpretation=self.word_ch_text_edit.toPlainText(),
+                             en_interpretation=self.word_en_text_edit.toPlainText())
             self.new_words.append(self.word)
             self.temp.append(self.word.get_name())
         self.next_one()

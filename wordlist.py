@@ -1,6 +1,7 @@
 # 生成单词表word_list、定制样式等
 import codecs
 import markdown
+from vocabulary2 import Word
 import os
 
 
@@ -33,6 +34,8 @@ def process(words, filename, show_context=False, show_english=False, show_chines
     md.write("## " + filename + "\n\n")
     for i in range(len(words)):
         word = words[i]
+        if not isinstance(word, Word):
+            continue
         # md.write(str(i) + ". **" + word.get_name() + "**:" + "\n\n"
         #          + "    " + " > " + word.get_context() + "\n\n"
         #          + "    " + " - " + word.get_en_interpretation() + "\n\n"

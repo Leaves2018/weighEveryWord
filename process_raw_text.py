@@ -1,6 +1,7 @@
 import markdown
 import codecs
 from util import *
+from vocabulary2 import *
 import os
 
 
@@ -29,7 +30,8 @@ def process(words, filename):
     text = f.read()
     f.close()
     for word in words:
-        text = re.sub(word.get_name(), ' **' + word.get_name() + '** ', text)
+        if isinstance(word, Word):
+            text = re.sub(word.get_name(), ' **' + word.get_name() + '** ', text)
 
     md = open("./md/" + filename + ".md", mode="w+", encoding="UTF-8")
     md.write("# " + filename + "\n\n")

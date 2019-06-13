@@ -1,0 +1,149 @@
+ 10 module VGA_color_line (clk, rst_n, hs_vga, vs_vga, r_vga, g_vga, b_vga);
+ 11     
+ 12     input clk, rst_n;  //ϵͳʱ�Ӻ͵͵�ƽ��λ
+ 13     output hs_vga, vs_vga;  //��ͬ��hs_vga����ͬ��vs_vga
+ 14     output r_vga, g_vga , b_vga;  //��������ɫ���R��G��B
+ 15     reg [2:0] rgb_vga;  //�൱�������ź���
+ 16     wire clk_vga;  //����ʱ�� 1688 * 1066 * 60 MZ ����ҵ��׼ 108 MHZ��
+ 17     
+ 18 // VGA_1280_1024_60fps_50MHz
+ 19 // Horizontal Parameter( Pixel )
+ 20     parameter 
+ 21         H_DISP  = 11'd1280,
+ 22         H_FRONT = 11'd48,
+ 23         H_SYNC  = 11'd112,
+ 24         H_BACK  = 11'd248,
+ 25         H_TOTAL = 11'd1688,
+ 26 // Virtical Parameter( Line )
+ 27         V_DISP  = 11'd1024,
+ 28         V_FRONT = 11'd1,
+ 29         V_SYNC  = 11'd3,
+ 30         V_BACK  = 11'd38,
+ 31         V_TOTAL = 11'd1066;
+ 32             
+ 33 //����IP��ALTPLL������Ƶ��108 MHZ
+ 34     pll_pixel_clock    pll_pixel_clock_inst (
+ 35         .inclk0 ( clk ),
+ 36         .c0 ( clk_vga )   //�����˿ڱ�����������
+ 37         );
+ 38     
+ 39 //��ͬ��������(�źŷ�����)
+ 40     reg [10:0] hcnt;
+ 41     reg hs_vga;
+ 42     always @ (posedge clk_vga or negedge rst_n)
+ 43         begin
+ 44             if (!rst_n) 
+ 45                 hcnt <= 0;  //��λ���������
+ 46             else 
+ 47                 begin
+ 48                     if (hcnt < H_TOTAL - 1'b1)  //�ж�ɨ����һ��,��������Ϊ[0, H_TOTAL - 1'b1]
+ 49                         hcnt <= hcnt + 1'b1;
+ 50                     else
+ 51                         hcnt <= 0; 
+ 52                 end
+ 53         end 
+ 54 //��ͬ��    
+ 55     always @ (posedge clk_vga or negedge rst_n)
+ 56         begin
+ 57             if (!rst_n)
+ 58             hs_vga <= 0; //��Ϊ��λ����������㣬��0 ~ (H_DISP - 1)����Ϊ��ʾ�����˴���Ϊ 0  
+ 59             else
+ 60                 begin
+ 61                 //����(H_DISP + H_FRONT - 1, H_DISP + H_FRONT + H_SYNC - 1]����ͬ��
+ 62                     if (hcnt >= (H_DISP + H_FRONT - 1'b1) && hcnt < (H_DISP + H_FRONT + H_SYNC - 1'b1))
+ 63                         hs_vga <= 1;  //��ͬ������1����ͬ��
+ 64                     else
+ 65                         hs_vga <= 0;
+ 66                 end
+ 67         end 
+ 68     
+ 69 //��ͬ��������(�źŷ�����)
+ 70     reg [10:0] vcnt;
+ 71     reg vs_vga;
+ 72     always @ (posedge clk_vga or negedge rst_n)  //�첽��λ
+ 73         begin
+ 74             if (!rst_n)
+ 75             vcnt <= 0;  //��λ���������
+ 76             else
+ 77                 begin
+ 78                     if (hcnt == H_DISP - 1'b1)  //�ж���ʾ��ɨ����һ�У��˴�Ҳ���ж�����һ��ɨ����
+ 79                         begin
+ 80                             if (vcnt < V_TOTAL - 1'b1)  //�ж�ɨ����һ��
+ 81                                 vcnt <= vcnt + 1'b1;
+ 82                             else
+ 83                                 vcnt <= 0;
+ 84                         end
+ 85                     else
+ 86                         vcnt <= vcnt;
+ 87                 end 
+ 88         end 
+ 89 //��ͬ��
+ 90     always @ (posedge clk_vga or negedge rst_n)
+ 91         begin
+ 92             if (!rst_n)
+ 93                 vs_vga <= 0;
+ 94             else 
+ 95                 begin
+ 96                     if (vcnt >= (V_DISP + V_FRONT - 1'b1) && vcnt < (V_DISP + V_FRONT + V_SYNC - 1'b1))
+ 97                         vs_vga <= 1;
+ 98                     else
+ 99                         vs_vga <= 0;
+100                 end 
+101         end 
+102 
+103 //����ʾ�����������ʾ��ɨ����ı䣬�ڷ���ʾ�ڣ���������
+104     wire [10:0] xpos_vga, ypos_vga;
+105     assign xpos_vga = (hcnt < H_DISP) ? (hcnt + 1'b1) : 11'd0;  //����ʾ�������� + 1����1~H_DISP��
+106     assign ypos_vga = (vcnt < V_DISP) ? (vcnt + 1'b1) : 11'd0;  //����ʾ�������� + 1����1~V_DISP��
+107     
+108 //��������ʾ
+109     always @ (posedge clk_vga or negedge rst_n)    
+110         if (!rst_n)
+111             rgb_vga <= 3'b000;
+112         else 
+113             begin
+114                 /*if (xpos_vga > 0 && xpos_vga < 80) rgb_vga <= 3'b010;
+115                 else if (xpos_vga < 160) rgb_vga <= 3'b011;
+116                 else if (xpos_vga < 240) rgb_vga <= 3'b100;
+117                 else if (xpos_vga < 320) rgb_vga <= 3'b101;
+118                 else if (xpos_vga < 400) rgb_vga <= 3'b110;
+119                 else if (xpos_vga < 480) rgb_vga <= 3'b111;
+120                 else if (xpos_vga < 560) rgb_vga <= 3'b001;
+121                 else if (xpos_vga < 640) rgb_vga <= 3'b010;
+122                 else if (xpos_vga < 720) rgb_vga <= 3'b011;
+123                 else if (xpos_vga < 800) rgb_vga <= 3'b100;
+124                 else if (xpos_vga < 880) rgb_vga <= 3'b101;
+125                 else if (xpos_vga < 960) rgb_vga <= 3'b110;
+126                 else if (xpos_vga < 1040) rgb_vga <= 3'b111;
+127                 else if (xpos_vga < 1120) rgb_vga <= 3'b001;
+128                 else if (xpos_vga < 1200) rgb_vga <= 3'b010;
+129                 else if (xpos_vga <= 1280) rgb_vga <= 3'b011;
+130                 else rgb_vga <= 3'b000;*/
+131             
+132             if (xpos_vga > 0 && xpos_vga <= 80) rgb_vga <= 3'b111;//white
+133             else if (xpos_vga > 80 && xpos_vga <= 160) rgb_vga <= 3'b100;//red
+134             else if (xpos_vga > 160 && xpos_vga <= 240) rgb_vga <= 3'b101;//mangenta
+135             else if (xpos_vga > 240 && xpos_vga <= 320) rgb_vga <= 3'b110;//yellow
+136             else if (xpos_vga > 320 && xpos_vga <= 400) rgb_vga <= 3'b010;//green
+137             else if (xpos_vga > 400 && xpos_vga <= 480) rgb_vga <= 3'b001;//blue
+138             else if (xpos_vga > 480 && xpos_vga <= 560) rgb_vga <= 3'b011;//cyan            
+139             else if (xpos_vga > 560 && xpos_vga <= 640) rgb_vga <= 3'b000;
+140             
+141             else if (xpos_vga > 640 && xpos_vga <= 720) rgb_vga <= 3'b111;//white
+142             else if (xpos_vga > 720 && xpos_vga <= 800) rgb_vga <= 3'b100;
+143             else if (xpos_vga > 800 && xpos_vga <= 880) rgb_vga <= 3'b101;
+144             else if (xpos_vga > 880 && xpos_vga <= 960) rgb_vga <= 3'b110;
+145             else if (xpos_vga > 960 && xpos_vga <= 1040) rgb_vga <= 3'b010;
+146             else if (xpos_vga > 1040 && xpos_vga <= 1120) rgb_vga <= 3'b001;
+147             else if (xpos_vga > 1120 && xpos_vga <= 1200) rgb_vga <= 3'b011;
+148             else if (xpos_vga > 1200 && xpos_vga <= 1280) rgb_vga <= 3'b111;
+149             else rgb_vga <= 3'b000;//black���������Ҫ����Ȼ��ɫ����ô����
+150             
+151         end 
+152         
+153 //����ɫ���루��ʡ��ֱ���� rgb_vga��
+154     assign r_vga = rgb_vga[2];
+155     assign g_vga = rgb_vga[1];
+156     assign b_vga = rgb_vga[0];
+157     
+158 endmodule
