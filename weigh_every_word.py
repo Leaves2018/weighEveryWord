@@ -155,7 +155,8 @@ class MainUi(QMainWindow):
 
         self.test_label_choice = QLabel("输出选择")
         self.test_label_choice.setFont(QFont("Roman times", 16, QFont.Bold))
-        self.goal_example_checkbox = QCheckBox('例句')
+        self.goal_example_original_checkbox = QCheckBox('例句')
+        self.goal_example_youdao_checkbox = QCheckBox('有道例句')
         self.goal_ying_checkbox = QCheckBox('英解')
         self.goal_han_checkbox = QCheckBox('汉解')
 
@@ -433,7 +434,7 @@ class MainUi(QMainWindow):
                         f.close()
                         third(self.unfamiliar_words,
                               filename,
-                              self.goal_example_checkbox.isChecked(),
+                              self.goal_example_youdao_checkbox.isChecked(),
                               self.goal_ying_checkbox.isChecked(),
                               self.goal_han_checkbox.isChecked())
 
@@ -442,9 +443,10 @@ class MainUi(QMainWindow):
             self.dui = DecideUi(s=self.s,
                                 unfamiliar_words=self.unfamiliar_words,
                                 unknown_words=self.unknown_words,
-                                show_context=self.goal_example_checkbox.isChecked(),
+                                show_youdao=self.goal_example_youdao_checkbox.isChecked(),
                                 show_english=self.goal_ying_checkbox.isChecked(),
-                                show_chinese=self.goal_han_checkbox.isChecked())
+                                show_chinese=self.goal_han_checkbox.isChecked(),
+                                show_context=self.goal_example_original_checkbox.isChecked())
             self.dui.show()
 
     def show_dialog(self, text1="提示", text2="不符合条件"):
@@ -537,7 +539,7 @@ class MainUi(QMainWindow):
         output_file1.writelines(["\n" + i.to_string() for i in temp_words])
         output_file1.close()
         generate_word_list(temp_words, "生词本",
-                           self.goal_example_checkbox.isChecked(),
+                           self.goal_example_youdao_checkbox.isChecked(),
                            self.goal_ying_checkbox.isChecked(),
                            self.goal_han_checkbox.isChecked())
         res = QtWidgets.QMessageBox.information(self, '提示',
@@ -823,7 +825,8 @@ class MainUi(QMainWindow):
         self.shuci_chuzhong_checkbox.setCheckState(Qt.Checked)
         self.shuci_gaozhong_checkbox.setCheckState(Qt.Checked)
         self.shuci_siliuji_checkbox.setCheckState(Qt.Unchecked)
-        self.goal_example_checkbox.setCheckState(Qt.Checked)
+        self.goal_example_original_checkbox.setCheckState(Qt.Checked)
+        self.goal_example_youdao_checkbox.setCheckState(Qt.Unchecked)
         self.goal_ying_checkbox.setCheckState(Qt.Checked)
         self.goal_han_checkbox.setCheckState(Qt.Checked)
         self.sample = 1
@@ -838,7 +841,8 @@ class MainUi(QMainWindow):
                                              + ("《初中词汇》" if self.shuci_chuzhong_checkbox.isChecked() else "")
                                              + ("《高中词汇》" if self.shuci_gaozhong_checkbox.isChecked() else "")
                                              + ("《四六级词汇》" if self.shuci_siliuji_checkbox.isChecked() else "" + "\n")
-                                             + ("《例句》" if self.goal_example_checkbox.isChecked() else "")
+                                             + ("《例句》" if self.goal_example_original_checkbox.isChecked() else "")
+                                             + ("《有道例句》" if self.goal_example_youdao_checkbox.isChecked() else "")
                                              + ("《英解》" if self.goal_ying_checkbox.isChecked() else "")
                                              + ("《汉解》" if self.goal_han_checkbox.isChecked() else "" + "\n")
                                              + "样式" + str(self.sample) + "\n"
@@ -866,7 +870,8 @@ class MainUi(QMainWindow):
                 f.writelines(cet)
                 settings.append(self.shuci_siliuji_checkbox.isChecked())
 
-                settings.append(self.goal_example_checkbox.isChecked())
+                settings.append(self.goal_example_original_checkbox.isChecked())
+                settings.append(self.goal_example_youdao_checkbox.isChecked())
                 settings.append(self.goal_ying_checkbox.isChecked())
                 settings.append(self.goal_han_checkbox.isChecked())
 
@@ -888,15 +893,16 @@ class MainUi(QMainWindow):
             self.shuci_chuzhong_checkbox.setCheckState(Qt.Checked if settings[1] == "True" else Qt.Unchecked)
             self.shuci_gaozhong_checkbox.setCheckState(Qt.Checked if settings[2] == "True" else Qt.Unchecked)
             self.shuci_siliuji_checkbox.setCheckState(Qt.Checked if settings[3] == "True" else Qt.Unchecked)
-            self.goal_example_checkbox.setCheckState(Qt.Checked if settings[4] == "True" else Qt.Unchecked)
-            self.goal_ying_checkbox.setCheckState(Qt.Checked if settings[5] == "True" else Qt.Unchecked)
-            self.goal_han_checkbox.setCheckState(Qt.Checked if settings[6] == "True" else Qt.Unchecked)
+            self.goal_example_original_checkbox.setCheckState(Qt.Checked if settings[4] == "True" else Qt.Unchecked)
+            self.goal_example_youdao_checkbox.setCheckState(Qt.Checked if settings[5] == "True" else Qt.Unchecked)
+            self.goal_ying_checkbox.setCheckState(Qt.Checked if settings[6] == "True" else Qt.Unchecked)
+            self.goal_han_checkbox.setCheckState(Qt.Checked if settings[7] == "True" else Qt.Unchecked)
 
-            if int(settings[7]) == 1:
+            if int(settings[8]) == 1:
                 self.sample_1_output()
-            elif int(settings[7]) == 2:
+            elif int(settings[8]) == 2:
                 self.sample_2_output()
-            elif int(settings[7]) == 3:
+            elif int(settings[8]) == 3:
                 self.sample_3_output()
 
     def settings_add_to_window(self):
@@ -909,9 +915,10 @@ class MainUi(QMainWindow):
         self.settings_ui_layout.addWidget(self.down_process_bar_1)
 
         self.settings_ui_layout.addWidget(self.test_label_choice)
-        self.settings_ui_layout.addWidget(self.goal_example_checkbox)
         self.settings_ui_layout.addWidget(self.goal_ying_checkbox)
         self.settings_ui_layout.addWidget(self.goal_han_checkbox)
+        self.settings_ui_layout.addWidget(self.goal_example_original_checkbox)
+        self.settings_ui_layout.addWidget(self.goal_example_youdao_checkbox)
 
         self.settings_ui_layout.addWidget(self.down_process_bar_2)
 
@@ -973,7 +980,7 @@ class MainUi(QMainWindow):
 
 class DecideUi(QMainWindow):
     def __init__(self, s="", unfamiliar_words=[], unknown_words=[],
-                 show_context=False, show_english=False, show_chinese=False):
+                 show_context=False, show_english=False, show_chinese=False, show_youdao=False):
         super().__init__()
 
         self.s = s
@@ -989,6 +996,7 @@ class DecideUi(QMainWindow):
         self.show_context = show_context
         self.show_english = show_english
         self.show_chinese = show_chinese
+        self.show_youdao = show_youdao
 
         self.mark_decide_ui_widget = QWidget()
         self.mark_decide_ui_layout = QGridLayout(self.mark_decide_ui_widget)
@@ -1299,7 +1307,7 @@ class DecideUi(QMainWindow):
         self.word_name_text_edit.setPlainText(self.word.get_name())
         self.word_yb_text_edit.setPlainText(self.word.get_yb(flag))
         # self.word_context_text_edit.setPlainText(self.word.get_str_context())
-        self.word_context_text_edit.setPlainText(self.word.get_context(flag))
+        self.word_context_text_edit.setPlainText(self.word.get_context(self.show_youdao))
         self.word_ch_text_edit.setPlainText(self.word.get_str_ch_interpretation(flag))
         self.word_en_text_edit.setPlainText(self.word.get_str_en_interpretation(flag))
         QApplication.processEvents()
