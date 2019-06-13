@@ -29,6 +29,8 @@ def first(raw_text):
     context = dict()
     unfamiliar_words = set()
     unknown_words = set()
+    uf = []
+    uk = []
     for sentence in sentences(raw_text):
         words = set(re.split('[^a-zA-Z]+', sentence))
         for word in words:
@@ -37,7 +39,7 @@ def first(raw_text):
             context[word] = re.sub(word, '*' + word + '*', sentence.strip())
 
             i = 0
-            if len(word) < 5:
+            if len(word) < 6:
                 i = 1
             elif len(word) < 8:
                 i = 2
@@ -55,14 +57,14 @@ def first(raw_text):
             elif vocabulary_words_trie.starts_with(word.lower()[:-i]):
                 temp_word = vocabulary_words_dict.get(vocabulary_words_trie.get_start(word.lower()[:-i])[0])
                 temp_word.context = context.get(word)
+                uf.append(temp_word)
                 unfamiliar_words.add(word)
             # 添加未知词
             else:
                 unknown_words.add(word)
-    uf = []
-    uk = []
-    for w in unfamiliar_words:
-        uf.append(vocabulary_words_dict.get(w))
+
+    # for w in unfamiliar_words:
+    #     uf.append(vocabulary_words_dict.get(w))
 
     for w in unknown_words:
         uk.append(Word(name=w, context=context.get(w)))
