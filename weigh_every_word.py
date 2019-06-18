@@ -1409,10 +1409,10 @@ class ReciteUi(QMainWindow):
             for sentence in f.readlines():
                 if not sentence[0].isalpha():
                     continue
-                text = sentence.split("----")
+                text = sentence.strip().split("----")
                 word = Word(name=text[0], yb=text[1], context=text[2])
-                word.set_en_interpretation(re.split("[)(1-9]+", text[3])[1:])
-                word.set_ch_interpretation(re.split("[)(1-9]+", text[4])[1:])
+                word.set_en_interpretation(re.split("[)(1-9]+", text[3]))
+                word.set_ch_interpretation(re.split("[)(1-9]+", text[4]))
                 self.words.append(word)
 
     def recite_ensure(self):
