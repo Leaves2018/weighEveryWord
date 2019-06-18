@@ -893,10 +893,10 @@ class MainUi(QMainWindow):
             self.shuci_chuzhong_checkbox.setCheckState(Qt.Checked if settings[1] == "True" else Qt.Unchecked)
             self.shuci_gaozhong_checkbox.setCheckState(Qt.Checked if settings[2] == "True" else Qt.Unchecked)
             self.shuci_siliuji_checkbox.setCheckState(Qt.Checked if settings[3] == "True" else Qt.Unchecked)
-            self.goal_example_original_checkbox.setCheckState(Qt.Checked if settings[4] == "True" else Qt.Unchecked)
-            self.goal_example_youdao_checkbox.setCheckState(Qt.Checked if settings[5] == "True" else Qt.Unchecked)
-            self.goal_ying_checkbox.setCheckState(Qt.Checked if settings[6] == "True" else Qt.Unchecked)
-            self.goal_han_checkbox.setCheckState(Qt.Checked if settings[7] == "True" else Qt.Unchecked)
+            self.goal_ying_checkbox.setCheckState(Qt.Checked if settings[4] == "True" else Qt.Unchecked)
+            self.goal_han_checkbox.setCheckState(Qt.Checked if settings[5] == "True" else Qt.Unchecked)
+            self.goal_example_original_checkbox.setCheckState(Qt.Checked if settings[6] == "True" else Qt.Unchecked)
+            self.goal_example_youdao_checkbox.setCheckState(Qt.Checked if settings[7] == "True" else Qt.Unchecked)
 
             if int(settings[8]) == 1:
                 self.sample_1_output()
